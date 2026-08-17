@@ -532,7 +532,7 @@ test('getCardDetail uses one batch request when enabled', async () => {
   const paths = requestUrl.searchParams.get('urls')?.split(',') || []
   expect(paths).toHaveLength(3)
   expect(
-    new URL(`https://api.trello.com${paths[0]}`).searchParams.get('fields'),
+    new URL(`https://apidraw.com${paths[0]}`).searchParams.get('fields'),
   ).toBe('name,desc,url,idBoard,idList,labels')
   expect(paths[1]).toContain('/cards/card-1/attachments?fields=')
   expect(paths[2]).toContain('/cards/card-1/actions?fields=')
@@ -1086,9 +1086,9 @@ test('addCardAttachment uploads a file as form data', async () => {
   const requests: string[] = []
   const requestInits: (
     | {
-        readonly body?: Readonly<FormData>
-        readonly method?: string
-      }
+      readonly body?: Readonly<FormData>
+      readonly method?: string
+    }
     | undefined
   )[] = []
   const client = createTrelloClient(async (url, init) => {

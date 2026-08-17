@@ -84,13 +84,11 @@ export const getBoardBackgroundCss = (
       `--TrelloBoardBackgroundImage: url("${escapeCssString(image)}")`,
     )
     properties.push(
-      `--TrelloBoardBackgroundRepeat: ${
-        board.prefs?.backgroundTile ? 'repeat' : 'no-repeat'
+      `--TrelloBoardBackgroundRepeat: ${board.prefs?.backgroundTile ? 'repeat' : 'no-repeat'
       }`,
     )
     properties.push(
-      `--TrelloBoardBackgroundSize: ${
-        board.prefs?.backgroundTile ? 'auto' : 'cover'
+      `--TrelloBoardBackgroundSize: ${board.prefs?.backgroundTile ? 'auto' : 'cover'
       }`,
     )
   }
@@ -100,7 +98,7 @@ export const getBoardBackgroundCss = (
   if (properties.length === 0) {
     return ''
   }
-  return `.TrelloBoardDetailWithBackground {
+  return `drawBoardDetailWithBackground {
   ${properties.join(';\n  ')};
 }`
 }

@@ -20,8 +20,8 @@ export interface MemoryTrelloApiCache extends TrelloApiCache {
   readonly keys: () => readonly string[]
 }
 
-export const trelloApiCacheName = 'builtin.trello.api-responses'
-export const testTrelloApiCacheName = 'test.builtin.trello.api-responses'
+export const trelloApiCacheName = 'builtindraw.api-responses'
+export const testTrelloApiCacheName = 'test.builtindraw.api-responses'
 export const credentialFingerprintSearchParam = 'credential'
 
 const textEncoder = new TextEncoder()

@@ -23,7 +23,7 @@ export const test: Test = async ({ Command, expect, Locator }) => {
   })
 
   // assert
-  const boards = Locator('.TrelloBoards')
+  const boards = Locator('drawBoards')
   await expect(boards).toBeVisible()
   await expect(boards).toHaveText(`RefreshSign outBoardsNo boards found`)
 }

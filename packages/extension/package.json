@@ -1,5 +1,5 @@
 {
-  "name": "builtin.trello",
+  "name": "builtindraw",
   "version": "0.0.0-dev",
   "description": "Trello extension for Lvce Editor",
   "main": "dist/trelloMain.js",

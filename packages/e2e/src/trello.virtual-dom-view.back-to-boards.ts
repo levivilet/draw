@@ -22,7 +22,7 @@ export const test: Test = async ({ Command, expect, Locator }) => {
   await back.click()
 
   const board = Locator('button[name="board:board-1"]')
-  const cards = Locator('.TrelloCard')
+  const cards = Locator('drawCard')
 
   await expect(board).toBeVisible()
   await expect(cards).toHaveCount(0)

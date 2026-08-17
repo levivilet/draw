@@ -4,7 +4,7 @@ import path, { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { root } from './root.ts'
 
-const extensionId = 'builtin.trello'
+const extensionId = 'builtindraw'
 
 const assertFileExists = async (file: string): Promise<void> => {
   try {

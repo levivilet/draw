@@ -13,7 +13,7 @@ export const test: Test = async ({ Command, expect, Locator }) => {
   await connectWithCredentials({ Command, expect, Locator })
 
   const noBoards = Locator('text=No boards found')
-  const boardButtons = Locator('.TrelloBoardButton')
+  const boardButtons = Locator('drawBoardButton')
 
   await expect(noBoards).toBeVisible()
   await expect(boardButtons).toHaveCount(0)

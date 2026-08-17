@@ -38,8 +38,8 @@ export const test: Test = async ({ Command, expect, Locator }) => {
   await openBoard(Command, Locator, expect)
   await openCard(Command, Locator, expect)
 
-  const list = Locator('.TrelloMarkdownList')
-  const items = Locator('.TrelloMarkdownListItem')
+  const list = Locator('drawMarkdownList')
+  const items = Locator('drawMarkdownListItem')
   await expect(list).toBeVisible()
   await expect(list).toHaveCSS('list-style-position', 'inside')
   await expect(list).toHaveCSS('list-style-type', 'disc')

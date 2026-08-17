@@ -34,7 +34,7 @@ export const test: Test = async ({ Command, expect, Locator }) => {
 
   const title = Locator('textarea[name="newCardTitle:list-1"]')
   const submit = Locator('button[name="submitAddCard:list-1"]')
-  const cards = Locator('.TrelloCard')
+  const cards = Locator('drawCard')
   await expect(title).toBeVisible()
   await expect(submit).toBeVisible()
   await expect(cards).toHaveCount(1)

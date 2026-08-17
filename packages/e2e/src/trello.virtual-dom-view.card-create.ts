@@ -78,7 +78,7 @@ export const test: Test = async ({ Command, expect, Locator }) => {
   // await expect(title).toBeVisible()
   // await title.type(' edited')
 
-  // const descriptionPreview = Locator('.TrelloCardDescriptionPreview')
+  // const descriptionPreview = Locator('drawCardDescriptionPreview')
   // await expect(descriptionPreview).toBeVisible()
   // // eslint-disable-next-line e2e/no-direct-click
   // await descriptionPreview.click()

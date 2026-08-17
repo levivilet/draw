@@ -7,7 +7,7 @@ interface RunningExtension {
   readonly id: string
 }
 
-const extensionId = 'builtin.trello'
+const extensionId = 'builtindraw'
 const viewId = 'trello.views.boards'
 
 export const test: Test = async ({ Command, expect, Locator }) => {

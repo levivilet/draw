@@ -13,10 +13,10 @@ export const test: Test = async ({ Command, expect, Locator }) => {
   await Locator('input[name="boardFilter"]').type('no such card')
   await Command.execute('Timeout.sleep', 100)
 
-  const cards = Locator('.TrelloCard')
-  const lists = Locator('.TrelloList')
+  const cards = Locator('drawCard')
+  const lists = Locator('drawList')
   const noCards = Locator('text=No cards')
-  const counts = Locator('.TrelloListCardCount')
+  const counts = Locator('drawListCardCount')
   const firstCount = counts.nth(0)
   const secondCount = counts.nth(1)
   await expect(cards).toHaveCount(0)

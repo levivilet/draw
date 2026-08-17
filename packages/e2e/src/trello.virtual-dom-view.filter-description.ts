@@ -14,7 +14,7 @@ export const test: Test = async ({ Command, expect, Locator }) => {
   await input.type('PRODUCTION')
   await Command.execute('Timeout.sleep', 100)
 
-  const cards = Locator('.TrelloCard')
+  const cards = Locator('drawCard')
   const matchingCard = Locator('button[name="card:card-description"]')
   const hiddenCard = Locator('button[name="card:card-title"]')
   const firstList = Locator('input[name="listTitle:list-1"]')

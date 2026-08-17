@@ -23,5 +23,5 @@ test('renders placeholders', () => {
   expect(TrelloStrings.searchResultsFor('roadmap')).toBe(
     'Search results for "roadmap"',
   )
-  expect(TrelloStrings.trelloBoard('Roadmap')).toBe('Trello: Roadmap')
+  expect(TrelloStringsdrawBoard('Roadmap')).toBe('Trello: Roadmap')
 })

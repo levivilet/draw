@@ -17,8 +17,8 @@ export interface RecentBoardStorage {
   ) => Promise<void>
 }
 
-export const cacheName = 'builtin.trello.recent-boards'
-export const testCacheName = 'test.builtin.trello.recent-boards'
+export const cacheName = 'builtindraw.recent-boards'
+export const testCacheName = 'test.builtindraw.recent-boards'
 const legacyRecentBoardsRequestUrl = '/recent-boards.json'
 export const recentBoardsRequestUrl = createLocalCacheRequestUrl(
   legacyRecentBoardsRequestUrl,

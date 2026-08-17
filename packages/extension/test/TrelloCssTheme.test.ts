@@ -7,10 +7,10 @@ const oldDarkFallbackPattern =
   /#(?:181f1f|202929|121818|111616|314040|334040|087d90|006a7a|4dc8ff|aeb8b8|f4f4f4|f7f7f7|394545|2a3434)\b/i
 const hardcodedDarkOverlayPattern = /rgba\((?:0,\s*0,\s*0|255,\s*255,\s*255)/
 const labelChoiceTextColorPattern =
-  /\.TrelloCardLabelChoiceText \{[^}]*color: #ffffff;/s
+  /\drawCardLabelChoiceText \{[^}]*color: #ffffff;/s
 const lightLabelTextColorPattern =
-  /\.TrelloCardLabelColorGreenLight \{[^}]*color: #172b4d;/s
-const authFormMaxWidthPattern = /\.TrelloAuthForm\s*\{[^}]*max-width: 760px;/
+  /\drawCardLabelColorGreenLight \{[^}]*color: #172b4d;/s
+const authFormMaxWidthPattern = /\drawAuthForm\s*\{[^}]*max-width: 760px;/
 
 const readTrelloCss = async (): Promise<string> => {
   return readFile(new URL('../media/trello.css', import.meta.url), 'utf8')
@@ -27,7 +27,7 @@ const getCssAfterTokenLayer = (css: string): string => {
 test('trello css defines local theme tokens from editor theme variables', async () => {
   const css = await readTrelloCss()
 
-  expect(css).toContain('.TrelloView,\n.TrelloBoardDetail {')
+  expect(css).toContain('drawView,\ndrawBoardDetail {')
   expect(css).toContain('--TrelloForeground: var(')
   expect(css).toContain('--WorkbenchForeground')
   expect(css).toContain('--ListForeground')
@@ -53,7 +53,7 @@ test('trello scroll containers use native themed scrollbars', async () => {
   const css = await readTrelloCss()
 
   expect(css).toContain(
-    '.TrelloLists,\n.TrelloCards,\n.TrelloCardDetailPanel {',
+    'drawLists,\ndrawCards,\ndrawCardDetailPanel {',
   )
   expect(css).toContain(
     'scrollbar-color: var(--TrelloScrollbarThumb) var(--TrelloScrollbarTrack);',
@@ -72,9 +72,9 @@ test('trello component styles use local tokens instead of dark theme fallbacks',
 test('trello readable content allows text selection', async () => {
   const css = await readTrelloCss()
 
-  expect(css).toContain('.TrelloTitle,\n.TrelloWelcome,')
-  expect(css).toContain('.TrelloCardDescriptionPreview,')
-  expect(css).toContain('.TrelloCardCommentText,')
+  expect(css).toContain('drawTitle,\ndrawWelcome,')
+  expect(css).toContain('drawCardDescriptionPreview,')
+  expect(css).toContain('drawCardCommentText,')
   expect(css).toContain('user-select: text;')
 })
 
@@ -87,7 +87,7 @@ test('trello auth form matches the welcome section maximum width', async () => {
 test('trello card description preview uses pointer cursor', async () => {
   const css = await readTrelloCss()
 
-  expect(css).toContain('.TrelloCardDescriptionPreview {')
+  expect(css).toContain('drawCardDescriptionPreview {')
   expect(css).toContain('cursor: pointer;')
 })
 

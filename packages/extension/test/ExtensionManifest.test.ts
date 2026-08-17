@@ -14,7 +14,7 @@ test('extension has expected metadata, connect sources, and opt-in settings', as
 
   expect(manifest.repository).toBe('https://github.com/levivilet/trello')
   expect(manifest.contentSecurityPolicy).toContain(
-    'connect-src https://api.trello.com https://trello.com',
+    'connect-src https://apidraw.com https://trello.com',
   )
   expect(manifest.configuration['trello.batchRequestsEnabled']).toEqual({
     default: false,

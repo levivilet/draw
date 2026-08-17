@@ -14,12 +14,12 @@ type TrelloView = Omit<View<ActiveTrelloViewInstance>, 'commands'> & {
 
 const runViewAction =
   (action: (instance: ActiveTrelloViewInstance) => Promise<void>) =>
-  async (
-    instance: ActiveTrelloViewInstance,
-  ): Promise<ActiveTrelloViewInstance> => {
-    await action(instance)
-    return instance
-  }
+    async (
+      instance: ActiveTrelloViewInstance,
+    ): Promise<ActiveTrelloViewInstance> => {
+      await action(instance)
+      return instance
+    }
 
 export const view: TrelloView = {
   commands: {
@@ -31,13 +31,13 @@ export const view: TrelloView = {
   },
   create: createInstance,
   // @ts-ignore
-  displayName: TrelloStrings.trello(),
+  displayName: TrelloStringsdraw(),
   eventListeners: renderEventListeners(),
   icon: 'list-tree',
   id: viewId,
   kind: 'virtualDom',
   preferredLocation: 'preview',
-  title: TrelloStrings.trello(),
+  title: TrelloStringsdraw(),
 }
 
 export {

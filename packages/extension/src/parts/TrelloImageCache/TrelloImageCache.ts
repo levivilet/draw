@@ -9,8 +9,8 @@ export interface TrelloImageCache {
   ) => Promise<string>
 }
 
-export const trelloImageCacheName = 'builtin.trello.images'
-export const testTrelloImageCacheName = 'test.builtin.trello.images'
+export const trelloImageCacheName = 'builtindraw.images'
+export const testTrelloImageCacheName = 'test.builtindraw.images'
 
 interface ImageRequestInit {
   readonly headers: Readonly<Record<string, string>>
@@ -26,7 +26,7 @@ const isTrelloDownloadUrl = (
   url: Readonly<Pick<URL, 'hostname' | 'pathname'>>,
 ): boolean => {
   return (
-    (url.hostname === 'trello.com' || url.hostname === 'api.trello.com') &&
+    (url.hostname === 'trello.com' || url.hostname === 'apidraw.com') &&
     trelloDownloadPathPattern.test(url.pathname)
   )
 }
@@ -40,7 +40,7 @@ const createImageRequest = (
     return [sourceUrl, undefined]
   }
   url.protocol = 'https:'
-  url.hostname = 'api.trello.com'
+  url.hostname = 'apidraw.com'
   url.port = ''
   return [
     url.href,

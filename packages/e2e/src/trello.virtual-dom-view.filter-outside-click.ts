@@ -11,13 +11,13 @@ export const test: Test = async ({ Command, expect, Locator }) => {
   await openBoardFilter({ Command, expect, Locator })
 
   const input = Locator('input[name="boardFilter"]')
-  const cards = Locator('.TrelloCard')
-  const popup = Locator('.TrelloBoardFilterPopup')
+  const cards = Locator('drawCard')
+  const popup = Locator('drawBoardFilterPopup')
   await input.type('ready')
   await Command.execute('Timeout.sleep', 100)
   await expect(cards).toHaveCount(1)
 
-  const overlay = Locator('.TrelloBoardFilterOverlay')
+  const overlay = Locator('drawBoardFilterOverlay')
   // eslint-disable-next-line e2e/no-direct-click
   await overlay.click()
   await Command.execute('Timeout.sleep', 100)

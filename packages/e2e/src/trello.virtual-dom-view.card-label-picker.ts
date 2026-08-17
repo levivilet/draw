@@ -46,7 +46,7 @@ export const test: Test = async ({ Command, expect, Locator }) => {
   await openPicker.click()
   await Command.execute('Timeout.sleep', 100)
 
-  const picker = Locator('.TrelloCardLabelPicker')
+  const picker = Locator('drawCardLabelPicker')
   const search = Locator('input[name="cardLabelSearch"]')
   const ready = Locator('button[name="addCardLabel:label-1"]')
   const needsReview = Locator('button[name="addCardLabel:label-2"]')

@@ -2,7 +2,7 @@ import type { TrelloViewState } from '../TrelloViewState/TrelloViewState.ts'
 import { getBoardBackgroundCss } from '../BoardBackground/BoardBackground.ts'
 
 const getCardDetailCss = (state: Readonly<TrelloViewState>): string => {
-  return `.TrelloCardDetailPanel {
+  return `drawCardDetailPanel {
   --TrelloCardDetailWidth: ${state.cardDetailWidth}px;
 }`
 }
@@ -10,9 +10,9 @@ const getCardDetailCss = (state: Readonly<TrelloViewState>): string => {
 export const getCss = (state: Readonly<TrelloViewState>): string => {
   const boardBackgroundCss = state.boardDetail
     ? getBoardBackgroundCss(
-        state.boardDetail.board,
-        state.boardBackgroundEnabled,
-      )
+      state.boardDetail.board,
+      state.boardBackgroundEnabled,
+    )
     : ''
   return [getCardDetailCss(state), boardBackgroundCss]
     .filter(Boolean)

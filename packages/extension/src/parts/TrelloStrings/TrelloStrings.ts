@@ -113,9 +113,9 @@ export const selectLabelColor = (color: string): string =>
 export const signOut = (): string => getString(UiStrings.SignOut)
 export const title = (): string => getString(UiStrings.Title)
 export const token = (): string => getString(UiStrings.Token)
-export const trello = (): string => getString(UiStrings.Trello)
+export const trello = (): string => getString(UiStringsdraw)
 export const trelloBoard = (name: string): string =>
-  getStringWithPlaceholder(UiStrings.TrelloBoard, name)
+  getStringWithPlaceholder(UiStringsdrawBoard, name)
 export const unknownMember = (): string => getString(UiStrings.UnknownMember)
 export const uploadingFiles = (): string => getString(UiStrings.UploadingFiles)
 export const welcome = (): string => getString(UiStrings.Welcome)

@@ -28,8 +28,8 @@ export const test: Test = async ({ Command, expect, Locator }) => {
   await connectWithCredentials({ Command, expect, Locator })
   await openBoard(Command, Locator, expect)
 
-  const lists = Locator('.TrelloList')
-  const cards = Locator('.TrelloCard')
+  const lists = Locator('drawList')
+  const cards = Locator('drawCard')
   const todo = Locator('input[name="listTitle:list-1"]')
   const doing = Locator('input[name="listTitle:list-2"]')
   const done = Locator('input[name="listTitle:list-3"]')

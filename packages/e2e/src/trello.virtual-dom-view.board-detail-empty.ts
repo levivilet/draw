@@ -22,9 +22,9 @@ export const test: Test = async ({ Command, expect, Locator }) => {
   await connectWithCredentials({ Command, expect, Locator })
   await openBoard(Command, Locator, expect)
 
-  const boardDetail = Locator('.TrelloBoardDetail')
-  const lists = Locator('.TrelloList')
-  const cards = Locator('.TrelloCard')
+  const boardDetail = Locator('drawBoardDetail')
+  const lists = Locator('drawList')
+  const cards = Locator('drawCard')
 
   await expect(boardDetail).toBeVisible()
   await expect(lists).toHaveCount(0)

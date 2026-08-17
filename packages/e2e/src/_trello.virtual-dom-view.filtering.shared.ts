@@ -84,7 +84,7 @@ export const openBoardFilter = async ({
   await openFilter.click()
   await Command.execute('Timeout.sleep', 100)
 
-  const popup = Locator('.TrelloBoardFilterPopup')
+  const popup = Locator('drawBoardFilterPopup')
   const input = Locator('input[name="boardFilter"]')
   await expect(openFilter).toHaveAttribute('aria-expanded', 'true')
   await expect(popup).toBeVisible()

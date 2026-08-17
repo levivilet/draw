@@ -17,8 +17,8 @@ export interface SecretStorageApi {
   readonly storeSecret: (key: string, value: string) => Promise<void>
 }
 
-export const cacheName = 'builtin.trello.credentials'
-export const testCacheName = 'test.builtin.trello.credentials'
+export const cacheName = 'builtindraw.credentials'
+export const testCacheName = 'test.builtindraw.credentials'
 export const credentialsSecretKey = 'credentials'
 const legacyCredentialsRequestUrl = '/credentials.json'
 export const credentialsRequestUrl = createLocalCacheRequestUrl(

@@ -143,7 +143,7 @@ test('resolveImageUrl authenticates Trello download URLs', async () => {
 
   expect(requests).toEqual([
     [
-      'https://api.trello.com/1/cards/card-1/attachments/attachment-1/download/image.png',
+      'https://apidraw.com/1/cards/card-1/attachments/attachment-1/download/image.png',
       {
         headers: {
           Authorization:

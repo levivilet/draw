@@ -10,7 +10,7 @@ export const test: Test = async ({ Command, expect, Locator }) => {
   await showFilteringBoard({ Command, expect, Locator })
   await openBoardFilter({ Command, expect, Locator })
 
-  const popup = Locator('.TrelloBoardFilterPopup')
+  const popup = Locator('drawBoardFilterPopup')
   const input = Locator('input[name="boardFilter"]')
   const close = Locator('button[name="closeBoardFilter"]')
   await expect(popup).toBeVisible()

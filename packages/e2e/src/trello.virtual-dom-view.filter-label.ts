@@ -13,7 +13,7 @@ export const test: Test = async ({ Command, expect, Locator }) => {
   await Locator('input[name="boardFilter"]').type('ready FOR')
   await Command.execute('Timeout.sleep', 100)
 
-  const cards = Locator('.TrelloCard')
+  const cards = Locator('drawCard')
   const matchingCard = Locator('button[name="card:card-label"]')
   const hiddenCard = Locator('button[name="card:card-blocked"]')
   await expect(cards).toHaveCount(1)

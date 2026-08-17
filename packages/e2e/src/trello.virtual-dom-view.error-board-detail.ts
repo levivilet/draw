@@ -23,7 +23,7 @@ export const test: Test = async ({ Command, expect, Locator }) => {
 
   const error = Locator('text=Cannot load board')
   const board = Locator('button[name="board:board-1"]')
-  const cards = Locator('.TrelloCard')
+  const cards = Locator('drawCard')
 
   await expect(error).toBeVisible()
   await expect(board).toBeVisible()

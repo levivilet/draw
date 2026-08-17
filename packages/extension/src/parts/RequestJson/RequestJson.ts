@@ -6,7 +6,7 @@ import type {
 } from '../TrelloClientTypes/TrelloClientTypes.ts'
 import type { TrelloCredentials } from '../TrelloTypes/TrelloTypes.ts'
 
-const baseUrl = 'https://api.trello.com/1'
+const baseUrl = 'https://apidraw.com/1'
 const batchRequestLimit = 10
 const successfulResponseStatusPattern = /^2\d\d$/
 

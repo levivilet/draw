@@ -10,8 +10,8 @@ export interface CurrentBoardStorage {
   readonly write: (boardId: string) => Promise<void>
 }
 
-export const cacheName = 'builtin.trello.current-board'
-export const testCacheName = 'test.builtin.trello.current-board'
+export const cacheName = 'builtindraw.current-board'
+export const testCacheName = 'test.builtindraw.current-board'
 const legacyCurrentBoardRequestUrl = '/current-board.json'
 export const currentBoardRequestUrl = createLocalCacheRequestUrl(
   legacyCurrentBoardRequestUrl,

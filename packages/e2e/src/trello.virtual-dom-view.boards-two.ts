@@ -14,7 +14,7 @@ export const test: Test = async ({ Command, expect, Locator }) => {
   await useMockDataAndShowTrello(Command, createMockData(boards))
   await connectWithCredentials({ Command, expect, Locator })
 
-  const boardButtons = Locator('.TrelloBoardButton')
+  const boardButtons = Locator('drawBoardButton')
   const roadmap = Locator('button[name="board:board-1"]')
   const boardTwo = Locator('button[name="board:board-2"]')
 

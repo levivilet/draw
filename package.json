@@ -1,5 +1,5 @@
 {
-  "name": "builtin.trello-monorepo",
+  "name": "builtindraw-monorepo",
   "version": "0.0.0-dev",
   "description": "Trello extension monorepo for Lvce Editor",
   "type": "module",

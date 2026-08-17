@@ -1,5 +1,5 @@
 {
-  "id": "builtin.trello",
+  "id": "builtindraw",
   "name": "Trello",
   "workerName": "Trello Worker",
   "description": "Browse Trello boards from Lvce Editor",
@@ -8,7 +8,7 @@
   "isolated": true,
   "contentSecurityPolicy": [
     "default-src 'none'",
-    "connect-src https://api.trello.com https://trello.com",
+    "connect-src https://apidraw.com https://trello.com",
     "script-src 'self'"
   ],
   "categories": ["Other"],

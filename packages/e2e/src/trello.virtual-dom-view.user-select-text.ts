@@ -11,7 +11,7 @@ export const test: Test = async ({ Command, expect, Locator }) => {
   const boards = createBoards(1)
   await useMockDataAndShowTrello(Command, createMockData(boards))
 
-  const welcomeText = Locator('.TrelloWelcomeText')
+  const welcomeText = Locator('drawWelcomeText')
   await expect(welcomeText).toBeVisible()
   await expect(welcomeText).toHaveCSS('user-select', 'text')
 }

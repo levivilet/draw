@@ -1,5 +1,5 @@
-.TrelloView,
-.TrelloBoardDetail {
+drawView,
+drawBoardDetail {
   --TrelloBackground: var(--MainBackground, var(--SideBarBackground, #1e2324));
   --TrelloForeground: var(
     --WorkbenchForeground,
@@ -102,7 +102,7 @@
   );
 }
 
-.TrelloView {
+drawView {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -114,14 +114,14 @@
   background: var(--TrelloBackground);
 }
 
-.TrelloTitle {
+drawTitle {
   margin: 0;
   contain: content;
   font-size: 20px;
   line-height: 1.3;
 }
 
-.TrelloListTitle {
+drawListTitle {
   margin: 0 0 8px;
   contain: content;
   font-size: 13px;
@@ -130,7 +130,7 @@
   text-transform: uppercase;
 }
 
-.TrelloListHeader {
+drawListHeader {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -138,12 +138,12 @@
   min-width: 0;
 }
 
-.TrelloListTitleInputWrapper {
+drawListTitleInputWrapper {
   flex: 1 1 auto;
   min-width: 0;
 }
 
-.TrelloListTitleInput {
+drawListTitleInput {
   box-sizing: border-box;
   width: 100%;
   min-height: 28px;
@@ -166,7 +166,7 @@
     box-shadow 120ms ease;
 }
 
-.TrelloListTitleInput:focus {
+drawListTitleInput:focus {
   color: var(--TrelloInputForeground);
   background: var(--TrelloInputBackground);
   border-color: var(--TrelloFocus);
@@ -174,7 +174,7 @@
   box-shadow: inset 0 0 0 1px var(--TrelloFocus);
 }
 
-.TrelloListCardCount {
+drawListCardCount {
   flex: 0 0 auto;
   contain: content;
   font-size: 12px;
@@ -183,7 +183,7 @@
   white-space: nowrap;
 }
 
-.TrelloToolbar {
+drawToolbar {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
@@ -191,7 +191,7 @@
   contain: content;
 }
 
-.TrelloField {
+drawField {
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -200,7 +200,7 @@
   color: var(--TrelloForegroundMuted);
 }
 
-.TrelloAuthForm {
+drawAuthForm {
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -208,14 +208,14 @@
   max-width: 760px;
 }
 
-.TrelloAuthFields {
+drawAuthFields {
   display: flex;
   flex-direction: column;
   gap: 12px;
   contain: content;
 }
 
-.TrelloWelcome {
+drawWelcome {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -230,7 +230,7 @@
   border-radius: 6px;
 }
 
-.TrelloWelcomeTitle {
+drawWelcomeTitle {
   margin: 0;
   contain: content;
   font-size: 14px;
@@ -239,14 +239,14 @@
   color: var(--TrelloForegroundStrong);
 }
 
-.TrelloWelcomeText {
+drawWelcomeText {
   contain: content;
   max-width: 68ch;
   font-size: 12px;
   line-height: 1.55;
 }
 
-.TrelloWelcomeNote {
+drawWelcomeNote {
   contain: content;
   max-width: 68ch;
   padding-top: 8px;
@@ -256,7 +256,7 @@
   border-top: 1px solid var(--TrelloBorder);
 }
 
-.TrelloWelcomeSteps {
+drawWelcomeSteps {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -266,7 +266,7 @@
   list-style: none;
 }
 
-.TrelloWelcomeStep {
+drawWelcomeStep {
   display: flex;
   gap: 8px;
   align-items: flex-start;
@@ -276,7 +276,7 @@
   line-height: 1.5;
 }
 
-.TrelloWelcomeStepNumber {
+drawWelcomeStepNumber {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -289,50 +289,50 @@
   border-radius: 999px;
 }
 
-.TrelloWelcomeStepText {
+drawWelcomeStepText {
   min-width: 0;
   contain: content;
   overflow-wrap: anywhere;
 }
 
-.TrelloWelcomeLink {
+drawWelcomeLink {
   color: var(--TrelloLinkForeground);
   text-decoration: none;
   overflow-wrap: anywhere;
 }
 
-.TrelloWelcomeLink:hover {
+drawWelcomeLink:hover {
   text-decoration: underline;
 }
 
-.TrelloTitle,
-.TrelloWelcome,
-.TrelloCardDescriptionPreview,
-.TrelloMarkdownParagraph,
-.TrelloMarkdownHeading,
-.TrelloMarkdownListItem,
-.TrelloCardCommentAuthor,
-.TrelloCardCommentDate,
-.TrelloCardCommentText,
-.TrelloCardDetailEmpty,
-.TrelloCardDetailLink {
+drawTitle,
+drawWelcome,
+drawCardDescriptionPreview,
+drawMarkdownParagraph,
+drawMarkdownHeading,
+drawMarkdownListItem,
+drawCardCommentAuthor,
+drawCardCommentDate,
+drawCardCommentText,
+drawCardDetailEmpty,
+drawCardDetailLink {
   user-select: text;
 }
 
 @media (max-width: 520px) {
-  .TrelloWelcome {
+  drawWelcome {
     gap: 8px;
     padding: 10px;
   }
 
-  .TrelloWelcomeStep {
+  drawWelcomeStep {
     flex-direction: column;
     gap: 4px;
   }
 }
 
-.TrelloInput,
-.TrelloTextArea {
+drawInput,
+drawTextArea {
   box-sizing: border-box;
   width: 100%;
   min-height: 28px;
@@ -347,21 +347,21 @@
     box-shadow 120ms ease;
 }
 
-.TrelloInput:focus,
-.TrelloTextArea:focus {
+drawInput:focus,
+drawTextArea:focus {
   outline: none;
   border-color: var(--TrelloFocus);
   box-shadow: inset 0 0 0 1px var(--TrelloFocus);
 }
 
-.TrelloTextArea {
+drawTextArea {
   min-height: 96px;
   resize: vertical;
   line-height: 1.5;
 }
 
-.TrelloButton,
-.TrelloBoardButton {
+drawButton,
+drawBoardButton {
   min-height: 28px;
   contain: content;
   padding: 4px 10px;
@@ -371,50 +371,50 @@
   border-radius: 6px;
 }
 
-.TrelloButton:hover,
-.TrelloBoardButton:hover {
+drawButton:hover,
+drawBoardButton:hover {
   background: var(--TrelloButtonHoverBackground);
 }
 
-.TrelloBoardButton {
+drawBoardButton {
   width: 100%;
   text-align: left;
 }
 
-.TrelloSearchForm {
+drawSearchForm {
   flex: 1 1 160px;
   contain: content;
 }
 
-.TrelloSection,
-.TrelloWorkspaces,
-.TrelloWorkspace {
+drawSection,
+drawWorkspaces,
+drawWorkspace {
   display: flex;
   flex-direction: column;
   gap: 8px;
   contain: content;
 }
 
-.TrelloWorkspaces {
+drawWorkspaces {
   margin-top: 4px;
 }
 
-.TrelloBoardGrid {
+drawBoardGrid {
   display: flex;
   flex-direction: column;
   gap: 8px;
   contain: content;
 }
 
-.TrelloSearchSection,
-.TrelloSearchResults {
+drawSearchSection,
+drawSearchResults {
   display: flex;
   flex-direction: column;
   gap: 8px;
   contain: content;
 }
 
-.TrelloSearchResult {
+drawSearchResult {
   min-height: 28px;
   contain: content;
   padding: 8px;
@@ -425,29 +425,29 @@
   border-radius: 6px;
 }
 
-button.TrelloSearchResult:hover {
+buttondrawSearchResult:hover {
   background: var(--TrelloHoverBackground);
 }
 
-.TrelloBoardDetail {
+drawBoardDetail {
   position: relative;
   min-height: 0;
   overflow: hidden;
 }
 
-.TrelloBoardFilterActionActive {
+drawBoardFilterActionActive {
   color: var(--TrelloButtonForeground);
   background: var(--TrelloButtonBackground);
   border-color: transparent;
 }
 
-.TrelloBoardFilterOverlay {
+drawBoardFilterOverlay {
   position: absolute;
   z-index: 9;
   inset: 0;
 }
 
-.TrelloBoardFilterPopup {
+drawBoardFilterPopup {
   position: absolute;
   z-index: 10;
   top: 16px;
@@ -468,14 +468,14 @@ button.TrelloSearchResult:hover {
     0 12px 32px var(--TrelloShadow);
 }
 
-.TrelloBoardFilterPopupHeader {
+drawBoardFilterPopupHeader {
   display: flex;
   align-items: center;
   min-height: 28px;
   contain: content;
 }
 
-.TrelloBoardFilterPopupTitle {
+drawBoardFilterPopupTitle {
   flex: 1 1 auto;
   padding-left: 28px;
   text-align: center;
@@ -483,7 +483,7 @@ button.TrelloSearchResult:hover {
   color: var(--TrelloForegroundStrong);
 }
 
-.TrelloBoardFilterCloseButton {
+drawBoardFilterCloseButton {
   display: inline-flex;
   flex: 0 0 auto;
   align-items: center;
@@ -498,34 +498,34 @@ button.TrelloSearchResult:hover {
   border-color: transparent;
 }
 
-.TrelloBoardFilterCloseButton:hover,
-.TrelloBoardFilterCloseButton:focus {
+drawBoardFilterCloseButton:hover,
+drawBoardFilterCloseButton:focus {
   color: var(--TrelloForegroundStrong);
   background: var(--TrelloHoverBackground);
   outline: none;
 }
 
-.TrelloBoardFilterField {
+drawBoardFilterField {
   display: flex;
   flex-direction: column;
   gap: 6px;
   contain: content;
 }
 
-.TrelloBoardFilterLabel {
+drawBoardFilterLabel {
   font-size: 12px;
   font-weight: 600;
   color: var(--TrelloForegroundStrong);
 }
 
-.TrelloBoardFilterHint {
+drawBoardFilterHint {
   contain: content;
   font-size: 11px;
   line-height: 1.4;
   color: var(--TrelloForegroundMuted);
 }
 
-.TrelloBoardDetailWithBackground {
+drawBoardDetailWithBackground {
   background-color: var(--TrelloBoardBackgroundColor, var(--TrelloBackground));
   background-image: var(--TrelloBoardBackgroundImage, none);
   background-position: center;
@@ -533,7 +533,7 @@ button.TrelloSearchResult:hover {
   background-size: var(--TrelloBoardBackgroundSize, cover);
 }
 
-.TrelloBoardDetailContent {
+drawBoardDetailContent {
   display: flex;
   flex: 1 1 auto;
   gap: 12px;
@@ -542,13 +542,13 @@ button.TrelloSearchResult:hover {
   overflow: hidden;
 }
 
-.TrelloLists,
-.TrelloCards,
-.TrelloCardDetailPanel {
+drawLists,
+drawCards,
+drawCardDetailPanel {
   scrollbar-color: var(--TrelloScrollbarThumb) var(--TrelloScrollbarTrack);
 }
 
-.TrelloLists {
+drawLists {
   display: flex;
   align-items: flex-start;
   flex: 1 1 auto;
@@ -560,7 +560,7 @@ button.TrelloSearchResult:hover {
   overflow-y: hidden;
 }
 
-.TrelloList {
+drawList {
   box-sizing: border-box;
   display: flex;
   flex: 0 0 280px;
@@ -579,13 +579,13 @@ button.TrelloSearchResult:hover {
     0 8px 24px var(--TrelloShadow);
 }
 
-.TrelloListDragTarget {
+drawListDragTarget {
   background: color-mix(in srgb, var(--TrelloFocus) 18%, var(--TrelloSurface));
   outline: 1px solid var(--TrelloFocus);
   outline-offset: -1px;
 }
 
-.TrelloCards {
+drawCards {
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
@@ -597,7 +597,7 @@ button.TrelloSearchResult:hover {
   overflow-y: auto;
 }
 
-.TrelloCard {
+drawCard {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -620,7 +620,7 @@ button.TrelloSearchResult:hover {
     transform 120ms ease;
 }
 
-.TrelloCard:hover {
+drawCard:hover {
   background: var(--TrelloHoverBackground);
   border-color: var(--TrelloFocus);
   box-shadow:
@@ -629,7 +629,7 @@ button.TrelloSearchResult:hover {
   transform: translateY(-1px);
 }
 
-.TrelloCard:focus {
+drawCard:focus {
   outline: none;
   border-color: var(--TrelloFocus);
   box-shadow:
@@ -637,15 +637,15 @@ button.TrelloSearchResult:hover {
     0 0 0 1px var(--TrelloFocus);
 }
 
-.TrelloCard * {
+drawCard * {
   pointer-events: none;
 }
 
-.TrelloCardWithCover {
+drawCardWithCover {
   gap: 0;
 }
 
-.TrelloCardBody {
+drawCardBody {
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -653,7 +653,7 @@ button.TrelloSearchResult:hover {
   padding: 8px 9px;
 }
 
-.TrelloCardCoverImage {
+drawCardCoverImage {
   display: block;
   width: 100%;
   aspect-ratio: 16 / 9;
@@ -663,12 +663,12 @@ button.TrelloSearchResult:hover {
   border-bottom: 1px solid var(--TrelloBorderSubtle);
 }
 
-.TrelloCardTitle {
+drawCardTitle {
   contain: content;
   line-height: 1.4;
 }
 
-.TrelloCardMeta {
+drawCardMeta {
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -678,14 +678,14 @@ button.TrelloSearchResult:hover {
   color: var(--TrelloForegroundMuted);
 }
 
-.TrelloAddListButton,
-.TrelloAddListForm {
+drawAddListButton,
+drawAddListForm {
   box-sizing: border-box;
   flex: 0 0 280px;
   contain: content;
 }
 
-.TrelloAddListButton {
+drawAddListButton {
   min-height: 40px;
   padding: 8px;
   text-align: left;
@@ -698,11 +698,11 @@ button.TrelloSearchResult:hover {
     0 8px 24px var(--TrelloShadow);
 }
 
-.TrelloAddListButton:hover {
+drawAddListButton:hover {
   background: var(--TrelloSurfaceAlt);
 }
 
-.TrelloAddListInput {
+drawAddListInput {
   box-sizing: border-box;
   width: 100%;
   min-height: 40px;
@@ -713,7 +713,7 @@ button.TrelloSearchResult:hover {
   border-radius: 8px;
 }
 
-.TrelloCardCommentIcon {
+drawCardCommentIcon {
   display: block;
   flex: none;
   width: 14px;
@@ -723,12 +723,12 @@ button.TrelloSearchResult:hover {
   object-fit: contain;
 }
 
-.TrelloCardCommentCount {
+drawCardCommentCount {
   font-size: 12px;
   line-height: 1;
 }
 
-.TrelloAddCardButton {
+drawAddCardButton {
   width: 100%;
   min-height: 32px;
   contain: content;
@@ -740,26 +740,26 @@ button.TrelloSearchResult:hover {
   border-radius: 6px;
 }
 
-.TrelloAddCardButton:hover {
+drawAddCardButton:hover {
   color: var(--TrelloButtonForeground);
   background: var(--TrelloButtonHoverBackground);
 }
 
-.TrelloAddCardForm {
+drawAddCardForm {
   display: flex;
   flex-direction: column;
   gap: 8px;
   contain: content;
 }
 
-.TrelloAddCardActions {
+drawAddCardActions {
   display: flex;
   gap: 4px;
   align-items: center;
   contain: content;
 }
 
-.TrelloAddCardCloseButton {
+drawAddCardCloseButton {
   min-width: 32px;
   min-height: 28px;
   contain: content;
@@ -770,12 +770,12 @@ button.TrelloSearchResult:hover {
   border-radius: 6px;
 }
 
-.TrelloAddCardCloseButton:hover {
+drawAddCardCloseButton:hover {
   color: var(--TrelloForegroundStrong);
   background: var(--TrelloButtonHoverBackground);
 }
 
-.TrelloAddCardInput {
+drawAddCardInput {
   box-sizing: border-box;
   width: 100%;
   min-height: calc(2lh + 16px);
@@ -794,12 +794,12 @@ button.TrelloSearchResult:hover {
   border-radius: 6px;
 }
 
-.TrelloAddCardInput:focus {
+drawAddCardInput:focus {
   outline: none;
   box-shadow: 0 0 0 1px var(--TrelloFocus);
 }
 
-.TrelloCardDetailPanel {
+drawCardDetailPanel {
   box-sizing: border-box;
   display: flex;
   flex: 0 0 var(--TrelloCardDetailWidth, 360px);
@@ -815,7 +815,7 @@ button.TrelloSearchResult:hover {
   border-radius: 8px;
 }
 
-.TrelloCardDetailPopup {
+drawCardDetailPopup {
   position: absolute;
   z-index: 1;
   inset: 0;
@@ -828,7 +828,7 @@ button.TrelloSearchResult:hover {
   background: rgb(0 0 0 / 64%);
 }
 
-.TrelloCardDetailPanelPopup {
+drawCardDetailPanelPopup {
   flex: 0 1 900px;
   width: min(900px, 100%);
   height: min(720px, 100%);
@@ -837,17 +837,17 @@ button.TrelloSearchResult:hover {
   box-shadow: 0 16px 48px var(--TrelloShadow);
 }
 
-.TrelloCardDetailResizeSash {
+drawCardDetailResizeSash {
   flex: 0 0 8px;
   contain: strict;
   cursor: ew-resize;
 }
 
-.TrelloCardDetailResizeSash:hover {
+drawCardDetailResizeSash:hover {
   background: color-mix(in srgb, var(--TrelloFocus) 28%, transparent);
 }
 
-.TrelloCardAttachmentDropArea {
+drawCardAttachmentDropArea {
   display: flex;
   flex: 1 1 auto;
   align-items: center;
@@ -864,19 +864,19 @@ button.TrelloSearchResult:hover {
 }
 
 @media (max-width: 520px) {
-  .TrelloCardDetailPopup {
+  drawCardDetailPopup {
     padding: 12px;
   }
 }
 
-.TrelloCardDetailHeader {
+drawCardDetailHeader {
   display: flex;
   gap: 8px;
   align-items: flex-start;
   contain: content;
 }
 
-.TrelloCardDetailTitleSizer {
+drawCardDetailTitleSizer {
   flex: 1 1 auto;
   position: relative;
   display: flex;
@@ -884,8 +884,8 @@ button.TrelloSearchResult:hover {
   min-width: 0;
 }
 
-.TrelloCardDetailTitleInput,
-.TrelloCardDetailTitleMirror {
+drawCardDetailTitleInput,
+drawCardDetailTitleMirror {
   box-sizing: border-box;
   width: 100%;
   min-width: 0;
@@ -901,7 +901,7 @@ button.TrelloSearchResult:hover {
   border-radius: 4px;
 }
 
-.TrelloCardDetailTitleInput {
+drawCardDetailTitleInput {
   position: absolute;
   inset: 0;
   height: 100%;
@@ -912,24 +912,24 @@ button.TrelloSearchResult:hover {
   background: transparent;
 }
 
-.TrelloCardDetailTitleMirror {
+drawCardDetailTitleMirror {
   visibility: hidden;
   pointer-events: none;
 }
 
-.TrelloCardDetailTitleInput:hover {
+drawCardDetailTitleInput:hover {
   background: var(--TrelloSurfaceAlt);
 }
 
-.TrelloCardDetailTitleInput:focus,
-.TrelloCardDetailTitleInputEditing {
+drawCardDetailTitleInput:focus,
+drawCardDetailTitleInputEditing {
   background: var(--TrelloInputBackground);
   border-color: var(--TrelloFocus);
   outline: none;
   box-shadow: inset 0 0 0 1px var(--TrelloFocus);
 }
 
-.TrelloCardDetailCloseButton {
+drawCardDetailCloseButton {
   flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
@@ -946,48 +946,48 @@ button.TrelloSearchResult:hover {
   border-color: transparent;
 }
 
-.TrelloCardDetailCloseButton:hover,
-.TrelloCardDetailCloseButton:focus {
+drawCardDetailCloseButton:hover,
+drawCardDetailCloseButton:focus {
   color: var(--TrelloForegroundStrong);
   background: var(--TrelloHoverBackground);
   outline: none;
 }
 
-.TrelloCardListSection {
+drawCardListSection {
   display: flex;
   flex-direction: column;
   gap: 5px;
   contain: content;
 }
 
-.TrelloCardListLabel {
+drawCardListLabel {
   contain: content;
   font-size: 12px;
   line-height: 1.3;
   color: var(--TrelloForegroundMuted);
 }
 
-.TrelloCardListSelect {
+drawCardListSelect {
   min-height: 30px;
   padding: 5px 8px;
 }
 
-.TrelloCardDescriptionSection,
-.TrelloCardDescriptionEditor {
+drawCardDescriptionSection,
+drawCardDescriptionEditor {
   display: flex;
   flex-direction: column;
   gap: 8px;
   contain: content;
 }
 
-.TrelloCardDescriptionHeader {
+drawCardDescriptionHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
   contain: content;
 }
 
-.TrelloCardDetailSectionTitle {
+drawCardDetailSectionTitle {
   margin: 0;
   contain: content;
   font-size: 13px;
@@ -996,14 +996,14 @@ button.TrelloSearchResult:hover {
   color: var(--TrelloForegroundStrong);
 }
 
-.TrelloCardDescriptionEditButton {
+drawCardDescriptionEditButton {
   min-height: 24px;
   padding: 3px 8px;
   font-size: 12px;
   line-height: 16px;
 }
 
-.TrelloCardDescriptionPreview {
+drawCardDescriptionPreview {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -1019,51 +1019,51 @@ button.TrelloSearchResult:hover {
   border-radius: 6px;
 }
 
-.TrelloCardDescriptionPreview:hover {
+drawCardDescriptionPreview:hover {
   background: var(--TrelloSurfaceAlt);
   border-color: var(--TrelloBorder);
 }
 
-.TrelloCardDescriptionPlaceholder {
+drawCardDescriptionPlaceholder {
   align-items: center;
   justify-content: center;
   color: var(--TrelloForegroundMuted);
 }
 
-.TrelloCardDescriptionTextArea {
+drawCardDescriptionTextArea {
   min-height: 132px;
 }
 
-.TrelloCardDetailActions {
+drawCardDetailActions {
   display: flex;
   gap: 8px;
   align-items: center;
   contain: content;
 }
 
-.TrelloCardDetailSaveButton,
-.TrelloCardDetailCancelButton {
+drawCardDetailSaveButton,
+drawCardDetailCancelButton {
   min-width: 72px;
 }
 
-.TrelloCardDetailCancelButton {
+drawCardDetailCancelButton {
   color: var(--TrelloForegroundStrong);
   background: transparent;
   border-color: transparent;
 }
 
-.TrelloCardDetailCancelButton:hover {
+drawCardDetailCancelButton:hover {
   background: var(--TrelloHoverBackground);
 }
 
-.TrelloMarkdownParagraph {
+drawMarkdownParagraph {
   margin: 0;
   contain: content;
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
 
-.TrelloMarkdownHeading {
+drawMarkdownHeading {
   margin: 0;
   contain: content;
   font-weight: 600;
@@ -1071,19 +1071,19 @@ button.TrelloSearchResult:hover {
   overflow-wrap: anywhere;
 }
 
-.TrelloMarkdownHeading1,
-.TrelloMarkdownHeading2 {
+drawMarkdownHeading1,
+drawMarkdownHeading2 {
   font-size: 16px;
 }
 
-.TrelloMarkdownHeading3,
-.TrelloMarkdownHeading4,
-.TrelloMarkdownHeading5,
-.TrelloMarkdownHeading6 {
+drawMarkdownHeading3,
+drawMarkdownHeading4,
+drawMarkdownHeading5,
+drawMarkdownHeading6 {
   font-size: 14px;
 }
 
-.TrelloMarkdownList {
+drawMarkdownList {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -1094,13 +1094,13 @@ button.TrelloSearchResult:hover {
   list-style-type: disc;
 }
 
-.TrelloMarkdownListItem {
+drawMarkdownListItem {
   contain: content;
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
 
-.TrelloMarkdownCode {
+drawMarkdownCode {
   padding: 1px 4px;
   font-family: var(--EditorFontFamily, monospace);
   font-size: 0.92em;
@@ -1109,31 +1109,31 @@ button.TrelloSearchResult:hover {
   border-radius: 4px;
 }
 
-.TrelloMarkdownLink {
+drawMarkdownLink {
   color: var(--TrelloLinkForeground);
   text-decoration: none;
   overflow-wrap: anywhere;
 }
 
-.TrelloMarkdownLink:hover {
+drawMarkdownLink:hover {
   text-decoration: underline;
 }
 
-.TrelloCardLabelSection {
+drawCardLabelSection {
   display: flex;
   flex-direction: column;
   gap: 8px;
   contain: content;
 }
 
-.TrelloCardLabelRow {
+drawCardLabelRow {
   display: flex;
   gap: 6px;
   align-items: flex-start;
   contain: content;
 }
 
-.TrelloCardLabels {
+drawCardLabels {
   display: flex;
   flex: 1 1 auto;
   flex-wrap: wrap;
@@ -1142,7 +1142,7 @@ button.TrelloSearchResult:hover {
   contain: content;
 }
 
-.TrelloCardLabel {
+drawCardLabel {
   box-sizing: border-box;
   max-width: 100%;
   padding: 3px 8px;
@@ -1156,20 +1156,20 @@ button.TrelloSearchResult:hover {
   border-radius: 4px;
 }
 
-.TrelloCardLabelButton {
+drawCardLabelButton {
   border: 0;
 }
 
-.TrelloCardLabelButton:hover {
+drawCardLabelButton:hover {
   filter: brightness(1.08);
 }
 
-.TrelloCardPreviewLabels {
+drawCardPreviewLabels {
   flex: 0 0 auto;
   gap: 4px;
 }
 
-.TrelloCardPreviewLabel {
+drawCardPreviewLabel {
   flex: 0 0 40px;
   width: 40px;
   height: 8px;
@@ -1181,11 +1181,11 @@ button.TrelloSearchResult:hover {
   border-radius: 999px;
 }
 
-.TrelloCardLabelAddButton {
+drawCardLabelAddButton {
   align-self: flex-start;
 }
 
-.TrelloCardLabelAddIconButton {
+drawCardLabelAddIconButton {
   flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
@@ -1199,7 +1199,7 @@ button.TrelloSearchResult:hover {
   line-height: 1;
 }
 
-.TrelloCardLabelPicker {
+drawCardLabelPicker {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -1210,7 +1210,7 @@ button.TrelloSearchResult:hover {
   border-radius: 6px;
 }
 
-.TrelloCardLabelPickerHeader {
+drawCardLabelPickerHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1218,7 +1218,7 @@ button.TrelloSearchResult:hover {
   contain: content;
 }
 
-.TrelloCardLabelPickerTitle {
+drawCardLabelPickerTitle {
   contain: content;
   font-size: 12px;
   font-weight: 600;
@@ -1226,7 +1226,7 @@ button.TrelloSearchResult:hover {
   color: var(--TrelloForeground);
 }
 
-.TrelloCardLabelPickerCloseButton {
+drawCardLabelPickerCloseButton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1239,7 +1239,7 @@ button.TrelloSearchResult:hover {
   line-height: 1;
 }
 
-.TrelloCardLabelPickerBackButton {
+drawCardLabelPickerBackButton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1252,22 +1252,22 @@ button.TrelloSearchResult:hover {
   line-height: 1;
 }
 
-.TrelloCardLabelSearchInput {
+drawCardLabelSearchInput {
   width: 100%;
 }
 
-.TrelloCardLabelCreateButton {
+drawCardLabelCreateButton {
   width: 100%;
 }
 
-.TrelloCardLabelCreate {
+drawCardLabelCreate {
   display: flex;
   flex-direction: column;
   gap: 12px;
   contain: content;
 }
 
-.TrelloCardLabelCreatePreview {
+drawCardLabelCreatePreview {
   box-sizing: border-box;
   min-height: 32px;
   contain: content;
@@ -1282,14 +1282,14 @@ button.TrelloSearchResult:hover {
   border-radius: 4px;
 }
 
-.TrelloCardLabelCreateFields {
+drawCardLabelCreateFields {
   display: flex;
   flex-direction: column;
   gap: 8px;
   contain: content;
 }
 
-.TrelloCardLabelCreateFields label {
+drawCardLabelCreateFields label {
   contain: content;
   font-size: 12px;
   font-weight: 600;
@@ -1297,14 +1297,14 @@ button.TrelloSearchResult:hover {
   color: var(--TrelloForeground);
 }
 
-.TrelloCardLabelColorGrid {
+drawCardLabelColorGrid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 8px;
   contain: content;
 }
 
-.TrelloCardLabelColorChoice {
+drawCardLabelColorChoice {
   box-sizing: border-box;
   height: 32px;
   min-height: 32px;
@@ -1313,23 +1313,23 @@ button.TrelloSearchResult:hover {
   border-radius: 4px;
 }
 
-.TrelloCardLabelColorChoice:hover {
+drawCardLabelColorChoice:hover {
   filter: brightness(1.08);
 }
 
-.TrelloCardLabelColorChoiceSelected {
+drawCardLabelColorChoiceSelected {
   border-color: var(--TrelloForeground);
   box-shadow: inset 0 0 0 1px var(--TrelloSurfaceAlt);
 }
 
-.TrelloCardLabelPickerList {
+drawCardLabelPickerList {
   display: flex;
   flex-direction: column;
   gap: 6px;
   contain: content;
 }
 
-.TrelloCardLabelChoice {
+drawCardLabelChoice {
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -1351,14 +1351,14 @@ button.TrelloSearchResult:hover {
   border-radius: 4px;
 }
 
-.TrelloCardLabelChoiceCheckbox {
+drawCardLabelChoiceCheckbox {
   flex: 0 0 auto;
   width: 14px;
   height: 14px;
   margin: 0;
 }
 
-.TrelloCardLabelChoiceText {
+drawCardLabelChoiceText {
   box-sizing: border-box;
   flex: 1 1 auto;
   min-width: 0;
@@ -1371,12 +1371,12 @@ button.TrelloSearchResult:hover {
   border-radius: 4px;
 }
 
-.TrelloCardLabelChoice:disabled {
+drawCardLabelChoice:disabled {
   cursor: default;
   opacity: 0.65;
 }
 
-.TrelloCardLabelPickerEmpty {
+drawCardLabelPickerEmpty {
   contain: content;
   padding: 4px 0;
   color: var(--TrelloForegroundMuted);
@@ -1384,158 +1384,158 @@ button.TrelloSearchResult:hover {
   line-height: 1.4;
 }
 
-.TrelloCardLabelColorGreen {
+drawCardLabelColorGreen {
   background: #1f845a;
 }
 
-.TrelloCardLabelColorGreenDark {
+drawCardLabelColorGreenDark {
   background: #216e4e;
 }
 
-.TrelloCardLabelColorGreenLight {
+drawCardLabelColorGreenLight {
   color: #172b4d;
   background: #baf3db;
 }
 
-.TrelloCardLabelColorYellow {
+drawCardLabelColorYellow {
   color: #172b4d;
   background: #f5cd47;
 }
 
-.TrelloCardLabelColorYellowDark {
+drawCardLabelColorYellowDark {
   background: #7f5f01;
 }
 
-.TrelloCardLabelColorYellowLight {
+drawCardLabelColorYellowLight {
   color: #172b4d;
   background: #f8e6a0;
 }
 
-.TrelloCardLabelColorOrange {
+drawCardLabelColorOrange {
   background: #c25100;
 }
 
-.TrelloCardLabelColorOrangeDark {
+drawCardLabelColorOrangeDark {
   background: #974f0c;
 }
 
-.TrelloCardLabelColorOrangeLight {
+drawCardLabelColorOrangeLight {
   color: #172b4d;
   background: #fedec8;
 }
 
-.TrelloCardLabelColorRed {
+drawCardLabelColorRed {
   background: #c9372c;
 }
 
-.TrelloCardLabelColorRedDark {
+drawCardLabelColorRedDark {
   background: #ae2e24;
 }
 
-.TrelloCardLabelColorRedLight {
+drawCardLabelColorRedLight {
   color: #172b4d;
   background: #ffd5d2;
 }
 
-.TrelloCardLabelColorPurple {
+drawCardLabelColorPurple {
   background: #6e5dc6;
 }
 
-.TrelloCardLabelColorPurpleDark {
+drawCardLabelColorPurpleDark {
   background: #5e4db2;
 }
 
-.TrelloCardLabelColorPurpleLight {
+drawCardLabelColorPurpleLight {
   color: #172b4d;
   background: #dfd8fd;
 }
 
-.TrelloCardLabelColorBlue {
+drawCardLabelColorBlue {
   background: #0c66e4;
 }
 
-.TrelloCardLabelColorBlueDark {
+drawCardLabelColorBlueDark {
   background: #0055cc;
 }
 
-.TrelloCardLabelColorBlueLight {
+drawCardLabelColorBlueLight {
   color: #172b4d;
   background: #cce0ff;
 }
 
-.TrelloCardLabelColorSky {
+drawCardLabelColorSky {
   color: #172b4d;
   background: #6cc3e0;
 }
 
-.TrelloCardLabelColorSkyDark {
+drawCardLabelColorSkyDark {
   background: #206a83;
 }
 
-.TrelloCardLabelColorSkyLight {
+drawCardLabelColorSkyLight {
   color: #172b4d;
   background: #c6edfb;
 }
 
-.TrelloCardLabelColorLime {
+drawCardLabelColorLime {
   color: #172b4d;
   background: #94c748;
 }
 
-.TrelloCardLabelColorLimeDark {
+drawCardLabelColorLimeDark {
   background: #5b7f24;
 }
 
-.TrelloCardLabelColorLimeLight {
+drawCardLabelColorLimeLight {
   color: #172b4d;
   background: #d3f1a7;
 }
 
-.TrelloCardLabelColorPink {
+drawCardLabelColorPink {
   background: #ae4787;
 }
 
-.TrelloCardLabelColorPinkDark {
+drawCardLabelColorPinkDark {
   background: #943d73;
 }
 
-.TrelloCardLabelColorPinkLight {
+drawCardLabelColorPinkLight {
   color: #172b4d;
   background: #fdd0ec;
 }
 
-.TrelloCardLabelColorBlack {
+drawCardLabelColorBlack {
   background: #626f86;
 }
 
-.TrelloCardLabelColorBlackDark {
+drawCardLabelColorBlackDark {
   background: #44546f;
 }
 
-.TrelloCardLabelColorBlackLight {
+drawCardLabelColorBlackLight {
   color: #172b4d;
   background: #dcdfe4;
 }
 
-.TrelloCardLabelColorNeutral {
+drawCardLabelColorNeutral {
   background: var(--TrelloButtonBackground);
 }
 
-.TrelloCardComments {
+drawCardComments {
   display: flex;
   flex-direction: column;
   gap: 10px;
   contain: content;
 }
 
-.TrelloCardComment {
+drawCardComment {
   display: flex;
   gap: 8px;
   align-items: flex-start;
   contain: content;
 }
 
-.TrelloCardCommentAvatar {
+drawCardCommentAvatar {
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -1556,7 +1556,7 @@ button.TrelloSearchResult:hover {
   object-fit: cover;
 }
 
-.TrelloCardCommentContent {
+drawCardCommentContent {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -1564,7 +1564,7 @@ button.TrelloSearchResult:hover {
   contain: content;
 }
 
-.TrelloCardCommentHeader {
+drawCardCommentHeader {
   display: flex;
   flex-wrap: wrap;
   gap: 4px 8px;
@@ -1573,7 +1573,7 @@ button.TrelloSearchResult:hover {
   min-width: 0;
 }
 
-.TrelloCardCommentAuthor {
+drawCardCommentAuthor {
   contain: content;
   overflow: hidden;
   font-size: 12px;
@@ -1584,7 +1584,7 @@ button.TrelloSearchResult:hover {
   white-space: nowrap;
 }
 
-.TrelloCardCommentDate {
+drawCardCommentDate {
   contain: content;
   overflow: hidden;
   font-size: 11px;
@@ -1594,7 +1594,7 @@ button.TrelloSearchResult:hover {
   white-space: nowrap;
 }
 
-.TrelloCardCommentText {
+drawCardCommentText {
   box-sizing: border-box;
   contain: content;
   padding: 8px;
@@ -1608,53 +1608,53 @@ button.TrelloSearchResult:hover {
   box-shadow: 0 1px 2px var(--TrelloShadow);
 }
 
-.TrelloCardCommentWriteButton {
+drawCardCommentWriteButton {
   width: 100%;
   min-height: 34px;
   text-align: left;
 }
 
-.TrelloCardCommentComposer {
+drawCardCommentComposer {
   display: flex;
   flex-direction: column;
   gap: 8px;
   contain: content;
 }
 
-.TrelloCardCommentTextArea {
+drawCardCommentTextArea {
   min-height: 82px;
 }
 
-.TrelloCardCommentActions {
+drawCardCommentActions {
   display: flex;
   gap: 8px;
   align-items: center;
   contain: content;
 }
 
-.TrelloCardCommentSaveButton,
-.TrelloCardCommentCancelButton {
+drawCardCommentSaveButton,
+drawCardCommentCancelButton {
   min-width: 72px;
 }
 
-.TrelloCardCommentCancelButton {
+drawCardCommentCancelButton {
   color: var(--TrelloForegroundStrong);
   background: transparent;
   border-color: transparent;
 }
 
-.TrelloCardCommentCancelButton:hover {
+drawCardCommentCancelButton:hover {
   background: var(--TrelloHoverBackground);
 }
 
-.TrelloCardDetailImages {
+drawCardDetailImages {
   display: flex;
   flex-direction: column;
   gap: 8px;
   contain: content;
 }
 
-.TrelloCardDetailImage {
+drawCardDetailImage {
   box-sizing: border-box;
   display: block;
   width: 100%;
@@ -1666,7 +1666,7 @@ button.TrelloSearchResult:hover {
   border-radius: 6px;
 }
 
-.TrelloCardDetailImageError {
+drawCardDetailImageError {
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -1681,17 +1681,17 @@ button.TrelloSearchResult:hover {
   border-radius: 6px;
 }
 
-.TrelloCardDetailEmpty {
+drawCardDetailEmpty {
   contain: content;
   color: var(--TrelloForegroundMuted);
 }
 
-.TrelloCardDetailLink {
+drawCardDetailLink {
   contain: content;
   color: var(--TrelloLinkForeground);
 }
 
-.TrelloError {
+drawError {
   contain: content;
   padding: 8px;
   color: var(--TrelloErrorForeground);

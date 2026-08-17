@@ -27,15 +27,15 @@ export const test: Test = async ({ Command, expect, Locator }) => {
     await expect(tokenInput).toBeVisible()
 
     step = 'expect auth form width'
-    const authForm = Locator('.TrelloAuthForm')
+    const authForm = Locator('drawAuthForm')
     await expect(authForm).toHaveCSS('max-width', '760px')
 
     step = 'expect auth inputs wrapper'
-    const authFields = Locator('.TrelloAuthFields > .TrelloField')
+    const authFields = Locator('drawAuthFields > drawField')
     await expect(authFields).toHaveCount(2)
 
     step = 'expect no duplicate title'
-    const authTitle = Locator('.TrelloAuthForm > .TrelloTitle')
+    const authTitle = Locator('drawAuthForm > drawTitle')
     await expect(authTitle).toHaveCount(0)
 
     step = 'locate labels'

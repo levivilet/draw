@@ -38,9 +38,9 @@ export const test: Test = async ({ Command, expect, Locator }) => {
   await openBoard(Command, Locator, expect)
   await openCard(Command, Locator, expect)
 
-  const popup = Locator('.TrelloCardDetailPopup')
-  const popupPanel = Locator('.TrelloCardDetailPanelPopup')
-  const resizeSash = Locator('.TrelloCardDetailResizeSash')
+  const popup = Locator('drawCardDetailPopup')
+  const popupPanel = Locator('drawCardDetailPanelPopup')
+  const resizeSash = Locator('drawCardDetailResizeSash')
   await expect(popup).toBeVisible()
   await expect(popupPanel).toBeVisible()
   await expect(resizeSash).toHaveCount(0)

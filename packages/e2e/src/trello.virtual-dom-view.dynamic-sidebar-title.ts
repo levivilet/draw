@@ -17,7 +17,7 @@ export const test: Test = async ({ Command, expect, Locator }) => {
   await openBoard(Command, Locator, expect)
 
   const sidebarTitle = Locator('.SideBarTitleAreaTitle')
-  const boardTitle = Locator('.TrelloTitle')
+  const boardTitle = Locator('drawTitle')
   await expect(sidebarTitle).toHaveText('Trello: Roadmap')
   await expect(boardTitle).toHaveCount(0)
 }

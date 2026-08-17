@@ -29,7 +29,7 @@ export const test: Test = async ({ Command, expect, Locator }) => {
   await openBoard(Command, Locator, expect)
 
   const planWork = Locator('button[name="card:card-1"]')
-  const doingList = Locator('.TrelloList[name="list:list-2"]')
+  const doingList = Locator('drawList[name="list:list-2"]')
   const buildWork = doingList.locator('button[name="card:card-2"]')
   await expect(planWork).toBeVisible()
   await expect(doingList).toBeVisible()
@@ -40,7 +40,7 @@ export const test: Test = async ({ Command, expect, Locator }) => {
   await expect(doingList).toHaveClass('TrelloList TrelloListDragTarget')
   await buildWork.dispatchEvent('drop', '{"value":"card-1"}')
 
-  const cards = doingList.locator('button.TrelloCard')
+  const cards = doingList.locator('buttondrawCard')
   const movedCard = cards.nth(0)
   await expect(movedCard).toBeVisible()
   await expect(movedCard).toHaveText('Plan work')
