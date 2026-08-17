@@ -14,6 +14,7 @@ test('defines only the basic Draw extension surface', async () => {
     readonly repository: string
     readonly views: readonly {
       readonly css: string
+      readonly icon: string
       readonly id: string
       readonly preferredLocation: string
     }[]
@@ -36,6 +37,7 @@ test('defines only the basic Draw extension surface', async () => {
   expect(manifest.views).toEqual([
     expect.objectContaining({
       css: 'media/draw.css',
+      icon: 'media/draw.svg',
       id: 'draw.views.whiteboard',
       preferredLocation: 'secondaryPreview',
     }),

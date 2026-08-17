@@ -26,6 +26,10 @@ fs.copyFileSync(
   join(media, 'draw.css'),
   join(root, 'dist', 'media', 'draw.css'),
 )
+fs.copyFileSync(
+  join(media, 'draw.svg'),
+  join(root, 'dist', 'media', 'draw.svg'),
+)
 
 const bundle = await rollup({
   input: join(extension, 'src', 'drawMain.ts'),

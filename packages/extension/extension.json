@@ -29,6 +29,7 @@
       "displayName": "Draw",
       "id": "draw.views.whiteboard",
       "title": "Draw",
+      "icon": "media/draw.svg",
       "kind": "virtualDom",
       "preferredLocation": "secondaryPreview"
     }
