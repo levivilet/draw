@@ -1,80 +1,190 @@
 import {
   AriaRoles,
+  mergeClassNames,
+  text,
   type VirtualDomNode,
   VirtualDomElements,
 } from '@lvce-editor/virtual-dom-worker'
-import type { Stroke } from '../DrawState/DrawState.ts'
-import { renderEmptyMessage } from '../RenderEmptyMessage/RenderEmptyMessage.ts'
-import { renderStroke } from '../RenderStroke/RenderStroke.ts'
-import { renderText } from '../RenderText/RenderText.ts'
+import type { DrawState, Shape, Tool } from '../DrawState/DrawState.ts'
 import * as TabIndex from '../TabIndex/TabIndex.ts'
 
 const handleClear = 'handleClear'
 const handleContextMenu = 'handleContextMenu'
 const handleDrawPointerDown = 'handleDrawPointerDown'
+const handleSelectTool = 'handleSelectTool'
+const handleTextInput = 'handleTextInput'
 
-const drawViewNode: VirtualDomNode = {
-  childCount: 2,
-  className: 'DrawView',
-  type: VirtualDomElements.Div,
+interface TreeNode {
+  readonly children: readonly TreeNode[]
+  readonly node: VirtualDomNode
 }
 
-const drawToolbarNode: VirtualDomNode = {
-  childCount: 2,
-  className: 'DrawToolbar',
-  role: AriaRoles.ToolBar,
-  type: VirtualDomElements.Div,
+const tree = (
+  type: number,
+  properties: Readonly<Record<string, unknown>> = {},
+  children: readonly TreeNode[] = [],
+): TreeNode => {
+  return {
+    children,
+    node: {
+      ...properties,
+      childCount: children.length,
+      type,
+    },
+  }
 }
 
-const drawHintNode: VirtualDomNode = {
-  childCount: 1,
-  className: 'DrawHint',
-  type: VirtualDomElements.P,
+const textNode = (value: string): TreeNode => {
+  return {
+    children: [],
+    node: text(value),
+  }
 }
 
-export const renderDraw = (
-  strokes: readonly Readonly<Stroke>[],
-): readonly VirtualDomNode[] => {
-  const empty = strokes.length === 0
-  let strokeIndex = 0
-  const strokeNodes = strokes.flatMap((stroke) => {
-    const nodes = renderStroke(stroke, strokeIndex)
-    strokeIndex += nodes.length
-    return nodes
-  })
-  return [
-    drawViewNode,
-    drawToolbarNode,
-    drawHintNode,
-    renderText('Draw with your mouse or pointer'),
+const flatten = (node: TreeNode): readonly VirtualDomNode[] => {
+  return [node.node, ...node.children.flatMap(flatten)]
+}
+
+const toolDetails: readonly {
+  readonly icon: string
+  readonly label: string
+  readonly tool: Tool
+}[] = [
+  { icon: '↖', label: 'Select', tool: 'cursor' },
+  { icon: '╱', label: 'Line', tool: 'line' },
+  { icon: '□', label: 'Rectangle', tool: 'rectangle' },
+  { icon: 'T', label: 'Text', tool: 'text' },
+]
+
+const renderToolButton = (
+  selectedTool: Tool,
+  tool: Tool,
+  label: string,
+  icon: string,
+): TreeNode => {
+  const selected = selectedTool === tool
+  return tree(
+    VirtualDomElements.Button,
+    {
+      'aria-label': `${label} tool`,
+      'aria-pressed': selected,
+      className: mergeClassNames(
+        'DrawToolButton',
+        selected ? 'DrawToolButtonSelected' : '',
+      ),
+      name: tool,
+      onClick: handleSelectTool,
+      title: label,
+    },
+    [textNode(icon)],
+  )
+}
+
+const renderToolbar = (selectedTool: Tool, empty: boolean): TreeNode => {
+  const toolbar = tree(
+    VirtualDomElements.Div,
+    {
+      'aria-label': 'Drawing tools',
+      className: 'DrawToolbar',
+      role: AriaRoles.ToolBar,
+    },
+    toolDetails.map(({ icon, label, tool }) =>
+      renderToolButton(selectedTool, tool, label, icon),
+    ),
+  )
+  const clearButton = tree(
+    VirtualDomElements.Button,
     {
       'aria-label': 'Clear drawing',
-      childCount: 1,
       className: 'DrawClearButton',
       disabled: empty,
       onClick: handleClear,
       title: 'Clear drawing',
-      type: VirtualDomElements.Button,
     },
-    renderText('Clear'),
+    [textNode('⌫')],
+  )
+  return tree(VirtualDomElements.Div, { className: 'DrawControls' }, [
+    toolbar,
+    clearButton,
+  ])
+}
+
+const getShapeClassName = (
+  shape: Readonly<Shape>,
+  selectedShapeId: number | undefined,
+): string => {
+  return mergeClassNames(
+    'DrawShape',
+    `Draw${shape.type[0].toUpperCase()}${shape.type.slice(1)}`,
+    `DrawShape${shape.id}`,
+    selectedShapeId === shape.id ? 'DrawShapeSelected' : '',
+  )
+}
+
+const renderShape = (
+  shape: Readonly<Shape>,
+  selectedShapeId: number | undefined,
+  selectedTool: Tool,
+): TreeNode => {
+  const properties = {
+    className: getShapeClassName(shape, selectedShapeId),
+    'data-shape-id': String(shape.id),
+  }
+  if (shape.type !== 'text') {
+    return tree(VirtualDomElements.Div, properties)
+  }
+  if (selectedShapeId === shape.id && selectedTool === 'text') {
+    return tree(VirtualDomElements.Input, {
+      ...properties,
+      'aria-label': 'Text',
+      autofocus: true,
+      onInput: handleTextInput,
+      placeholder: 'Type text…',
+      value: shape.text,
+    })
+  }
+  return tree(
+    VirtualDomElements.Div,
+    properties,
+    shape.text ? [textNode(shape.text)] : [],
+  )
+}
+
+const renderBoard = (state: Readonly<DrawState>): TreeNode => {
+  const { selectedShapeId, selectedTool, shapes } = state
+  const shapeNodes = shapes.map((shape) =>
+    renderShape(shape, selectedShapeId, selectedTool),
+  )
+  const emptyNodes =
+    shapes.length === 0
+      ? [
+          tree(VirtualDomElements.P, { className: 'DrawEmptyMessage' }, [
+            textNode('Choose a tool and start creating'),
+          ]),
+        ]
+      : []
+  return tree(
+    VirtualDomElements.Div,
     {
       'aria-label': 'Whiteboard drawing area',
-      childCount: empty ? 2 : 1,
-      className: 'DrawBoard',
+      className: mergeClassNames('DrawBoard', `DrawBoardTool-${selectedTool}`),
       name: 'board',
       onContextMenu: handleContextMenu,
       onPointerDown: handleDrawPointerDown,
       role: AriaRoles.Group,
       tabIndex: TabIndex.Focusable,
-      type: VirtualDomElements.Div,
     },
-    {
-      'aria-hidden': true,
-      childCount: strokeNodes.length,
-      className: 'DrawCanvas',
-      type: VirtualDomElements.Div,
-    },
-    ...strokeNodes,
-    ...renderEmptyMessage(empty),
-  ]
+    [...shapeNodes, ...emptyNodes],
+  )
+}
+
+export const renderDraw = (
+  state: Readonly<DrawState>,
+): readonly VirtualDomNode[] => {
+  const { selectedTool, shapes } = state
+  const root = tree(VirtualDomElements.Div, { className: 'DrawView' }, [
+    renderBoard(state),
+    renderToolbar(selectedTool, shapes.length === 0),
+  ])
+  return flatten(root)
 }

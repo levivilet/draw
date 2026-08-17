@@ -1,74 +1,112 @@
 import { expect, test } from '@jest/globals'
-import {
-  mergeClassNames,
-  VirtualDomElements,
-} from '@lvce-editor/virtual-dom-worker'
+import type {
+  DrawState,
+  Shape,
+  Tool,
+} from '../src/parts/DrawState/DrawState.ts'
 import { getDrawCss } from '../src/parts/GetDrawCss/GetDrawCss.ts'
 import { renderDraw } from '../src/parts/RenderDraw/RenderDraw.ts'
-import { renderStroke } from '../src/parts/RenderStroke/RenderStroke.ts'
 
-test('renders an empty whiteboard with a disabled clear button', () => {
-  const dom = renderDraw([])
+const createState = (
+  shapes: readonly Shape[] = [],
+  selectedTool: Tool = 'cursor',
+  selectedShapeId: number | undefined = undefined,
+): DrawState => ({
+  drawing: false,
+  nextShapeId: shapes.length,
+  originalShape: undefined,
+  pointerStart: undefined,
+  selectedShapeId,
+  selectedTool,
+  shapes,
+})
 
-  expect(dom).toHaveLength(10)
-  expect(dom[4]).toMatchObject({
+const findByClass = (
+  dom: ReturnType<typeof renderDraw>,
+  className: string,
+): ReturnType<typeof renderDraw>[number] | undefined =>
+  dom.find((node) => node.className?.split(' ').includes(className))
+
+test('renders a bottom toolbar with cursor selected by default', () => {
+  const dom = renderDraw(createState())
+  const cursor = dom.find((node) => node.name === 'cursor')
+  const line = dom.find((node) => node.name === 'line')
+
+  expect(findByClass(dom, 'DrawToolbar')).toMatchObject({
+    'aria-label': 'Drawing tools',
+  })
+  expect(cursor).toMatchObject({
+    'aria-label': 'Select tool',
+    'aria-pressed': true,
+    onClick: 'handleSelectTool',
+  })
+  expect(line).toMatchObject({ 'aria-pressed': false })
+  expect(findByClass(dom, 'DrawClearButton')).toMatchObject({
     disabled: true,
     onClick: 'handleClear',
   })
-  expect(dom[6]).toMatchObject({
-    className: 'DrawBoard',
+  expect(findByClass(dom, 'DrawBoard')).toMatchObject({
     name: 'board',
     onContextMenu: 'handleContextMenu',
     onPointerDown: 'handleDrawPointerDown',
   })
-  expect(dom[9]).toMatchObject({ text: 'Start drawing anywhere' })
-})
-
-test('renders strokes as positioned line segments', () => {
-  const dom = renderDraw([
-    {
-      points: [
-        { x: 4, y: 5 },
-        { x: 8, y: 9 },
-      ],
-    },
-  ])
-
-  expect(dom).toHaveLength(9)
-  expect(dom[4]).toMatchObject({ disabled: false })
-  expect(dom[8]).toEqual({
-    childCount: 0,
-    className: mergeClassNames('DrawStroke', 'DrawStroke0'),
-    type: VirtualDomElements.Div,
-  })
   expect(
-    getDrawCss([
-      {
-        points: [
-          { x: 4, y: 5 },
-          { x: 8, y: 9 },
-        ],
-      },
-    ]),
-  ).toBe(
-    '.DrawStroke0{left:4px;top:5px;width:5.656854249492381px;transform:translateY(-50%) rotate(0.7853981633974483rad)}',
+    dom.some((node) => node.text === 'Choose a tool and start creating'),
+  ).toBe(true)
+})
+
+test('renders line and rectangle shapes with selection state', () => {
+  const shapes: readonly Shape[] = [
+    {
+      end: { x: 8, y: 9 },
+      id: 4,
+      start: { x: 4, y: 5 },
+      type: 'line',
+    },
+    {
+      end: { x: 2, y: 3 },
+      id: 5,
+      start: { x: 12, y: 13 },
+      type: 'rectangle',
+    },
+  ]
+  const dom = renderDraw(createState(shapes, 'rectangle', 5))
+
+  expect(findByClass(dom, 'DrawLine')).toMatchObject({
+    'data-shape-id': '4',
+  })
+  expect(findByClass(dom, 'DrawRectangle')?.className).toContain(
+    'DrawShapeSelected',
+  )
+  expect(dom.find((node) => node.name === 'rectangle')).toMatchObject({
+    'aria-pressed': true,
+  })
+  expect(findByClass(dom, 'DrawClearButton')).toMatchObject({ disabled: false })
+  expect(getDrawCss(shapes)).toBe(
+    '.DrawShape4{left:4px;top:5px;width:5.656854249492381px;transform:translateY(-50%) rotate(0.7853981633974483rad)}.DrawShape5{left:2px;top:3px;width:10px;height:10px}',
   )
 })
 
-test('renders a single point and handles an empty stroke', () => {
-  expect(renderStroke({ points: [{ x: 2, y: 3 }] })).toEqual([
-    {
-      childCount: 0,
-      className: mergeClassNames(
-        'DrawStroke',
-        'DrawStrokePoint',
-        'DrawStroke0',
-      ),
-      type: VirtualDomElements.Div,
-    },
-  ])
-  expect(renderStroke({ points: [] })).toEqual([])
-  expect(getDrawCss([{ points: [{ x: 2, y: 3 }] }, { points: [] }])).toBe(
-    '.DrawStroke0{left:2px;top:3px}',
+test('renders selected text as an editor and committed text as a shape', () => {
+  const shape: Shape = {
+    id: 2,
+    point: { x: 20, y: 30 },
+    text: 'A note',
+    type: 'text',
+  }
+  const editing = renderDraw(createState([shape], 'text', 2))
+  const committed = renderDraw(createState([shape], 'cursor', 2))
+  const emptyText = renderDraw(
+    createState([{ ...shape, text: '' }], 'cursor', 2),
   )
+
+  expect(findByClass(editing, 'DrawText')).toMatchObject({
+    autofocus: true,
+    onInput: 'handleTextInput',
+    placeholder: 'Type text…',
+    value: 'A note',
+  })
+  expect(committed.some((node) => node.text === 'A note')).toBe(true)
+  expect(emptyText.some((node) => node.text === '')).toBe(false)
+  expect(getDrawCss([shape])).toBe('.DrawShape2{left:20px;top:30px}')
 })

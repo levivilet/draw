@@ -2,7 +2,7 @@
   "id": "builtindraw",
   "name": "Draw",
   "workerName": "Draw Worker",
-  "description": "A basic whiteboard for drawing with a mouse or pointer.",
+  "description": "A whiteboard for creating lines, rectangles, and text.",
   "repository": "https://github.com/levivilet/draw",
   "browser": "dist/drawMain.js",
   "isolated": true,
