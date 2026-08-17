@@ -6,10 +6,11 @@ import type {
 import { type VirtualDomNode, text } from '@lvce-editor/virtual-dom-worker'
 import type { DrawState, Point, Stroke } from '../DrawState/DrawState.ts'
 import { toLocalPoint } from '../Point/Point.ts'
-import { renderDraw } from '../RenderDraw/RenderDraw.ts'
+import { getDrawCss, renderDraw } from '../RenderDraw/RenderDraw.ts'
 
 export interface DrawViewInstance extends VirtualDomViewInstance {
   readonly clear: () => void
+  readonly getCss: () => string
   readonly handleClear: () => void
   readonly handleDrawPointerDown: (
     button: unknown,
@@ -98,6 +99,9 @@ export const createInstance = (context?: ViewContext): DrawViewInstance => {
     dispose(): void {
       activeInstances.delete(instance)
     },
+    getCss(): string {
+      return getDrawCss(state.strokes)
+    },
     handleClear(): void {
       instance.clear()
     },
@@ -149,10 +153,8 @@ export const createInstance = (context?: ViewContext): DrawViewInstance => {
       return renderDraw(state.strokes)
     },
     renderActionsDom() {
-      return [
-        text('')
-      ]
-    }
+      return [text('')]
+    },
   }
 
   activeInstances.add(instance)

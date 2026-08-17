@@ -1,6 +1,6 @@
 import { expect, test } from '@jest/globals'
 import { VirtualDomElements } from '@lvce-editor/virtual-dom-worker'
-import { renderDraw, toPathData } from '../src/parts/RenderDraw/RenderDraw.ts'
+import { renderDraw, renderStroke } from '../src/parts/RenderDraw/RenderDraw.ts'
 
 test('renders an empty whiteboard with a disabled clear button', () => {
   const dom = renderDraw([])
@@ -17,7 +17,7 @@ test('renders an empty whiteboard with a disabled clear button', () => {
   expect(dom[9]).toMatchObject({ text: 'Start drawing anywhere' })
 })
 
-test('renders strokes as svg paths', () => {
+test('renders strokes as positioned line segments', () => {
   const dom = renderDraw([
     {
       points: [
@@ -32,12 +32,20 @@ test('renders strokes as svg paths', () => {
   expect(dom[8]).toEqual({
     childCount: 0,
     className: 'DrawStroke',
-    d: 'M 4 5 L 8 9',
-    type: VirtualDomElements.Path,
+    style:
+      'left:4px;top:5px;width:5.656854249492381px;transform:translateY(-50%) rotate(0.7853981633974483rad);',
+    type: VirtualDomElements.Div,
   })
 })
 
-test('creates visible path data for a dot and handles no points', () => {
-  expect(toPathData([{ x: 2, y: 3 }])).toBe('M 2 3 L 2 3')
-  expect(toPathData([])).toBe('')
+test('renders a single point and handles an empty stroke', () => {
+  expect(renderStroke({ points: [{ x: 2, y: 3 }] })).toEqual([
+    {
+      childCount: 0,
+      className: 'DrawStroke DrawStrokePoint',
+      style: 'left:2px;top:3px;',
+      type: VirtualDomElements.Div,
+    },
+  ])
+  expect(renderStroke({ points: [] })).toEqual([])
 })
