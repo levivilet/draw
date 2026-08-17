@@ -1,12 +1,15 @@
-import { expect, jest, test } from '@jest/globals'
 import type { ViewContext } from '@lvce-editor/api'
+import { expect, jest, test } from '@jest/globals'
 import {
   appendPoint,
   clearActiveDrawViewInstance,
   createInstance,
 } from '../src/parts/DrawViewInstance/DrawViewInstance.ts'
 
-const createContext = () => {
+const createContext = (): {
+  readonly context: ViewContext
+  readonly requestRerender: ReturnType<typeof jest.fn<() => Promise<void>>>
+} => {
   const requestRerender = jest.fn<() => Promise<void>>(async () => {})
   const context: ViewContext = {
     requestRerender,

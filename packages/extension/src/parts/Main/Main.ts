@@ -12,18 +12,20 @@ import {
 import { view } from '../DrawView/DrawView.ts'
 import { clearActiveDrawViewInstance } from '../DrawViewInstance/DrawViewInstance.ts'
 
-let activated = false
+const state = {
+  activated: false,
+}
 
 export const activate = async (): Promise<void> => {
-  if (activated) {
+  if (state.activated) {
     return
   }
-  activated = true
+  state.activated = true
   await activateExtensionApi()
   registerView(view)
   registerCommand({
     execute() {
-      return executeCommand('Layout.togglePreview', viewId)
+      return executeCommand('Layout.toggleSideBarView', viewId)
     },
     id: showCommandId,
   })

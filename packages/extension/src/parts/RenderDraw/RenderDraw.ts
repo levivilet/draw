@@ -4,6 +4,7 @@ import {
   VirtualDomElements,
 } from '@lvce-editor/virtual-dom-worker'
 import type { Point, Stroke } from '../DrawState/DrawState.ts'
+import * as TabIndex from '../TabIndex/TabIndex.ts'
 
 const handleClear = 'handleClear'
 const handleDrawPointerDown = 'handleDrawPointerDown'
@@ -34,6 +35,20 @@ const renderStroke = (stroke: Readonly<Stroke>): VirtualDomNode => {
     d: toPathData(stroke.points),
     type: VirtualDomElements.Path,
   }
+}
+
+const renderEmptyMessage = (empty: boolean): readonly VirtualDomNode[] => {
+  if (!empty) {
+    return []
+  }
+  return [
+    {
+      childCount: 1,
+      className: 'DrawEmptyMessage',
+      type: VirtualDomElements.P,
+    },
+    renderText('Start drawing anywhere'),
+  ]
 }
 
 export const renderDraw = (
@@ -74,7 +89,7 @@ export const renderDraw = (
       className: 'DrawBoard',
       onPointerDown: handleDrawPointerDown,
       role: AriaRoles.Group,
-      tabIndex: 0,
+      tabIndex: TabIndex.Focusable,
       type: VirtualDomElements.Div,
     },
     {
@@ -84,16 +99,7 @@ export const renderDraw = (
       type: VirtualDomElements.Svg,
     },
     ...strokes.map(renderStroke),
-    ...(empty
-      ? [
-          {
-            childCount: 1,
-            className: 'DrawEmptyMessage',
-            type: VirtualDomElements.P,
-          },
-          renderText('Start drawing anywhere'),
-        ]
-      : []),
+    ...renderEmptyMessage(empty),
   ]
 }
 

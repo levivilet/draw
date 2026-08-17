@@ -9,7 +9,7 @@ test('converts client coordinates to board-local coordinates', () => {
 })
 
 test('handles missing, invalid, and negative coordinates', () => {
-  expect(toLocalPoint('invalid', Number.NaN, [undefined, null])).toEqual({
+  expect(toLocalPoint('invalid', NaN, [undefined, null])).toEqual({
     x: 0,
     y: 0,
   })
