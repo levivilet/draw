@@ -29,8 +29,11 @@ test('draws a stroke with the primary pointer and clears it', () => {
   instance.handleDrawPointerMove(120, 90, 10, 20)
   instance.handleDrawPointerUp(130, 100, 10, 20)
 
-  const path = instance.render().find((node) => node.className === 'DrawStroke')
-  expect(path?.d).toBe('M 100 60 L 110 70 L 120 80')
+  const segments = instance
+    .render()
+    .filter((node) => node.className?.startsWith('DrawStroke'))
+  expect(segments).toHaveLength(2)
+  expect(instance.getCss()).toContain('.DrawStroke0{left:100px;top:60px;')
   expect(requestRerender).toHaveBeenCalledTimes(4)
 
   instance.handleClear()

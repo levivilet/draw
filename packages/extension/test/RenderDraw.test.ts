@@ -1,6 +1,10 @@
 import { expect, test } from '@jest/globals'
 import { VirtualDomElements } from '@lvce-editor/virtual-dom-worker'
-import { renderDraw, renderStroke } from '../src/parts/RenderDraw/RenderDraw.ts'
+import {
+  getDrawCss,
+  renderDraw,
+  renderStroke,
+} from '../src/parts/RenderDraw/RenderDraw.ts'
 
 test('renders an empty whiteboard with a disabled clear button', () => {
   const dom = renderDraw([])
@@ -31,21 +35,33 @@ test('renders strokes as positioned line segments', () => {
   expect(dom[4]).toMatchObject({ disabled: false })
   expect(dom[8]).toEqual({
     childCount: 0,
-    className: 'DrawStroke',
-    style:
-      'left:4px;top:5px;width:5.656854249492381px;transform:translateY(-50%) rotate(0.7853981633974483rad);',
+    className: 'DrawStroke DrawStroke0',
     type: VirtualDomElements.Div,
   })
+  expect(
+    getDrawCss([
+      {
+        points: [
+          { x: 4, y: 5 },
+          { x: 8, y: 9 },
+        ],
+      },
+    ]),
+  ).toBe(
+    '.DrawStroke0{left:4px;top:5px;width:5.656854249492381px;transform:translateY(-50%) rotate(0.7853981633974483rad)}',
+  )
 })
 
 test('renders a single point and handles an empty stroke', () => {
   expect(renderStroke({ points: [{ x: 2, y: 3 }] })).toEqual([
     {
       childCount: 0,
-      className: 'DrawStroke DrawStrokePoint',
-      style: 'left:2px;top:3px;',
+      className: 'DrawStroke DrawStrokePoint DrawStroke0',
       type: VirtualDomElements.Div,
     },
   ])
   expect(renderStroke({ points: [] })).toEqual([])
+  expect(getDrawCss([{ points: [{ x: 2, y: 3 }] }, { points: [] }])).toBe(
+    '.DrawStroke0{left:2px;top:3px}',
+  )
 })

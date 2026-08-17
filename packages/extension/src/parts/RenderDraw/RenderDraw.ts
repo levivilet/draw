@@ -34,15 +34,7 @@ const renderPoint = (index: number): VirtualDomNode => {
   }
 }
 
-const renderSegment = (
-  start: Readonly<Point>,
-  end: Readonly<Point>,
-  index: number,
-): VirtualDomNode => {
-  const deltaX = end.x - start.x
-  const deltaY = end.y - start.y
-  const length = Math.hypot(deltaX, deltaY)
-  const angle = Math.atan2(deltaY, deltaX)
+const renderSegment = (index: number): VirtualDomNode => {
   return {
     childCount: 0,
     className: mergeClassNames('DrawStroke', getStrokeClassName(index)),
@@ -63,9 +55,7 @@ const renderStroke = (
   }
   const segments: VirtualDomNode[] = []
   for (let index = 1; index < points.length; index++) {
-    segments.push(
-      renderSegment(points[index - 1], points[index], startIndex + index - 1),
-    )
+    segments.push(renderSegment(startIndex + index - 1))
   }
   return segments
 }
@@ -86,9 +76,7 @@ const getSegmentCss = (
   return `.${getStrokeClassName(index)}{left:${start.x}px;top:${start.y}px;width:${length}px;transform:translateY(-50%) rotate(${angle}rad)}`
 }
 
-export const getDrawCss = (
-  strokes: readonly Readonly<Stroke>[],
-): string => {
+export const getDrawCss = (strokes: readonly Readonly<Stroke>[]): string => {
   const rules: string[] = []
   let index = 0
   for (const { points } of strokes) {
