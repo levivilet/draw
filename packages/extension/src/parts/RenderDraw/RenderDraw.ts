@@ -54,6 +54,13 @@ const renderEmptyMessage = (empty: boolean): readonly VirtualDomNode[] => {
 export const renderDraw = (
   strokes: readonly Readonly<Stroke>[],
 ): readonly VirtualDomNode[] => {
+  return [
+    {
+      childCount: 0,
+      className: 'DrawBoard',
+      type: VirtualDomElements.Div,
+    },
+  ]
   const empty = strokes.length === 0
   return [
     {
