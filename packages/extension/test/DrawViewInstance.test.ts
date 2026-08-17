@@ -81,3 +81,72 @@ test('appendPoint handles an absent stroke', () => {
   const strokes: readonly never[] = []
   expect(appendPoint(strokes, { x: 1, y: 2 })).toBe(strokes)
 })
+
+test('shows a context menu for the drawing board', async () => {
+  const { context } = createContext()
+  const showContextMenu = jest.fn<
+    (menuId: string, x: number, y: number) => Promise<void>
+  >(async () => {})
+  const instance = createInstance({
+    ...context,
+    showContextMenu,
+  })
+
+  await instance.handleEvent?.({
+    name: 'board',
+    type: 'contextmenu',
+    x: 10,
+    y: 20,
+  })
+
+  expect(showContextMenu).toHaveBeenCalledWith('draw.contextMenu', 10, 20)
+  expect(instance.getMenuEntries('draw.contextMenu')).toEqual([
+    {
+      args: [1, 'handleViewCommand', 'handleNoop'],
+      command: 'Viewlet.executeViewletCommand',
+      flags: 6,
+      id: 'paste',
+      label: 'Paste',
+    },
+    {
+      args: [1, 'handleViewCommand', 'handleNoop'],
+      command: 'Viewlet.executeViewletCommand',
+      flags: 6,
+      id: 'undo',
+      label: 'Undo',
+    },
+    {
+      args: [1, 'handleViewCommand', 'handleNoop'],
+      command: 'Viewlet.executeViewletCommand',
+      flags: 6,
+      id: 'redo',
+      label: 'Redo',
+    },
+    {
+      args: [1, 'handleViewCommand', 'handleNoop'],
+      command: 'Viewlet.executeViewletCommand',
+      flags: 6,
+      id: 'export',
+      label: 'Export As…',
+    },
+  ])
+  expect(instance.getMenuEntries('unknown')).toEqual([])
+  expect(instance.handleNoop()).toBeUndefined()
+  instance.dispose?.()
+})
+
+test('uses zero coordinates when context menu coordinates are absent', async () => {
+  const { context } = createContext()
+  const showContextMenu = jest.fn<
+    (menuId: string, x: number, y: number) => Promise<void>
+  >(async () => {})
+  const instance = createInstance({
+    ...context,
+    showContextMenu,
+  })
+
+  await instance.handleEvent?.({ name: 'board', type: 'contextmenu' })
+
+  expect(showContextMenu).toHaveBeenCalledWith('draw.contextMenu', 0, 0)
+  instance.dispose?.()
+})

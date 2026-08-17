@@ -10,6 +10,7 @@ import { renderText } from '../RenderText/RenderText.ts'
 import * as TabIndex from '../TabIndex/TabIndex.ts'
 
 const handleClear = 'handleClear'
+const handleContextMenu = 'handleContextMenu'
 const handleDrawPointerDown = 'handleDrawPointerDown'
 
 const drawViewNode: VirtualDomNode = {
@@ -60,6 +61,8 @@ export const renderDraw = (
       'aria-label': 'Whiteboard drawing area',
       childCount: empty ? 2 : 1,
       className: 'DrawBoard',
+      name: 'board',
+      onContextMenu: handleContextMenu,
       onPointerDown: handleDrawPointerDown,
       role: AriaRoles.Group,
       tabIndex: TabIndex.Focusable,
