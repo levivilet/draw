@@ -1,6 +1,8 @@
 import { expect, test } from '@jest/globals'
 import { readFile } from 'node:fs/promises'
 
+// cspell:ignore builtindraw
+
 test('defines only the basic Draw extension surface', async () => {
   const text = await readFile(
     new URL('../extension.json', import.meta.url),
@@ -12,6 +14,11 @@ test('defines only the basic Draw extension surface', async () => {
     readonly commands: readonly { readonly id: string }[]
     readonly configuration?: unknown
     readonly repository: string
+    readonly rpc: readonly {
+      readonly id: string
+      readonly type: string
+      readonly url: string
+    }[]
     readonly views: readonly {
       readonly css: string
       readonly icon: string
@@ -34,6 +41,13 @@ test('defines only the basic Draw extension surface', async () => {
     'draw.clear',
   ])
   expect(manifest.configuration).toBeUndefined()
+  expect(manifest.rpc).toEqual([
+    expect.objectContaining({
+      id: 'builtindraw.export-worker',
+      type: 'web-worker',
+      url: 'dist/drawExportWorkerMain.js',
+    }),
+  ])
   expect(manifest.views).toEqual([
     expect.objectContaining({
       css: 'media/draw.css',

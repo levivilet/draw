@@ -7,6 +7,12 @@ import type {
 import { type VirtualDomNode, text } from '@lvce-editor/virtual-dom-worker'
 import type { DrawState, Point, Shape, Tool } from '../DrawState/DrawState.ts'
 import { contextMenuId } from '../Constants/Constants.ts'
+import { downloadDrawing } from '../DownloadDrawing/DownloadDrawing.ts'
+import {
+  exportDrawing,
+  type ExportDrawingOptions,
+  type ExportFormat,
+} from '../DrawExportWorker/DrawExportWorker.ts'
 import { getDrawCss } from '../GetDrawCss/GetDrawCss.ts'
 import { getMenuEntries } from '../GetMenuEntries/GetMenuEntries.ts'
 import { toLocalPoint } from '../Point/Point.ts'
@@ -17,6 +23,12 @@ export interface DrawViewInstance extends VirtualDomViewInstance {
   readonly getCss: () => string
   readonly getMenuEntries: (menuId: string) => readonly MenuEntry[]
   readonly handleClear: () => void
+  readonly handleDrawContextMenu: (
+    clientX: unknown,
+    clientY: unknown,
+    width: unknown,
+    height: unknown,
+  ) => Promise<void>
   readonly handleDrawPointerDown: (
     button: unknown,
     clientX: unknown,
@@ -34,18 +46,46 @@ export interface DrawViewInstance extends VirtualDomViewInstance {
     clientY: unknown,
     ...offsets: readonly unknown[]
   ) => void
+  readonly handleExport: (format: unknown) => Promise<void>
   readonly handleNoop: () => void
   readonly handleSelectTool: (tool: unknown) => void
   readonly handleTextInput: (shapeId: unknown, value: unknown) => void
   readonly render: () => readonly VirtualDomNode[]
 }
 
+interface DrawViewApi {
+  readonly downloadDrawing: (blob: Blob, format: ExportFormat) => Promise<void>
+  readonly exportDrawing: (
+    options: Readonly<ExportDrawingOptions>,
+  ) => Promise<Blob>
+}
+
+const defaultApi: DrawViewApi = {
+  downloadDrawing,
+  exportDrawing,
+}
+
 const activeInstances = new Set<DrawViewInstance>()
 
 const tools: readonly Tool[] = ['cursor', 'line', 'rectangle', 'text']
+const exportFormats: readonly ExportFormat[] = ['jpg', 'svg']
 
 const isTool = (value: unknown): value is Tool => {
   return typeof value === 'string' && tools.includes(value as Tool)
+}
+
+const isExportFormat = (value: unknown): value is ExportFormat => {
+  return (
+    typeof value === 'string' && exportFormats.includes(value as ExportFormat)
+  )
+}
+
+const toFiniteNumber = (value: unknown): number => {
+  return typeof value === 'number' && Number.isFinite(value) ? value : 0
+}
+
+const toExportDimension = (value: unknown): number => {
+  return Math.max(1, Math.round(toFiniteNumber(value)))
 }
 
 const parseShapeId = (value: unknown): number | undefined => {
@@ -107,7 +147,10 @@ export const clearActiveDrawViewInstance = (): void => {
   }
 }
 
-export const createInstance = (context?: ViewContext): DrawViewInstance => {
+export const createInstanceWithApi = (
+  context: ViewContext | undefined,
+  api: Readonly<DrawViewApi>,
+): DrawViewInstance => {
   let state: DrawState = {
     drawing: false,
     nextShapeId: 0,
@@ -117,6 +160,8 @@ export const createInstance = (context?: ViewContext): DrawViewInstance => {
     selectedTool: 'cursor',
     shapes: [],
   }
+  let exportWidth = 1
+  let exportHeight = 1
 
   const updateState = (nextState: DrawState): void => {
     state = nextState
@@ -192,6 +237,20 @@ export const createInstance = (context?: ViewContext): DrawViewInstance => {
     },
     handleClear(): void {
       instance.clear()
+    },
+    async handleDrawContextMenu(
+      clientX: unknown,
+      clientY: unknown,
+      width: unknown,
+      height: unknown,
+    ): Promise<void> {
+      exportWidth = toExportDimension(width)
+      exportHeight = toExportDimension(height)
+      await context?.showContextMenu(
+        contextMenuId,
+        toFiniteNumber(clientX),
+        toFiniteNumber(clientY),
+      )
     },
     handleDrawPointerDown(
       button: unknown,
@@ -270,15 +329,22 @@ export const createInstance = (context?: ViewContext): DrawViewInstance => {
       updatePointer(clientX, clientY, offsets, false)
     },
     async handleEvent(event: Readonly<ViewEvent>): Promise<void> {
-      if (event.type === 'contextmenu' && event.name === 'board') {
-        const x = typeof event.x === 'number' ? event.x : 0
-        const y = typeof event.y === 'number' ? event.y : 0
-        await context?.showContextMenu(contextMenuId, x, y)
-        return
-      }
       if (event.type === 'click' && event.name === 'clear') {
         instance.clear()
       }
+    },
+    async handleExport(format: unknown): Promise<void> {
+      if (!isExportFormat(format)) {
+        throw new TypeError(`Unsupported drawing export format: ${format}`)
+      }
+      const { shapes } = state
+      const blob = await api.exportDrawing({
+        format,
+        height: exportHeight,
+        shapes,
+        width: exportWidth,
+      })
+      await api.downloadDrawing(blob, format)
     },
     handleNoop(): void {},
     handleSelectTool(tool: unknown): void {
@@ -316,6 +382,10 @@ export const createInstance = (context?: ViewContext): DrawViewInstance => {
 
   activeInstances.add(instance)
   return instance
+}
+
+export const createInstance = (context?: ViewContext): DrawViewInstance => {
+  return createInstanceWithApi(context, defaultApi)
 }
 
 export { moveShape, replaceShape, resizeShape }

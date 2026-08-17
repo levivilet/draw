@@ -50,6 +50,29 @@ const assertStaticDrawExtension = async (commitHash: string): Promise<void> => {
   }
   await assertFileExists(path.join(extensionDir, extensionJson.browser))
 
+  const rpcEntries = extensionJson.rpc
+  if (!Array.isArray(rpcEntries)) {
+    throw new Error(`Expected ${extensionJsonPath} to define RPC workers`)
+  }
+  const exportWorker = rpcEntries.find(
+    (entry) =>
+      entry &&
+      typeof entry === 'object' &&
+      'id' in entry &&
+      entry.id === 'builtindraw.export-worker',
+  )
+  if (
+    !exportWorker ||
+    typeof exportWorker !== 'object' ||
+    !('url' in exportWorker) ||
+    typeof exportWorker.url !== 'string'
+  ) {
+    throw new Error(
+      `Expected ${extensionJsonPath} to define the Draw export worker`,
+    )
+  }
+  await assertFileExists(path.join(extensionDir, exportWorker.url))
+
   const extensionsJson =
     await readJson<readonly Record<string, unknown>[]>(extensionsJsonPath)
   const extensionEntry = assertDrawExtensionEntry(
