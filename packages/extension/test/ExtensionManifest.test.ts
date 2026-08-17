@@ -12,7 +12,11 @@ test('defines only the basic Draw extension surface', async () => {
     readonly commands: readonly { readonly id: string }[]
     readonly configuration?: unknown
     readonly repository: string
-    readonly views: readonly { readonly css: string; readonly id: string }[]
+    readonly views: readonly {
+      readonly css: string
+      readonly id: string
+      readonly preferredLocation: string
+    }[]
   }
 
   expect(manifest).toMatchObject({
@@ -33,6 +37,7 @@ test('defines only the basic Draw extension surface', async () => {
     expect.objectContaining({
       css: 'media/draw.css',
       id: 'draw.views.whiteboard',
+      preferredLocation: 'secondaryPreview',
     }),
   ])
 })

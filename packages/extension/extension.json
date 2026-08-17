@@ -30,7 +30,7 @@
       "id": "draw.views.whiteboard",
       "title": "Draw",
       "kind": "virtualDom",
-      "preferredLocation": "preview"
+      "preferredLocation": "secondaryPreview"
     }
   ]
 }

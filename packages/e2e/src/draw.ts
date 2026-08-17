@@ -2,7 +2,7 @@ import type { Test } from '@lvce-editor/test-with-playwright'
 
 export const name = 'draw.basic'
 
-// The current test worker cannot query extension views in the primary preview.
+// TODO enable when the test worker can query secondary preview extension views.
 export const skip = true
 
 export const test: Test = async ({ Command, expect, Locator }) => {
