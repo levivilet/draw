@@ -1,5 +1,8 @@
 import { expect, test } from '@jest/globals'
-import { VirtualDomElements } from '@lvce-editor/virtual-dom-worker'
+import {
+  mergeClassNames,
+  VirtualDomElements,
+} from '@lvce-editor/virtual-dom-worker'
 import {
   getDrawCss,
   renderDraw,
@@ -35,7 +38,7 @@ test('renders strokes as positioned line segments', () => {
   expect(dom[4]).toMatchObject({ disabled: false })
   expect(dom[8]).toEqual({
     childCount: 0,
-    className: 'DrawStroke DrawStroke0',
+    className: mergeClassNames('DrawStroke', 'DrawStroke0'),
     type: VirtualDomElements.Div,
   })
   expect(
@@ -56,7 +59,11 @@ test('renders a single point and handles an empty stroke', () => {
   expect(renderStroke({ points: [{ x: 2, y: 3 }] })).toEqual([
     {
       childCount: 0,
-      className: 'DrawStroke DrawStrokePoint DrawStroke0',
+      className: mergeClassNames(
+        'DrawStroke',
+        'DrawStrokePoint',
+        'DrawStroke0',
+      ),
       type: VirtualDomElements.Div,
     },
   ])
