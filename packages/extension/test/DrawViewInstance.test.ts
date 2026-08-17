@@ -1,9 +1,12 @@
 import type { ViewContext } from '@lvce-editor/api'
 import { expect, jest, test } from '@jest/globals'
+import type { Shape } from '../src/parts/DrawState/DrawState.ts'
 import {
-  appendPoint,
   clearActiveDrawViewInstance,
   createInstance,
+  moveShape,
+  replaceShape,
+  resizeShape,
 } from '../src/parts/DrawViewInstance/DrawViewInstance.ts'
 
 const createContext = (): {
@@ -20,40 +23,99 @@ const createContext = (): {
   return { context, requestRerender }
 }
 
-test('draws a stroke with the primary pointer and clears it', () => {
-  const { context, requestRerender } = createContext()
+const getShape = (
+  instance: ReturnType<typeof createInstance>,
+  className: string,
+): ReturnType<typeof instance.render>[number] | undefined => {
+  return instance
+    .render()
+    .find((node) => node.className?.split(' ').includes(className))
+}
+
+test('creates lines and rectangles with primary pointer drags', () => {
+  const { context } = createContext()
   const instance = createInstance(context)
 
-  instance.handleDrawPointerDown(0, 110, 80, 10, 20)
-  instance.handleDrawPointerMove(120, 90, 10, 20)
+  instance.handleSelectTool('line')
+  instance.handleDrawPointerDown(0, 110, 80, undefined, 10, 20)
   instance.handleDrawPointerMove(120, 90, 10, 20)
   instance.handleDrawPointerUp(130, 100, 10, 20)
 
-  const segments = instance
-    .render()
-    .filter((node) => node.className?.startsWith('DrawStroke'))
-  expect(segments).toHaveLength(2)
-  expect(instance.getCss()).toContain('.DrawStroke0{left:100px;top:60px;')
-  expect(requestRerender).toHaveBeenCalledTimes(4)
+  expect(getShape(instance, 'DrawLine')).toBeDefined()
+  expect(instance.getCss()).toContain(
+    '.DrawShape0{left:100px;top:60px;width:28.284271247461902px;',
+  )
 
-  instance.handleClear()
-  expect(
-    instance.render().some((node) => node.className === 'DrawStroke'),
-  ).toBe(false)
+  instance.handleSelectTool('rectangle')
+  instance.handleDrawPointerDown(0, 100, 100, undefined)
+  instance.handleDrawPointerUp(60, 70)
+
+  expect(getShape(instance, 'DrawRectangle')).toBeDefined()
+  expect(instance.getCss()).toContain(
+    '.DrawShape1{left:60px;top:70px;width:40px;height:30px}',
+  )
   instance.dispose?.()
 })
 
-test('ignores non-primary and inactive pointer events', () => {
+test('places and edits text', () => {
   const { context, requestRerender } = createContext()
   const instance = createInstance(context)
 
-  instance.handleDrawPointerDown(1, 10, 10)
+  instance.handleSelectTool('text')
+  instance.handleDrawPointerDown(0, 40, 50, undefined)
+  instance.handleTextInput('0', 'Hello whiteboard')
+
+  expect(getShape(instance, 'DrawText')).toMatchObject({
+    autofocus: true,
+    value: 'Hello whiteboard',
+  })
+  expect(instance.getCss()).toBe('.DrawShape0{left:40px;top:50px}')
+
+  instance.handleDrawPointerDown(0, 40, 50, '0')
+  instance.handleTextInput('', 'ignored')
+  instance.handleTextInput('0', 42)
+  instance.handleTextInput('9', 'ignored')
+  expect(requestRerender).toHaveBeenCalledTimes(4)
+
+  instance.handleSelectTool('cursor')
+  expect(
+    instance.render().some((node) => node.text === 'Hello whiteboard'),
+  ).toBe(true)
+  instance.dispose?.()
+})
+
+test('cursor selects, moves, and deselects shapes', () => {
+  const instance = createInstance(createContext().context)
+  instance.handleSelectTool('rectangle')
+  instance.handleDrawPointerDown(0, 20, 30, undefined)
+  instance.handleDrawPointerUp(80, 90)
+  instance.handleSelectTool('cursor')
+
+  instance.handleDrawPointerDown(0, 40, 50, '0')
+  expect(getShape(instance, 'DrawShapeSelected')).toBeDefined()
+  instance.handleDrawPointerMove(50, 70)
+  instance.handleDrawPointerUp(60, 80)
+  expect(instance.getCss()).toBe(
+    '.DrawShape0{left:40px;top:60px;width:60px;height:60px}',
+  )
+
+  instance.handleDrawPointerDown(0, 5, 5, undefined)
+  expect(getShape(instance, 'DrawShapeSelected')).toBeUndefined()
+  instance.dispose?.()
+})
+
+test('ignores invalid tools, non-primary, and inactive pointer events', () => {
+  const { context, requestRerender } = createContext()
+  const instance = createInstance(context)
+
+  instance.handleSelectTool('cursor')
+  instance.handleSelectTool('unknown')
+  instance.handleDrawPointerDown(1, 10, 10, undefined)
   instance.handleDrawPointerMove(20, 20)
   instance.handleDrawPointerUp(20, 20)
-
-  expect(requestRerender).not.toHaveBeenCalled()
   instance.handleEvent?.({ name: 'somethingElse', type: 'click' })
   instance.handleEvent?.({ name: 'clear', type: 'input' })
+
   expect(requestRerender).not.toHaveBeenCalled()
   instance.dispose?.()
 })
@@ -61,25 +123,55 @@ test('ignores non-primary and inactive pointer events', () => {
 test('clear command clears all active instances', () => {
   const first = createInstance(createContext().context)
   const second = createInstance(createContext().context)
-  first.handleDrawPointerDown(0, 1, 1)
-  second.handleDrawPointerDown(0, 2, 2)
+  first.handleSelectTool('line')
+  second.handleSelectTool('rectangle')
+  first.handleDrawPointerDown(0, 1, 1, undefined)
+  second.handleDrawPointerDown(0, 2, 2, undefined)
 
   clearActiveDrawViewInstance()
 
-  expect(first.render().some((node) => node.className === 'DrawStroke')).toBe(
-    false,
-  )
-  expect(second.render().some((node) => node.className === 'DrawStroke')).toBe(
-    false,
-  )
+  expect(getShape(first, 'DrawShape')).toBeUndefined()
+  expect(getShape(second, 'DrawShape')).toBeUndefined()
   first.handleEvent?.({ name: 'clear', type: 'click' })
+  first.handleClear()
   first.dispose?.()
   second.dispose?.()
 })
 
-test('appendPoint handles an absent stroke', () => {
-  const strokes: readonly never[] = []
-  expect(appendPoint(strokes, { x: 1, y: 2 })).toBe(strokes)
+test('shape helpers cover each shape kind', () => {
+  const line: Shape = {
+    end: { x: 3, y: 4 },
+    id: 0,
+    start: { x: 1, y: 2 },
+    type: 'line',
+  }
+  const rectangle: Shape = {
+    end: { x: 4, y: 5 },
+    id: 1,
+    start: { x: 2, y: 3 },
+    type: 'rectangle',
+  }
+  const label: Shape = {
+    id: 2,
+    point: { x: 5, y: 6 },
+    text: 'Hello',
+    type: 'text',
+  }
+
+  expect(moveShape(line, 2, 3)).toMatchObject({
+    end: { x: 5, y: 7 },
+    start: { x: 3, y: 5 },
+  })
+  expect(moveShape(rectangle, 2, 3)).toMatchObject({
+    end: { x: 6, y: 8 },
+    start: { x: 4, y: 6 },
+  })
+  expect(moveShape(label, 2, 3)).toMatchObject({ point: { x: 7, y: 9 } })
+  expect(resizeShape(line, { x: 9, y: 10 })).toMatchObject({
+    end: { x: 9, y: 10 },
+  })
+  expect(resizeShape(label, { x: 9, y: 10 })).toBe(label)
+  expect(replaceShape([line, rectangle], label)).toEqual([line, rectangle])
 })
 
 test('shows a context menu for the drawing board', async () => {

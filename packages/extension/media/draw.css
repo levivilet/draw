@@ -1,109 +1,191 @@
 .DrawView {
-  --DrawBorder: var(--ContrastBorder, var(--PanelBorder, #d0d0d0));
-  --DrawButtonBackground: var(--ButtonBackground, #0e639c);
-  --DrawButtonForeground: var(--ButtonForeground, #ffffff);
-  --DrawButtonHoverBackground: var(--ButtonHoverBackground, #1177bb);
-  --DrawForeground: var(--WorkbenchForeground, #333333);
+  --DrawAccent: #2f80ed;
+  --DrawBorder: color-mix(
+    in srgb,
+    var(--WorkbenchForeground, #202020) 18%,
+    transparent
+  );
+  --DrawControlBackground: color-mix(
+    in srgb,
+    var(--MainBackground, #ffffff) 96%,
+    transparent
+  );
+  --DrawControlForeground: var(--WorkbenchForeground, #202020);
 
+  position: relative;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
   width: 100%;
   height: 100%;
   min-height: 0;
-  color: var(--DrawForeground);
-  background: var(--MainBackground, var(--EditorBackground, #f3f3f3));
-}
-
-.DrawToolbar {
-  display: flex;
-  flex: 0 0 auto;
-  gap: 12px;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 48px;
-  padding: 0 12px;
-  border-bottom: 1px solid var(--DrawBorder);
-}
-
-.DrawHint,
-.DrawEmptyMessage {
-  margin: 0;
-}
-
-.DrawHint {
   overflow: hidden;
-  font-size: 13px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  color: var(--DrawControlForeground);
+  background: #ffffff;
 }
 
-.DrawClearButton {
-  flex: 0 0 auto;
-  min-height: 28px;
-  padding: 4px 12px;
-  color: var(--DrawButtonForeground);
-  font: inherit;
-  background: var(--DrawButtonBackground);
-  border: 0;
-  border-radius: 3px;
-  cursor: pointer;
+.DrawBoard {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
 }
 
-.DrawClearButton:hover:not(:disabled) {
-  background: var(--DrawButtonHoverBackground);
-}
-
-.DrawClearButton:focus-visible,
 .DrawBoard:focus-visible {
   outline: 1px solid var(--FocusBorder, #007fd4);
   outline-offset: -1px;
 }
 
-.DrawClearButton:disabled {
-  cursor: default;
-  opacity: 0.55;
-}
-
-.DrawBoard {
-  position: relative;
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow: hidden;
-  touch-action: none;
+.DrawBoardTool-line,
+.DrawBoardTool-rectangle {
   cursor: crosshair;
-  background: #ffffff;
 }
 
-.DrawCanvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
+.DrawBoardTool-text {
+  cursor: text;
 }
 
-.DrawStroke {
+.DrawBoardTool-cursor .DrawShape {
+  cursor: move;
+}
+
+.DrawShape {
   position: absolute;
+  box-sizing: border-box;
+}
+
+.DrawLine {
   height: 3px;
   background: #202020;
   border-radius: 999px;
-  pointer-events: none;
   transform-origin: 0 50%;
 }
 
-.DrawStrokePoint {
-  width: 3px;
-  transform: translate(-50%, -50%);
+.DrawLine::after {
+  position: absolute;
+  inset: -6px 0;
+  content: '';
+}
+
+.DrawLine.DrawShapeSelected {
+  background: var(--DrawAccent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--DrawAccent) 25%, transparent);
+}
+
+.DrawRectangle {
+  min-width: 2px;
+  min-height: 2px;
+  background: transparent;
+  border: 2px solid #202020;
+}
+
+.DrawRectangle.DrawShapeSelected {
+  border-color: var(--DrawAccent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--DrawAccent) 25%, transparent);
+}
+
+.DrawText {
+  min-width: 12px;
+  min-height: 24px;
+  padding: 2px 4px;
+  color: #202020;
+  font: 18px/1.35 sans-serif;
+  white-space: pre;
+  background: transparent;
+  border: 0;
+  border-radius: 3px;
+  outline: 0;
+  transform: translateY(-50%);
+}
+
+input.DrawText {
+  min-width: 160px;
+  user-select: text;
+}
+
+.DrawText.DrawShapeSelected {
+  outline: 2px solid color-mix(in srgb, var(--DrawAccent) 70%, transparent);
+  outline-offset: 1px;
+}
+
+.DrawControls {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  z-index: 2;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  transform: translateX(-50%);
+}
+
+.DrawToolbar {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding: 5px;
+  background: var(--DrawControlBackground);
+  border: 1px solid var(--DrawBorder);
+  border-radius: 10px;
+  box-shadow:
+    0 1px 3px rgb(0 0 0 / 12%),
+    0 5px 18px rgb(0 0 0 / 10%);
+  backdrop-filter: blur(10px);
+}
+
+.DrawToolButton,
+.DrawClearButton {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  color: var(--DrawControlForeground);
+  font: 20px/1 sans-serif;
+  background: transparent;
+  border: 0;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.DrawToolButton:hover,
+.DrawClearButton:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--DrawControlForeground) 9%, transparent);
+}
+
+.DrawToolButtonSelected,
+.DrawToolButtonSelected:hover {
+  color: #ffffff;
+  background: var(--DrawAccent);
+}
+
+.DrawClearButton {
+  flex: 0 0 auto;
+  background: var(--DrawControlBackground);
+  border: 1px solid var(--DrawBorder);
+  border-radius: 50%;
+  box-shadow:
+    0 1px 3px rgb(0 0 0 / 12%),
+    0 5px 18px rgb(0 0 0 / 10%);
+}
+
+.DrawToolButton:focus-visible,
+.DrawClearButton:focus-visible {
+  outline: 2px solid var(--FocusBorder, #007fd4);
+  outline-offset: 1px;
+}
+
+.DrawClearButton:disabled {
+  cursor: default;
+  opacity: 0.45;
 }
 
 .DrawEmptyMessage {
   position: absolute;
   top: 50%;
   left: 50%;
+  margin: 0;
   color: #707070;
   font-size: 14px;
   pointer-events: none;
   transform: translate(-50%, -50%);
-  user-select: none;
 }

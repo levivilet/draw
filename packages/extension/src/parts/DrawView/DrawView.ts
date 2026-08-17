@@ -35,6 +35,7 @@ export const view: View<DrawViewInstance> = {
         'event.button',
         'event.clientX',
         'event.clientY',
+        'event.target.dataset.shapeId',
         ...offsetParameters,
       ],
       preventDefault: true,
@@ -59,6 +60,18 @@ export const view: View<DrawViewInstance> = {
         ...offsetParameters,
       ],
       preventDefault: true,
+    },
+    {
+      name: 'handleSelectTool',
+      params: ['handleSelectTool', 'event.currentTarget.name'],
+    },
+    {
+      name: 'handleTextInput',
+      params: [
+        'handleTextInput',
+        'event.currentTarget.dataset.shapeId',
+        'event.target.value',
+      ],
     },
   ],
   icon: 'edit',

@@ -13,4 +13,18 @@ test('registers the whiteboard view and pointer tracking', () => {
     preventDefault: true,
     trackPointerEvents: ['handleDrawPointerMove', 'handleDrawPointerUp'],
   })
+  expect(view.eventListeners?.slice(-2)).toEqual([
+    {
+      name: 'handleSelectTool',
+      params: ['handleSelectTool', 'event.currentTarget.name'],
+    },
+    {
+      name: 'handleTextInput',
+      params: [
+        'handleTextInput',
+        'event.currentTarget.dataset.shapeId',
+        'event.target.value',
+      ],
+    },
+  ])
 })

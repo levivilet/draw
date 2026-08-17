@@ -1,8 +1,8 @@
 # builtindraw
 
-Basic whiteboard extension for Lvce Editor. Open the Draw view, then use a
-mouse, pen, or touch pointer to draw freehand strokes. Use **Clear** to reset
-the whiteboard.
+Whiteboard extension for Lvce Editor with a compact, floating tool palette.
+Create lines and rectangles by dragging, place text with a click, or use the
+cursor to select and move shapes. Use **Clear** to reset the whiteboard.
 
 ## Development
 
