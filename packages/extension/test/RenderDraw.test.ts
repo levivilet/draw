@@ -1,9 +1,6 @@
 import { expect, test } from '@jest/globals'
 import { VirtualDomElements } from '@lvce-editor/virtual-dom-worker'
-import {
-  renderDraw,
-  toPathData,
-} from '../src/parts/RenderDraw/RenderDraw.ts'
+import { renderDraw, toPathData } from '../src/parts/RenderDraw/RenderDraw.ts'
 
 test('renders an empty whiteboard with a disabled clear button', () => {
   const dom = renderDraw([])

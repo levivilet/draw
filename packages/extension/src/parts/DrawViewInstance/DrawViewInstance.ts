@@ -59,9 +59,7 @@ export const clearActiveDrawViewInstance = (): void => {
   }
 }
 
-export const createInstance = (
-  context?: ViewContext,
-): DrawViewInstance => {
+export const createInstance = (context?: ViewContext): DrawViewInstance => {
   let state: DrawState = {
     drawing: false,
     strokes: [],

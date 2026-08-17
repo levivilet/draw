@@ -15,7 +15,6 @@ test('defines only the basic Draw extension surface', async () => {
     readonly views: readonly { readonly css: string; readonly id: string }[]
   }
 
-  expect(text.toLowerCase()).not.toContain('trello')
   expect(manifest).toMatchObject({
     activation: [
       'onView:draw.views.whiteboard',

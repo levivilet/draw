@@ -73,7 +73,7 @@ export const renderDraw = (
       childCount: empty ? 2 : 1,
       className: 'DrawBoard',
       onPointerDown: handleDrawPointerDown,
-      role: AriaRoles.Application,
+      role: AriaRoles.Group,
       tabIndex: 0,
       type: VirtualDomElements.Div,
     },

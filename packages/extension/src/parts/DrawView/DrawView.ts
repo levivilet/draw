@@ -38,10 +38,7 @@ export const view: View<DrawViewInstance> = {
         ...offsetParameters,
       ],
       preventDefault: true,
-      trackPointerEvents: [
-        'handleDrawPointerMove',
-        'handleDrawPointerUp',
-      ],
+      trackPointerEvents: ['handleDrawPointerMove', 'handleDrawPointerUp'],
     },
     {
       name: 'handleDrawPointerMove',

@@ -2,163 +2,35 @@
   "id": "builtindraw",
   "name": "Draw",
   "workerName": "Draw Worker",
-  "description": "Browse Draw boards from Lvce Editor",
-  "repository": "https://github.com/levivilet/trello",
+  "description": "A basic whiteboard for drawing with a mouse or pointer.",
+  "repository": "https://github.com/levivilet/draw",
   "browser": "dist/drawMain.js",
   "isolated": true,
   "contentSecurityPolicy": ["default-src 'none'", "script-src 'self'"],
   "categories": ["Other"],
-  "configuration": {
-    "trello.searchEnabled": {
-      "type": "boolean",
-      "default": false
-    },
-    "trello.boardBackgroundEnabled": {
-      "type": "boolean",
-      "default": false
-    },
-    "trello.cardDetailPopupEnabled": {
-      "type": "boolean",
-      "default": false,
-      "description": "Open card details in a centered popup instead of a right-side panel."
-    },
-    "trello.batchRequestsEnabled": {
-      "type": "boolean",
-      "default": false,
-      "description": "Use Draw's batch API for supported read requests."
-    }
-  },
   "activation": [
-    "onView:draw.views.boards",
-    "onCommand:draw.backToBoards",
-    "onCommand:draw.cancelNewCard",
-    "onCommand:draw.closeBoardFilter",
-    "onCommand:draw.closeCardDetail",
-    "onCommand:draw.logout",
-    "onCommand:draw.openCard",
-    "onCommand:draw.refreshBoards",
-    "onCommand:draw.saveCardDetail",
-    "onCommand:draw.show",
-    "onCommand:draw.startAddCard",
-    "onCommand:draw.submitNewCard",
-    "onCommand:draw.test.useMockData",
-    "onCommand:draw.test.reset",
-    "onCommand:draw.addList",
-    "onCommand:draw.openMockBoard",
-    "onCommand:draw.addCard"
+    "onView:draw.views.whiteboard",
+    "onCommand:draw.clear",
+    "onCommand:draw.show"
   ],
   "commands": [
     {
-      "id": "trello.show",
-      "label": "Draw: Show"
+      "id": "draw.show",
+      "label": "Draw: Show Whiteboard"
     },
     {
-      "id": "trello.addList",
-      "label": "Draw: Add List"
-    },
-    {
-      "id": "trello.openMockBoard",
-      "label": "Draw: Open Mock Board"
-    },
-    {
-      "id": "trello.addCard",
-      "label": "Draw: Add Card"
-    },
-    {
-      "id": "trello.backToBoards",
-      "label": "Draw: Back to Boards"
-    },
-    {
-      "id": "trello.cancelNewCard",
-      "label": "Draw: Cancel New Card"
-    },
-    {
-      "id": "trello.closeBoardFilter",
-      "label": "Draw: Close Board Filter"
-    },
-    {
-      "id": "trello.closeCardDetail",
-      "label": "Draw: Close Card Detail"
-    },
-    {
-      "id": "trello.logout",
-      "label": "Draw: Sign Out"
-    },
-    {
-      "id": "trello.openCard",
-      "label": "Draw: Open Card"
-    },
-    {
-      "id": "trello.refreshBoards",
-      "label": "Draw: Refresh Boards"
-    },
-    {
-      "id": "trello.saveCardDetail",
-      "label": "Draw: Save Card Detail"
-    },
-    {
-      "id": "trello.startAddCard",
-      "label": "Draw: Add Card"
-    },
-    {
-      "id": "trello.submitNewCard",
-      "label": "Draw: Submit New Card"
-    },
-    {
-      "id": "trello.test.useMockData",
-      "label": "Draw Test: Use Mock Data"
-    },
-    {
-      "id": "trello.test.reset",
-      "label": "Draw Test: Reset"
+      "id": "draw.clear",
+      "label": "Draw: Clear Whiteboard"
     }
   ],
   "views": [
     {
-      "css": "media/trello.css",
+      "css": "media/draw.css",
       "displayName": "Draw",
-      "id": "trello.views.boards",
+      "id": "draw.views.whiteboard",
       "title": "Draw",
-      "icon": "media/trello.svg",
       "kind": "virtualDom",
       "preferredLocation": "preview"
-    }
-  ],
-  "keybindings": [
-    {
-      "key": "Alt+Left",
-      "command": "trello.backToBoards",
-      "when": "trello.boardDetailFocus"
-    },
-    {
-      "key": "Ctrl+R",
-      "command": "trello.refreshBoards",
-      "when": "trello.boardsFocus"
-    },
-    {
-      "key": "Escape",
-      "command": "trello.closeBoardFilter",
-      "when": "trello.boardFilterFocus"
-    },
-    {
-      "key": "Escape",
-      "command": "trello.closeCardDetail",
-      "when": "trello.cardDetailFocus"
-    },
-    {
-      "key": "Enter",
-      "command": "trello.submitNewCard",
-      "when": "trello.newCardInputFocus"
-    },
-    {
-      "key": "Escape",
-      "command": "trello.cancelNewCard",
-      "when": "trello.newCardInputFocus"
-    },
-    {
-      "key": "Ctrl+S",
-      "command": "trello.saveCardDetail",
-      "when": "trello.cardDescriptionFocus"
     }
   ]
 }
