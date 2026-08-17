@@ -3,7 +3,7 @@ import type { Test } from '@lvce-editor/test-with-playwright'
 export const name = 'draw.basic'
 
 export const test: Test = async ({ Command, expect, Locator }) => {
-  await Command.execute('draw.show')
+  await Command.execute('Layout.toggleSideBarView', 'draw.views.whiteboard')
   const board = Locator('.DrawBoard')
   const clearButton = Locator('.DrawClearButton')
   await expect(board).toBeVisible()
