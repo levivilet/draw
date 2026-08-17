@@ -4,7 +4,7 @@
   "workerName": "Draw Worker",
   "description": "Browse Draw boards from Lvce Editor",
   "repository": "https://github.com/levivilet/trello",
-  "browser": "dist/trelloMain.js",
+  "browser": "dist/drawMain.js",
   "isolated": true,
   "contentSecurityPolicy": ["default-src 'none'", "script-src 'self'"],
   "categories": ["Other"],
