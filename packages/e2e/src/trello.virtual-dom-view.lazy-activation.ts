@@ -13,7 +13,7 @@ const viewId = 'trello.views.boards'
 export const test: Test = async ({ Command, expect, Locator }) => {
   await Command.execute('ActivityBar.handleExtensionsChanged')
 
-  const item = Locator('.ActivityBarItem[title="Trello"]')
+  const item = Locator('.ActivityBarItem[title="Draw"]')
   await expect(item).toBeVisible()
   await expect(item).toHaveAttribute('aria-selected', 'false')
 

@@ -1,33 +1,33 @@
-import type { TrelloApiCache } from '../TrelloApiCache/TrelloApiCache.ts'
+import type { DrawApiCache } from '../DrawApiCache/DrawApiCache.ts'
 import type {
   FetchLike,
-  TrelloRequestInit,
-  TrelloResponse,
-} from '../TrelloClientTypes/TrelloClientTypes.ts'
-import type { TrelloCredentials } from '../TrelloTypes/TrelloTypes.ts'
+  DrawRequestInit,
+  DrawResponse,
+} from '../DrawClientTypes/DrawClientTypes.ts'
+import type { DrawCredentials } from '../DrawTypes/DrawTypes.ts'
 
 const baseUrl = 'https://apidraw.com/1'
 const batchRequestLimit = 10
 const successfulResponseStatusPattern = /^2\d\d$/
 
-export interface TrelloBatchRequest {
+export interface DrawBatchRequest {
   readonly params?: Readonly<Record<string, string>>
   readonly path: string
 }
 
-const getErrorMessage = async (response: TrelloResponse): Promise<string> => {
+const getErrorMessage = async (response: DrawResponse): Promise<string> => {
   const text = await response.text()
   if (text) {
-    return `Trello request failed: ${response.status} ${text}`
+    return `Draw request failed: ${response.status} ${text}`
   }
-  return `Trello request failed: ${response.status} ${response.statusText}`
+  return `Draw request failed: ${response.status} ${response.statusText}`
 }
 
-const isGetRequest = (init?: TrelloRequestInit): boolean => {
+const isGetRequest = (init?: DrawRequestInit): boolean => {
   return !init?.method || init.method.toUpperCase() === 'GET'
 }
 
-const createTrelloBatchPath = (
+const createDrawBatchPath = (
   path: string,
   params: Readonly<Record<string, string>> = {},
 ): string => {
@@ -39,9 +39,9 @@ const createTrelloBatchPath = (
 }
 
 const writeCachedJson = async (
-  cache: TrelloApiCache | undefined,
+  cache: DrawApiCache | undefined,
   path: string,
-  credentials: TrelloCredentials,
+  credentials: DrawCredentials,
   params: Readonly<Record<string, string>>,
   value: unknown,
 ): Promise<void> => {
@@ -49,10 +49,10 @@ const writeCachedJson = async (
     return
   }
   try {
-    const requestUrl = createTrelloRequestUrl(path, credentials, params)
+    const requestUrl = createDrawRequestUrl(path, credentials, params)
     await cache.write(requestUrl, credentials, value)
   } catch {
-    // A quota or Cache Storage failure should not fail a Trello request.
+    // A quota or Cache Storage failure should not fail a Draw request.
   }
 }
 
@@ -61,15 +61,15 @@ const parseBatchResponse = (
   requestCount: number,
 ): readonly unknown[] => {
   if (!Array.isArray(value) || value.length !== requestCount) {
-    throw new Error('Trello batch request returned an invalid response')
+    throw new Error('Draw batch request returned an invalid response')
   }
   return value.map((item) => {
     if (!item || typeof item !== 'object' || Array.isArray(item)) {
-      throw new Error('Trello batch request returned an invalid response')
+      throw new Error('Draw batch request returned an invalid response')
     }
     const entries = Object.entries(item)
     if (entries.length !== 1) {
-      throw new Error('Trello batch request returned an invalid response')
+      throw new Error('Draw batch request returned an invalid response')
     }
     const [status, body] = entries[0]
     if (!successfulResponseStatusPattern.test(status)) {
@@ -77,15 +77,15 @@ const parseBatchResponse = (
         typeof body === 'string'
           ? body
           : JSON.stringify(body) || 'Unknown error'
-      throw new Error(`Trello request failed: ${status} ${message}`)
+      throw new Error(`Draw request failed: ${status} ${message}`)
     }
     return body
   })
 }
 
-export const createTrelloRequestUrl = (
+export const createDrawRequestUrl = (
   path: string,
-  credentials: TrelloCredentials,
+  credentials: DrawCredentials,
   params: Readonly<Record<string, string>> = {},
 ): string => {
   const url = new URL(`${baseUrl}${path}`)
@@ -98,16 +98,16 @@ export const createTrelloRequestUrl = (
 }
 
 export const readCachedJson = async <T>(
-  cache: TrelloApiCache | undefined,
+  cache: DrawApiCache | undefined,
   path: string,
-  credentials: TrelloCredentials,
+  credentials: DrawCredentials,
   params: Readonly<Record<string, string>> = {},
 ): Promise<T | undefined> => {
   if (!cache) {
     return undefined
   }
   try {
-    const requestUrl = createTrelloRequestUrl(path, credentials, params)
+    const requestUrl = createDrawRequestUrl(path, credentials, params)
     return await cache.read<T>(requestUrl, credentials)
   } catch {
     return undefined
@@ -115,31 +115,31 @@ export const readCachedJson = async <T>(
 }
 
 export const deleteCachedJson = async (
-  cache: TrelloApiCache | undefined,
+  cache: DrawApiCache | undefined,
   path: string,
-  credentials: TrelloCredentials,
+  credentials: DrawCredentials,
   params: Readonly<Record<string, string>> = {},
 ): Promise<void> => {
   if (!cache) {
     return
   }
   try {
-    const requestUrl = createTrelloRequestUrl(path, credentials, params)
+    const requestUrl = createDrawRequestUrl(path, credentials, params)
     await cache.delete(requestUrl, credentials)
   } catch {
-    // Cache cleanup should not make a successful Trello write look failed.
+    // Cache cleanup should not make a successful Draw write look failed.
   }
 }
 
 export const requestJson = async <T>(
   fetchLike: FetchLike,
   path: string,
-  credentials: TrelloCredentials,
+  credentials: DrawCredentials,
   params: Readonly<Record<string, string>> = {},
-  init?: TrelloRequestInit,
-  cache?: TrelloApiCache,
+  init?: DrawRequestInit,
+  cache?: DrawApiCache,
 ): Promise<T> => {
-  const requestUrl = createTrelloRequestUrl(path, credentials, params)
+  const requestUrl = createDrawRequestUrl(path, credentials, params)
   const response = await fetchLike(requestUrl, init)
   if (!response.ok) {
     throw new Error(await getErrorMessage(response))
@@ -153,22 +153,22 @@ export const requestJson = async <T>(
 
 export const requestJsonBatch = async <T extends readonly unknown[]>(
   fetchLike: FetchLike,
-  requests: readonly TrelloBatchRequest[],
-  credentials: TrelloCredentials,
-  cache?: TrelloApiCache,
+  requests: readonly DrawBatchRequest[],
+  credentials: DrawCredentials,
+  cache?: DrawApiCache,
 ): Promise<T> => {
   if (requests.length === 0) {
     return [] as unknown as T
   }
   if (requests.length > batchRequestLimit) {
     throw new Error(
-      `Trello batch requests support at most ${batchRequestLimit} requests`,
+      `Draw batch requests support at most ${batchRequestLimit} requests`,
     )
   }
   const paths = requests.map(({ params, path }) => {
-    return createTrelloBatchPath(path, params)
+    return createDrawBatchPath(path, params)
   })
-  const requestUrl = createTrelloRequestUrl('/batch', credentials, {
+  const requestUrl = createDrawRequestUrl('/batch', credentials, {
     urls: paths.join(','),
   })
   const response = await fetchLike(requestUrl)

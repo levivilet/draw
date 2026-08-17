@@ -3,21 +3,21 @@ import {
   VirtualDomElements,
   type VirtualDomNode,
 } from '@lvce-editor/virtual-dom-worker'
-import type { TrelloComment } from '../TrelloTypes/TrelloTypes.ts'
+import type { DrawComment } from '../DrawTypes/DrawTypes.ts'
 import { getCommentInitials } from '../CommentHelpers/CommentHelpers.ts'
-import * as TrelloStrings from '../TrelloStrings/TrelloStrings.ts'
+import * as DrawStrings from '../DrawStrings/DrawStrings.ts'
 
 export const renderCardDetailAvatar = (
-  comment: Readonly<TrelloComment>,
+  comment: Readonly<DrawComment>,
   author: string,
   avatarUrl: string,
 ): readonly VirtualDomNode[] => {
   if (avatarUrl) {
     return [
       {
-        alt: TrelloStrings.avatar(author),
+        alt: DrawStrings.avatar(author),
         childCount: 0,
-        className: 'TrelloCardCommentAvatar',
+        className: 'DrawCardCommentAvatar',
         src: avatarUrl,
         type: VirtualDomElements.Img,
       },
@@ -26,7 +26,7 @@ export const renderCardDetailAvatar = (
   return [
     {
       childCount: 1,
-      className: 'TrelloCardCommentAvatar',
+      className: 'DrawCardCommentAvatar',
       type: VirtualDomElements.Div,
     },
     text(getCommentInitials(comment)),

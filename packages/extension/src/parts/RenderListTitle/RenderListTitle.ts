@@ -6,7 +6,7 @@ import {
 
 const listTitleNode: VirtualDomNode = {
   childCount: 1,
-  className: 'TrelloListTitle',
+  className: 'DrawListTitle',
   type: VirtualDomElements.H3,
 }
 

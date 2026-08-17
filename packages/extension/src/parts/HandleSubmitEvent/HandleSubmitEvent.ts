@@ -1,11 +1,11 @@
 import type { ViewEvent } from '@lvce-editor/api'
-import type { TrelloViewActionContext } from '../TrelloViewState/TrelloViewState.ts'
+import type { DrawViewActionContext } from '../DrawViewState/DrawViewState.ts'
 import { submitAddCard } from '../AddCard/AddCard.ts'
 import { submitAddList } from '../AddList/AddList.ts'
 import { submitSearch } from '../SubmitSearch/SubmitSearch.ts'
 
 export const handleSubmitEvent = async (
-  context: TrelloViewActionContext,
+  context: DrawViewActionContext,
   event: Readonly<ViewEvent>,
 ): Promise<void> => {
   if (event.name === 'search') {

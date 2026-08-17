@@ -1,8 +1,8 @@
-import type { TrelloCardMove } from '../TrelloTypes/TrelloTypes.ts'
+import type { DrawCardMove } from '../DrawTypes/DrawTypes.ts'
 import type {
-  TrelloViewActionContext,
-  TrelloViewState,
-} from '../TrelloViewState/TrelloViewState.ts'
+  DrawViewActionContext,
+  DrawViewState,
+} from '../DrawViewState/DrawViewState.ts'
 import { isSameJson } from '../CacheFirstHelpers/CacheFirstHelpers.ts'
 import { findBoardCard } from '../FindBoardCard/FindBoardCard.ts'
 import { getCardListId } from '../GetCardListId/GetCardListId.ts'
@@ -11,13 +11,13 @@ import { moveBoardDetailCard } from '../MoveBoardDetailCard/MoveBoardDetailCard.
 import { updateSelectedCard } from '../UpdateSelectedCard/UpdateSelectedCard.ts'
 
 export const moveCardToList = async (
-  context: TrelloViewActionContext,
+  context: DrawViewActionContext,
   cardId: string,
   targetListId: string,
-  position: TrelloCardMove['pos'] = 'bottom',
+  position: DrawCardMove['pos'] = 'bottom',
 ): Promise<void> => {
   const { client, requestRerender } = context
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   const card = findBoardCard(state, cardId)
   if (!state.credentials || !targetListId || !card || state.movingCardId) {
     return
@@ -42,9 +42,9 @@ export const moveCardToList = async (
   try {
     const sourceCard = sourceListId
       ? {
-          ...card,
-          idList: sourceListId,
-        }
+        ...card,
+        idList: sourceListId,
+      }
       : card
     await client.moveCard(
       sourceCard,

@@ -1,18 +1,18 @@
-import type { TrelloAttachment } from '../TrelloTypes/TrelloTypes.ts'
+import type { DrawAttachment } from '../DrawTypes/DrawTypes.ts'
 import type {
-  TrelloViewActionContext,
-  TrelloViewState,
-} from '../TrelloViewState/TrelloViewState.ts'
+  DrawViewActionContext,
+  DrawViewState,
+} from '../DrawViewState/DrawViewState.ts'
 import { getErrorMessage } from '../GetErrorMessage/GetErrorMessage.ts'
 import { resolveCardAttachmentImages } from '../OpenCard/OpenCard.ts'
 
 interface UploadResult {
-  readonly attachment?: TrelloAttachment
+  readonly attachment?: DrawAttachment
   readonly error?: unknown
 }
 
 const uploadFile = async (
-  context: TrelloViewActionContext,
+  context: DrawViewActionContext,
   file: File,
 ): Promise<UploadResult> => {
   const { client, state } = context
@@ -33,10 +33,10 @@ const uploadFile = async (
 }
 
 export const uploadCardAttachments = async (
-  context: TrelloViewActionContext,
+  context: DrawViewActionContext,
   fileList: FileList | undefined,
 ): Promise<void> => {
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   const { credentials, selectedCardDetail } = state
   const files = fileList ? [...fileList] : []
   state.cardAttachmentDropActive = false

@@ -3,27 +3,27 @@ import {
   VirtualDomElements,
   type VirtualDomNode,
 } from '@lvce-editor/virtual-dom-worker'
-import type { TrelloLabel } from '../TrelloTypes/TrelloTypes.ts'
-import type { TrelloViewState } from '../TrelloViewState/TrelloViewState.ts'
+import type { DrawLabel } from '../DrawTypes/DrawTypes.ts'
+import type { DrawViewState } from '../DrawViewState/DrawViewState.ts'
 import * as DomEventListenerFunctions from '../DomEventListenerFunctions/DomEventListenerFunctions.ts'
 import { getMatchingLabels } from '../GetMatchingLabels/GetMatchingLabels.ts'
 import * as MergeClassNames from '../MergeClassNames/MergeClassNames.ts'
 import { renderCardLabelChoice } from '../RenderCardLabelChoice/RenderCardLabelChoice.ts'
-import * as TrelloStrings from '../TrelloStrings/TrelloStrings.ts'
+import * as DrawStrings from '../DrawStrings/DrawStrings.ts'
 
 export const renderCardLabelPickerContent = (
-  state: Readonly<TrelloViewState>,
-  labels: readonly TrelloLabel[] | undefined,
+  state: Readonly<DrawViewState>,
+  labels: readonly DrawLabel[] | undefined,
 ): readonly VirtualDomNode[] => {
   const { boardLabelsLoading, draftLabelSearchQuery } = state
   if (boardLabelsLoading) {
     return [
       {
         childCount: 1,
-        className: 'TrelloCardLabelPickerEmpty',
+        className: 'DrawCardLabelPickerEmpty',
         type: VirtualDomElements.Div,
       },
-      text(TrelloStrings.loadingLabels()),
+      text(DrawStrings.loadingLabels()),
     ]
   }
   const matchingLabels = getMatchingLabels(state)
@@ -33,29 +33,29 @@ export const renderCardLabelPickerContent = (
         {
           childCount: 1,
           className: MergeClassNames.mergeClassNames(
-            'TrelloButton',
-            'TrelloCardLabelCreateButton',
+            'DrawButton',
+            'DrawCardLabelCreateButton',
           ),
           name: 'openCardLabelCreate',
           onClick: DomEventListenerFunctions.HandleClick,
           type: VirtualDomElements.Button,
         },
-        text(TrelloStrings.createNewLabel()),
+        text(DrawStrings.createNewLabel()),
       ]
     }
     return [
       {
         childCount: 1,
-        className: 'TrelloCardLabelPickerEmpty',
+        className: 'DrawCardLabelPickerEmpty',
         type: VirtualDomElements.Div,
       },
-      text(TrelloStrings.noLabelsAvailable()),
+      text(DrawStrings.noLabelsAvailable()),
     ]
   }
   return [
     {
       childCount: matchingLabels.length,
-      className: 'TrelloCardLabelPickerList',
+      className: 'DrawCardLabelPickerList',
       type: VirtualDomElements.Div,
     },
     ...matchingLabels.flatMap((label) =>

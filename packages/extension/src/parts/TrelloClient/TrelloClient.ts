@@ -1,19 +1,19 @@
 import type {
   FetchLike,
-  TrelloCacheFirstResult,
-  TrelloClient,
-  TrelloClientOptions,
-} from '../TrelloClientTypes/TrelloClientTypes.ts'
+  DrawCacheFirstResult,
+  DrawClient,
+  DrawClientOptions,
+} from '../DrawClientTypes/DrawClientTypes.ts'
 import type {
-  TrelloBoard,
-  TrelloBoardDetail,
-  TrelloCard,
-  TrelloCardDetail,
-  TrelloComment,
-  TrelloCredentials,
-  TrelloLabel,
-  TrelloSearchResult,
-} from '../TrelloTypes/TrelloTypes.ts'
+  DrawBoard,
+  DrawBoardDetail,
+  DrawCard,
+  DrawCardDetail,
+  DrawComment,
+  DrawCredentials,
+  DrawLabel,
+  DrawSearchResult,
+} from '../DrawTypes/DrawTypes.ts'
 import { addCardAttachment } from '../AddCardAttachment/AddCardAttachment.ts'
 import { addCardComment } from '../AddCardComment/AddCardComment.ts'
 import { addCardLabel } from '../AddCardLabel/AddCardLabel.ts'
@@ -34,29 +34,29 @@ import { listBoards, readCachedListBoards } from '../ListBoards/ListBoards.ts'
 import { moveCard } from '../MoveCard/MoveCard.ts'
 import { readCachedSearch, search } from '../Search/Search.ts'
 import {
-  createCacheStorageTrelloApiCache,
-  type TrelloApiCache,
-} from '../TrelloApiCache/TrelloApiCache.ts'
+  createCacheStorageDrawApiCache,
+  type DrawApiCache,
+} from '../DrawApiCache/DrawApiCache.ts'
 import { updateCard } from '../UpdateCard/UpdateCard.ts'
 import { updateList } from '../UpdateList/UpdateList.ts'
 
 export type {
   FetchLike,
-  TrelloClient,
-} from '../TrelloClientTypes/TrelloClientTypes.ts'
+  DrawClient,
+} from '../DrawClientTypes/DrawClientTypes.ts'
 
-export const createTrelloClient = (
+export const createDrawClient = (
   fetchLike: FetchLike = fetch,
-  cache: TrelloApiCache | undefined = createCacheStorageTrelloApiCache(),
-  options: TrelloClientOptions = {},
-): TrelloClient => {
+  cache: DrawApiCache | undefined = createCacheStorageDrawApiCache(),
+  options: DrawClientOptions = {},
+): DrawClient => {
   const readBatchRequestsEnabled =
     options.readBatchRequestsEnabled ||
     ((): Promise<boolean> => Promise.resolve(false))
   const getFreshBoardDetail = async (
-    board: TrelloBoard,
-    credentials: TrelloCredentials,
-  ): Promise<TrelloBoardDetail> => {
+    board: DrawBoard,
+    credentials: DrawCredentials,
+  ): Promise<DrawBoardDetail> => {
     return getBoardDetail(
       fetchLike,
       board,
@@ -66,9 +66,9 @@ export const createTrelloClient = (
     )
   }
   const getFreshCardDetail = async (
-    card: TrelloCard,
-    credentials: TrelloCredentials,
-  ): Promise<TrelloCardDetail> => {
+    card: DrawCard,
+    credentials: DrawCredentials,
+  ): Promise<DrawCardDetail> => {
     return getCardDetail(
       fetchLike,
       card,
@@ -82,54 +82,54 @@ export const createTrelloClient = (
       card,
       file,
       credentials,
-    ): ReturnType<TrelloClient['addCardAttachment']> {
+    ): ReturnType<DrawClient['addCardAttachment']> {
       return addCardAttachment(fetchLike, card, file, credentials, cache)
     },
     addCardComment(
-      card: TrelloCard,
+      card: DrawCard,
       text: string,
-      credentials: TrelloCredentials,
-    ): Promise<TrelloComment> {
+      credentials: DrawCredentials,
+    ): Promise<DrawComment> {
       return addCardComment(fetchLike, card, text, credentials, cache)
     },
     addCardLabel(
-      card: TrelloCard,
-      label: TrelloLabel,
-      credentials: TrelloCredentials,
-    ): ReturnType<TrelloClient['addCardLabel']> {
+      card: DrawCard,
+      label: DrawLabel,
+      credentials: DrawCredentials,
+    ): ReturnType<DrawClient['addCardLabel']> {
       return addCardLabel(fetchLike, card, label, credentials, cache)
     },
     createCard(
       list,
       create,
       credentials,
-    ): ReturnType<TrelloClient['createCard']> {
+    ): ReturnType<DrawClient['createCard']> {
       return createCard(fetchLike, list, create, credentials, cache)
     },
     createLabel(
-      board: TrelloBoard,
+      board: DrawBoard,
       create,
       credentials,
-    ): ReturnType<TrelloClient['createLabel']> {
+    ): ReturnType<DrawClient['createLabel']> {
       return createLabel(fetchLike, board, create, credentials, cache)
     },
     createList(
-      board: TrelloBoard,
+      board: DrawBoard,
       create,
       credentials,
-    ): ReturnType<TrelloClient['createList']> {
+    ): ReturnType<DrawClient['createList']> {
       return createList(fetchLike, board, create, credentials, cache)
     },
     async getBoardDetail(
       board,
       credentials,
-    ): ReturnType<TrelloClient['getBoardDetail']> {
+    ): ReturnType<DrawClient['getBoardDetail']> {
       return getFreshBoardDetail(board, credentials)
     },
     async getBoardDetailCacheFirst(
-      board: TrelloBoard,
-      credentials: TrelloCredentials,
-    ): Promise<TrelloCacheFirstResult<TrelloBoardDetail>> {
+      board: DrawBoard,
+      credentials: DrawCredentials,
+    ): Promise<DrawCacheFirstResult<DrawBoardDetail>> {
       return {
         cached: await readCachedBoardDetail(cache, board, credentials),
         fresh: getFreshBoardDetail(board, credentials),
@@ -138,22 +138,22 @@ export const createTrelloClient = (
     async getCardDetail(
       card,
       credentials,
-    ): ReturnType<TrelloClient['getCardDetail']> {
+    ): ReturnType<DrawClient['getCardDetail']> {
       return getFreshCardDetail(card, credentials)
     },
     async getCardDetailCacheFirst(
-      card: TrelloCard,
-      credentials: TrelloCredentials,
-    ): Promise<TrelloCacheFirstResult<TrelloCardDetail>> {
+      card: DrawCard,
+      credentials: DrawCredentials,
+    ): Promise<DrawCacheFirstResult<DrawCardDetail>> {
       return {
         cached: await readCachedCardDetail(cache, card, credentials),
         fresh: getFreshCardDetail(card, credentials),
       }
     },
     async getCardDetailPartsCacheFirst(
-      card: TrelloCard,
-      credentials: TrelloCredentials,
-    ): ReturnType<TrelloClient['getCardDetailPartsCacheFirst']> {
+      card: DrawCard,
+      credentials: DrawCredentials,
+    ): ReturnType<DrawClient['getCardDetailPartsCacheFirst']> {
       const [cached, batchRequestsEnabled] = await Promise.all([
         readCachedCardDetail(cache, card, credentials),
         readBatchRequestsEnabled(),
@@ -172,30 +172,30 @@ export const createTrelloClient = (
     listBoardLabels(
       board,
       credentials,
-    ): ReturnType<TrelloClient['listBoardLabels']> {
+    ): ReturnType<DrawClient['listBoardLabels']> {
       return listBoardLabels(fetchLike, board, credentials, cache)
     },
-    listBoards(credentials): ReturnType<TrelloClient['listBoards']> {
+    listBoards(credentials): ReturnType<DrawClient['listBoards']> {
       return listBoards(fetchLike, credentials, cache)
     },
     async listBoardsCacheFirst(
       credentials,
-    ): ReturnType<TrelloClient['listBoardsCacheFirst']> {
+    ): ReturnType<DrawClient['listBoardsCacheFirst']> {
       return {
         cached: await readCachedListBoards(cache, credentials),
         fresh: listBoards(fetchLike, credentials, cache),
       }
     },
-    moveCard(card, move, credentials): ReturnType<TrelloClient['moveCard']> {
+    moveCard(card, move, credentials): ReturnType<DrawClient['moveCard']> {
       return moveCard(fetchLike, card, move, credentials, cache)
     },
-    search(query, credentials): ReturnType<TrelloClient['search']> {
+    search(query, credentials): ReturnType<DrawClient['search']> {
       return search(fetchLike, query, credentials, cache)
     },
     async searchCacheFirst(
       query: string,
-      credentials: TrelloCredentials,
-    ): Promise<TrelloCacheFirstResult<readonly TrelloSearchResult[]>> {
+      credentials: DrawCredentials,
+    ): Promise<DrawCacheFirstResult<readonly DrawSearchResult[]>> {
       return {
         cached: await readCachedSearch(cache, query, credentials),
         fresh: search(fetchLike, query, credentials, cache),
@@ -205,14 +205,14 @@ export const createTrelloClient = (
       card,
       update,
       credentials,
-    ): ReturnType<TrelloClient['updateCard']> {
+    ): ReturnType<DrawClient['updateCard']> {
       return updateCard(fetchLike, card, update, credentials, cache)
     },
     updateList(
       list,
       update,
       credentials,
-    ): ReturnType<TrelloClient['updateList']> {
+    ): ReturnType<DrawClient['updateList']> {
       return updateList(fetchLike, list, update, credentials)
     },
   }

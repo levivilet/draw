@@ -1,14 +1,14 @@
 import { expect, test } from '@jest/globals'
 import type {
-  TrelloCard,
-  TrelloList,
-} from '../src/parts/TrelloTypes/TrelloTypes.ts'
+  DrawCard,
+  DrawList,
+} from '../src/parts/DrawTypes/DrawTypes.ts'
 import {
   cardMatchesFilter,
   filterListCards,
 } from '../src/parts/FilterBoardCards/FilterBoardCards.ts'
 
-const card: TrelloCard = {
+const card: DrawCard = {
   desc: 'Deploy the extension to production',
   id: 'card-1',
   labels: [
@@ -18,7 +18,7 @@ const card: TrelloCard = {
       name: 'Ready for review',
     },
   ],
-  name: 'Ship Trello filtering',
+  name: 'Ship Draw filtering',
 }
 
 test('matches card titles case-insensitively', () => {
@@ -52,7 +52,7 @@ test('an empty or whitespace-only filter matches every card', () => {
 })
 
 test('filters a list without mutating the original list', () => {
-  const list: TrelloList = {
+  const list: DrawList = {
     cards: [
       card,
       {
@@ -73,7 +73,7 @@ test('filters a list without mutating the original list', () => {
 })
 
 test('returns the original list when the filter is empty', () => {
-  const list: TrelloList = {
+  const list: DrawList = {
     cards: [card],
     id: 'list-1',
     name: 'Todo',

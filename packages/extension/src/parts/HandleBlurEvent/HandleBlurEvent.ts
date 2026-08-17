@@ -1,24 +1,24 @@
 import type { ViewEvent } from '@lvce-editor/api'
 import type {
-  TrelloViewActionContext,
-  TrelloViewState,
-} from '../TrelloViewState/TrelloViewState.ts'
+  DrawViewActionContext,
+  DrawViewState,
+} from '../DrawViewState/DrawViewState.ts'
 import { cancelAddCard } from '../AddCard/AddCard.ts'
 import { cancelAddList } from '../AddList/AddList.ts'
 import { closeCardLabelPicker } from '../CardLabelPicker/CardLabelPicker.ts'
 import { getErrorMessage } from '../GetErrorMessage/GetErrorMessage.ts'
 import { saveCardDetail } from '../SaveCardDetail/SaveCardDetail.ts'
-import * as TrelloStrings from '../TrelloStrings/TrelloStrings.ts'
+import * as DrawStrings from '../DrawStrings/DrawStrings.ts'
 import { updateBoardDetailCard } from '../UpdateBoardDetailCard/UpdateBoardDetailCard.ts'
 import { updateBoardDetailList } from '../UpdateBoardDetailList/UpdateBoardDetailList.ts'
 
 const listTitlePrefix = 'listTitle:'
 
 const handleCardTitleBlur = async (
-  context: Readonly<TrelloViewActionContext>,
+  context: Readonly<DrawViewActionContext>,
 ): Promise<void> => {
   const { client, requestRerender } = context
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   if (!state.credentials || !state.selectedCardDetail) {
     return
   }
@@ -27,7 +27,7 @@ const handleCardTitleBlur = async (
   state.editingCardTitle = false
   if (!name) {
     state.draftCardTitle = card.name
-    state.error = TrelloStrings.cardTitleRequired()
+    state.error = DrawStrings.cardTitleRequired()
     requestRerender()
     return
   }
@@ -65,14 +65,14 @@ const handleCardTitleBlur = async (
 }
 
 const handleListTitleBlur = async (
-  context: Readonly<TrelloViewActionContext>,
+  context: Readonly<DrawViewActionContext>,
   event: Readonly<ViewEvent>,
 ): Promise<void> => {
   if (!event.name?.startsWith(listTitlePrefix)) {
     return
   }
   const { client, requestRerender } = context
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   if (!state.credentials || !state.boardDetail) {
     return
   }
@@ -90,7 +90,7 @@ const handleListTitleBlur = async (
       ...state.draftListTitles,
       [listId]: list.name,
     }
-    state.error = TrelloStrings.listTitleRequired()
+    state.error = DrawStrings.listTitleRequired()
     requestRerender()
     return
   }
@@ -126,7 +126,7 @@ const handleListTitleBlur = async (
 }
 
 export const handleBlurEvent = async (
-  context: Readonly<TrelloViewActionContext>,
+  context: Readonly<DrawViewActionContext>,
   event: Readonly<ViewEvent>,
 ): Promise<void> => {
   if (event.name?.startsWith('newCardTitle:')) {

@@ -1,10 +1,10 @@
-import type { TrelloApiCache } from '../TrelloApiCache/TrelloApiCache.ts'
-import type { FetchLike } from '../TrelloClientTypes/TrelloClientTypes.ts'
+import type { DrawApiCache } from '../DrawApiCache/DrawApiCache.ts'
+import type { FetchLike } from '../DrawClientTypes/DrawClientTypes.ts'
 import type {
-  TrelloCard,
-  TrelloCardDetail,
-  TrelloCredentials,
-} from '../TrelloTypes/TrelloTypes.ts'
+  DrawCard,
+  DrawCardDetail,
+  DrawCredentials,
+} from '../DrawTypes/DrawTypes.ts'
 import {
   deleteCachedJson,
   readCachedJson,
@@ -27,52 +27,52 @@ const commentsParams = {
   memberCreator_fields: 'avatarHash,avatarUrl,fullName,initials,username',
 } as const
 
-type TrelloCardDetailBatchResult = readonly [
-  TrelloCard,
-  TrelloCardDetail['attachments'],
-  TrelloCardDetail['comments'],
+type DrawCardDetailBatchResult = readonly [
+  DrawCard,
+  DrawCardDetail['attachments'],
+  DrawCardDetail['comments'],
 ]
 
 const getBatchCard = async (
-  result: Readonly<Promise<TrelloCardDetailBatchResult>>,
-): Promise<TrelloCard> => {
+  result: Readonly<Promise<DrawCardDetailBatchResult>>,
+): Promise<DrawCard> => {
   const values = await result
   return values[0]
 }
 
 const getBatchAttachments = async (
-  result: Readonly<Promise<TrelloCardDetailBatchResult>>,
-): Promise<TrelloCardDetail['attachments']> => {
+  result: Readonly<Promise<DrawCardDetailBatchResult>>,
+): Promise<DrawCardDetail['attachments']> => {
   const values = await result
   return values[1]
 }
 
 const getBatchComments = async (
-  result: Readonly<Promise<TrelloCardDetailBatchResult>>,
-): Promise<TrelloCardDetail['comments']> => {
+  result: Readonly<Promise<DrawCardDetailBatchResult>>,
+): Promise<DrawCardDetail['comments']> => {
   const values = await result
   return values[2]
 }
 
 export const readCachedCardDetail = async (
-  cache: TrelloApiCache | undefined,
-  card: TrelloCard,
-  credentials: TrelloCredentials,
-): Promise<TrelloCardDetail | undefined> => {
+  cache: DrawApiCache | undefined,
+  card: DrawCard,
+  credentials: DrawCredentials,
+): Promise<DrawCardDetail | undefined> => {
   const [detailCard, attachments, comments] = await Promise.all([
-    readCachedJson<TrelloCard>(
+    readCachedJson<DrawCard>(
       cache,
       `/cards/${card.id}`,
       credentials,
       cardParams,
     ),
-    readCachedJson<TrelloCardDetail['attachments']>(
+    readCachedJson<DrawCardDetail['attachments']>(
       cache,
       `/cards/${card.id}/attachments`,
       credentials,
       attachmentsParams,
     ),
-    readCachedJson<TrelloCardDetail['comments']>(
+    readCachedJson<DrawCardDetail['comments']>(
       cache,
       `/cards/${card.id}/actions`,
       credentials,
@@ -90,17 +90,17 @@ export const readCachedCardDetail = async (
 }
 
 export const deleteCachedCardDetail = async (
-  cache: TrelloApiCache | undefined,
-  card: TrelloCard,
-  credentials: TrelloCredentials,
+  cache: DrawApiCache | undefined,
+  card: DrawCard,
+  credentials: DrawCredentials,
 ): Promise<void> => {
   await deleteCachedJson(cache, `/cards/${card.id}`, credentials, cardParams)
 }
 
 export const deleteCachedCardComments = async (
-  cache: TrelloApiCache | undefined,
-  card: TrelloCard,
-  credentials: TrelloCredentials,
+  cache: DrawApiCache | undefined,
+  card: DrawCard,
+  credentials: DrawCredentials,
 ): Promise<void> => {
   await deleteCachedJson(
     cache,
@@ -111,9 +111,9 @@ export const deleteCachedCardComments = async (
 }
 
 export const deleteCachedCardAttachments = async (
-  cache: TrelloApiCache | undefined,
-  card: TrelloCard,
-  credentials: TrelloCredentials,
+  cache: DrawApiCache | undefined,
+  card: DrawCard,
+  credentials: DrawCredentials,
 ): Promise<void> => {
   await deleteCachedJson(
     cache,
@@ -125,11 +125,11 @@ export const deleteCachedCardAttachments = async (
 
 export const getCardDetailCard = (
   fetchLike: FetchLike,
-  card: TrelloCard,
-  credentials: TrelloCredentials,
-  cache?: TrelloApiCache,
-): Promise<TrelloCard> => {
-  return requestJson<TrelloCard>(
+  card: DrawCard,
+  credentials: DrawCredentials,
+  cache?: DrawApiCache,
+): Promise<DrawCard> => {
+  return requestJson<DrawCard>(
     fetchLike,
     `/cards/${card.id}`,
     credentials,
@@ -141,11 +141,11 @@ export const getCardDetailCard = (
 
 export const getCardDetailAttachments = (
   fetchLike: FetchLike,
-  card: TrelloCard,
-  credentials: TrelloCredentials,
-  cache?: TrelloApiCache,
-): Promise<TrelloCardDetail['attachments']> => {
-  return requestJson<TrelloCardDetail['attachments']>(
+  card: DrawCard,
+  credentials: DrawCredentials,
+  cache?: DrawApiCache,
+): Promise<DrawCardDetail['attachments']> => {
+  return requestJson<DrawCardDetail['attachments']>(
     fetchLike,
     `/cards/${card.id}/attachments`,
     credentials,
@@ -157,11 +157,11 @@ export const getCardDetailAttachments = (
 
 export const getCardDetailComments = (
   fetchLike: FetchLike,
-  card: TrelloCard,
-  credentials: TrelloCredentials,
-  cache?: TrelloApiCache,
-): Promise<TrelloCardDetail['comments']> => {
-  return requestJson<TrelloCardDetail['comments']>(
+  card: DrawCard,
+  credentials: DrawCredentials,
+  cache?: DrawApiCache,
+): Promise<DrawCardDetail['comments']> => {
+  return requestJson<DrawCardDetail['comments']>(
     fetchLike,
     `/cards/${card.id}/actions`,
     credentials,
@@ -173,11 +173,11 @@ export const getCardDetailComments = (
 
 export const getCardDetail = async (
   fetchLike: FetchLike,
-  card: TrelloCard,
-  credentials: TrelloCredentials,
-  cache?: TrelloApiCache,
+  card: DrawCard,
+  credentials: DrawCredentials,
+  cache?: DrawApiCache,
   batchRequestsEnabled = false,
-): Promise<TrelloCardDetail> => {
+): Promise<DrawCardDetail> => {
   const {
     attachments,
     card: detailCard,
@@ -200,14 +200,14 @@ export const getCardDetail = async (
 
 export const getCardDetailParts = (
   fetchLike: FetchLike,
-  card: TrelloCard,
-  credentials: TrelloCredentials,
-  cache?: TrelloApiCache,
+  card: DrawCard,
+  credentials: DrawCredentials,
+  cache?: DrawApiCache,
   batchRequestsEnabled = false,
 ): {
-  readonly attachments: Promise<TrelloCardDetail['attachments']>
-  readonly card: Promise<TrelloCard>
-  readonly comments: Promise<TrelloCardDetail['comments']>
+  readonly attachments: Promise<DrawCardDetail['attachments']>
+  readonly card: Promise<DrawCard>
+  readonly comments: Promise<DrawCardDetail['comments']>
 } => {
   if (!batchRequestsEnabled) {
     const detailCard = getCardDetailCard(fetchLike, card, credentials, cache)
@@ -224,7 +224,7 @@ export const getCardDetailParts = (
       comments,
     }
   }
-  const result = requestJsonBatch<TrelloCardDetailBatchResult>(
+  const result = requestJsonBatch<DrawCardDetailBatchResult>(
     fetchLike,
     [
       {

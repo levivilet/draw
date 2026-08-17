@@ -1,17 +1,17 @@
 import type { ViewEvent } from '@lvce-editor/api'
 import { expect, test } from '@jest/globals'
-import type { TrelloClient } from '../src/parts/TrelloClient/TrelloClient.ts'
+import type { DrawClient } from '../src/parts/DrawClient/DrawClient.ts'
 import type {
-  TrelloBoard,
-  TrelloBoardDetail,
-  TrelloCard,
-  TrelloCredentials,
-  TrelloList,
-} from '../src/parts/TrelloTypes/TrelloTypes.ts'
+  DrawBoard,
+  DrawBoardDetail,
+  DrawCard,
+  DrawCredentials,
+  DrawList,
+} from '../src/parts/DrawTypes/DrawTypes.ts'
 import type {
-  TrelloViewActionContext,
-  TrelloViewState,
-} from '../src/parts/TrelloViewState/TrelloViewState.ts'
+  DrawViewActionContext,
+  DrawViewState,
+} from '../src/parts/DrawViewState/DrawViewState.ts'
 import { submitAddCard } from '../src/parts/AddCard/AddCard.ts'
 import {
   startWriteComment,
@@ -43,7 +43,7 @@ import { handleImageErrorEvent } from '../src/parts/HandleImageErrorEvent/Handle
 import { handleInputEvent } from '../src/parts/HandleInputEvent/HandleInputEvent.ts'
 import { handleKeyDownEvent } from '../src/parts/HandleKeyDownEvent/HandleKeyDownEvent.ts'
 import { loadBoards } from '../src/parts/LoadBoards/LoadBoards.ts'
-import { createMockTrelloClient } from '../src/parts/MockTrelloClient/MockTrelloClient.ts'
+import { createMockDrawClient } from '../src/parts/MockDrawClient/MockDrawClient.ts'
 import { createMemoryRecentBoardStorage } from '../src/parts/RecentBoardStorage/RecentBoardStorage.ts'
 import {
   resizeCardDetail,
@@ -54,42 +54,42 @@ import { restoreCurrentBoard } from '../src/parts/RestoreCurrentBoard/RestoreCur
 import { updateBoardDetailCard } from '../src/parts/UpdateBoardDetailCard/UpdateBoardDetailCard.ts'
 import { updateBoardDetailList } from '../src/parts/UpdateBoardDetailList/UpdateBoardDetailList.ts'
 
-const credentials: TrelloCredentials = {
+const credentials: DrawCredentials = {
   apiKey: 'abcdefghijklmnopqrstuvwxyz123456',
   token: 'abcdefghijklmnopqrstuvwxyz123456abcdefghijklmnopqrstuvwxyz123456',
 }
 
-const board: TrelloBoard = {
+const board: DrawBoard = {
   id: 'board-1',
   name: 'Roadmap',
 }
 
-const card: TrelloCard = {
+const card: DrawCard = {
   id: 'card-1',
   idList: 'list-1',
   name: 'Ship tests',
 }
 
-const list: TrelloList = {
+const list: DrawList = {
   cards: [card],
   id: 'list-1',
   name: 'Todo',
 }
 
-const boardDetail: TrelloBoardDetail = {
+const boardDetail: DrawBoardDetail = {
   board,
   lists: [list],
 }
 
 interface TestContext {
-  readonly context: TrelloViewActionContext
+  readonly context: DrawViewActionContext
   readonly getRerenderCount: () => number
-  readonly state: TrelloViewState
+  readonly state: DrawViewState
 }
 
 const createContext = (
-  overrides: Readonly<Partial<TrelloViewState>> = {},
-  client: TrelloClient = createMockTrelloClient({
+  overrides: Readonly<Partial<DrawViewState>> = {},
+  client: DrawClient = createMockDrawClient({
     boardDetails: {
       [board.id]: boardDetail,
     },
@@ -113,7 +113,7 @@ const createContext = (
       client,
       currentBoardStorage: createMemoryCurrentBoardStorage(),
       imageCache: {
-        dispose(): void {},
+        dispose(): void { },
         async resolveImageUrl(): Promise<string> {
           return ''
         },
@@ -122,7 +122,7 @@ const createContext = (
       requestRerender(): void {
         rerenderCount++
       },
-      async showContextMenu(): Promise<void> {},
+      async showContextMenu(): Promise<void> { },
       state,
       storage: createMemoryCredentialStorage(),
     },
@@ -230,8 +230,8 @@ test('card label actions handle missing state, duplicate labels, and API fallbac
   }
   await addCardLabel(authenticated.context, label.id)
 
-  const baseClient = createMockTrelloClient({})
-  const noLabelsClient: TrelloClient = {
+  const baseClient = createMockDrawClient({})
+  const noLabelsClient: DrawClient = {
     ...baseClient,
     async addCardLabel() {
       return card
@@ -343,7 +343,7 @@ test('dropping files on an open card uploads every attachment', async () => {
 })
 
 test('attachment upload errors keep successful files and surface the error', async () => {
-  const client = createMockTrelloClient({
+  const client = createMockDrawClient({
     cardAttachmentAddErrors: {
       [card.id]: 'Attachment upload failed',
     },
@@ -487,8 +487,8 @@ test('loadBoards handles missing credentials and cached unchanged results', asyn
   await loadBoards(missingCredentials.context)
   expect(missingCredentials.getRerenderCount()).toBe(0)
 
-  const baseClient = createMockTrelloClient({})
-  const cachedClient: TrelloClient = {
+  const baseClient = createMockDrawClient({})
+  const cachedClient: DrawClient = {
     ...baseClient,
     async listBoardsCacheFirst() {
       return {
@@ -532,8 +532,8 @@ test('restoreCurrentBoard handles guards, missing boards, and cached data', asyn
     missingBoard.context.currentBoardStorage.read(),
   ).resolves.toBeUndefined()
 
-  const baseClient = createMockTrelloClient({})
-  const cachedClient: TrelloClient = {
+  const baseClient = createMockDrawClient({})
+  const cachedClient: DrawClient = {
     ...baseClient,
     async getBoardDetailCacheFirst() {
       return {

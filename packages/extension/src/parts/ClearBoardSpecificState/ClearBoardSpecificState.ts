@@ -1,9 +1,9 @@
-import type { TrelloViewState } from '../TrelloViewState/TrelloViewState.ts'
+import type { DrawViewState } from '../DrawViewState/DrawViewState.ts'
 
 export const clearBoardSpecificState = (
-  state: Readonly<TrelloViewState>,
+  state: Readonly<DrawViewState>,
 ): void => {
-  const mutableState = state as TrelloViewState
+  const mutableState = state as DrawViewState
   mutableState.boardDetail = undefined
   mutableState.boardFilterOpen = false
   mutableState.selectedCardDetail = undefined

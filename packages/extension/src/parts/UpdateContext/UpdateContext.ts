@@ -1,4 +1,4 @@
-import type { TrelloViewState } from '../TrelloViewState/TrelloViewState.ts'
+import type { DrawViewState } from '../DrawViewState/DrawViewState.ts'
 
 export const contextKeyBoardDetailFocus = 'trello.boardDetailFocus'
 export const contextKeyBoardFilterFocus = 'trello.boardFilterFocus'
@@ -9,7 +9,7 @@ export const contextKeyCardLabelPickerFocus = 'trello.cardLabelPickerFocus'
 export const contextKeyNewCardInputFocus = 'trello.newCardInputFocus'
 export const contextKeyNewListInputFocus = 'trello.newListInputFocus'
 
-export const updateContext = (state: Readonly<TrelloViewState>): void => {
+export const updateContext = (state: Readonly<DrawViewState>): void => {
   const context: Record<string, boolean> = {}
   if (state.credentials && state.boardDetail) {
     context[contextKeyBoardDetailFocus] = true
@@ -42,6 +42,6 @@ export const updateContext = (state: Readonly<TrelloViewState>): void => {
   if (state.addingList && state.focusedName === 'newListTitle') {
     context[contextKeyNewListInputFocus] = true
   }
-  const mutableState = state as TrelloViewState
+  const mutableState = state as DrawViewState
   mutableState.context = context
 }

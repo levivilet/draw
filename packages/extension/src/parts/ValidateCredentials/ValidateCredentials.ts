@@ -1,16 +1,16 @@
-import type { TrelloCredentials } from '../TrelloTypes/TrelloTypes.ts'
-import * as TrelloStrings from '../TrelloStrings/TrelloStrings.ts'
+import type { DrawCredentials } from '../DrawTypes/DrawTypes.ts'
+import * as DrawStrings from '../DrawStrings/DrawStrings.ts'
 
 const apiKeyPattern = /^[A-Za-z0-9]{32}$/
 
 export const validateCredentials = (
-  credentials: Readonly<TrelloCredentials>,
+  credentials: Readonly<DrawCredentials>,
 ): string => {
   if (!credentials.apiKey.trim() || !credentials.token.trim()) {
-    return TrelloStrings.apiKeyAndTokenRequired()
+    return DrawStrings.apiKeyAndTokenRequired()
   }
   if (!apiKeyPattern.test(credentials.apiKey)) {
-    return TrelloStrings.apiKeyInvalid()
+    return DrawStrings.apiKeyInvalid()
   }
   return ''
 }

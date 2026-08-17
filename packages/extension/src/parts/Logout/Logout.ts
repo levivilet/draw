@@ -1,11 +1,11 @@
 import type {
-  TrelloViewActionContext,
-  TrelloViewState,
-} from '../TrelloViewState/TrelloViewState.ts'
+  DrawViewActionContext,
+  DrawViewState,
+} from '../DrawViewState/DrawViewState.ts'
 import { createInitialState } from '../CreateInitialState/CreateInitialState.ts'
 
 export const logout = async (
-  context: TrelloViewActionContext,
+  context: DrawViewActionContext,
 ): Promise<void> => {
   const {
     currentBoardStorage,
@@ -14,7 +14,7 @@ export const logout = async (
     requestRerender,
     storage,
   } = context
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   await storage.delete()
   await recentStorage.delete()
   await currentBoardStorage.delete()

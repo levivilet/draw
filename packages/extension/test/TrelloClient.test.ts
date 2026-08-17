@@ -1,8 +1,8 @@
 // cspell:ignore prefs subrequests
 
 import { expect, test } from '@jest/globals'
-import { createMemoryTrelloApiCache } from '../src/parts/TrelloApiCache/TrelloApiCache.ts'
-import { createTrelloClient } from '../src/parts/TrelloClient/TrelloClient.ts'
+import { createMemoryDrawApiCache } from '../src/parts/DrawApiCache/DrawApiCache.ts'
+import { createDrawClient } from '../src/parts/DrawClient/DrawClient.ts'
 
 const validApiKey = 'abcdefghijklmnopqrstuvwxyz123456'
 const validToken =
@@ -18,7 +18,7 @@ const jsonResponse = (value: unknown): Response => {
 
 test('listBoards requests member boards with credentials', async () => {
   const requests: string[] = []
-  const client = createTrelloClient(async (url) => {
+  const client = createDrawClient(async (url) => {
     requests.push(url)
     return jsonResponse([{ id: 'board-1', name: 'Roadmap' }])
   })
@@ -43,8 +43,8 @@ test('listBoards requests member boards with credentials', async () => {
 })
 
 test('listBoards caches responses without storing credentials in cache keys', async () => {
-  const cache = createMemoryTrelloApiCache()
-  const client = createTrelloClient(async () => {
+  const cache = createMemoryDrawApiCache()
+  const client = createDrawClient(async () => {
     return jsonResponse([{ id: 'board-1', name: 'Roadmap' }])
   }, cache)
   const credentials = {
@@ -72,9 +72,9 @@ test('listBoards caches responses without storing credentials in cache keys', as
 })
 
 test('getCardDetailCacheFirst returns cached data before fresh data', async () => {
-  const cache = createMemoryTrelloApiCache()
+  const cache = createMemoryDrawApiCache()
   let cardName = 'Cached card'
-  const client = createTrelloClient(async (url) => {
+  const client = createDrawClient(async (url) => {
     if (url.includes('/cards/card-1/attachments')) {
       return jsonResponse([])
     }
@@ -113,10 +113,10 @@ test('getCardDetailCacheFirst returns cached data before fresh data', async () =
 })
 
 test('getCardDetailPartsCacheFirst returns cached data and staged fresh requests', async () => {
-  const cache = createMemoryTrelloApiCache()
+  const cache = createMemoryDrawApiCache()
   const requests: string[] = []
   let cardName = 'Cached card'
-  const client = createTrelloClient(async (url) => {
+  const client = createDrawClient(async (url) => {
     requests.push(url)
     if (url.includes('/cards/card-1/attachments')) {
       return jsonResponse([
@@ -198,7 +198,7 @@ test('getCardDetailPartsCacheFirst returns cached data and staged fresh requests
 
 test('getBoardDetail requests lists and cards', async () => {
   const requests: string[] = []
-  const client = createTrelloClient(async (url) => {
+  const client = createDrawClient(async (url) => {
     requests.push(url)
     if (url.includes('/boards/board-1/lists')) {
       return jsonResponse([{ id: 'list-1', name: 'Todo' }])
@@ -222,7 +222,7 @@ test('getBoardDetail requests lists and cards', async () => {
             name: 'Extension Api',
           },
         ],
-        name: 'Ship Trello view',
+        name: 'Ship Draw view',
       },
     ])
   })
@@ -258,7 +258,7 @@ test('getBoardDetail requests lists and cards', async () => {
                 name: 'Extension Api',
               },
             ],
-            name: 'Ship Trello view',
+            name: 'Ship Draw view',
           },
         ],
         id: 'list-1',
@@ -289,7 +289,7 @@ test('getBoardDetail batches card requests in groups of ten when enabled', async
       name: `List ${index + 1}`,
     }
   })
-  const client = createTrelloClient(
+  const client = createDrawClient(
     async (url) => {
       requests.push(url)
       const requestUrl = new URL(url)
@@ -338,7 +338,7 @@ test('getBoardDetail batches card requests in groups of ten when enabled', async
 
 test('getCardDetail requests card detail, attachments, and comments', async () => {
   const requests: string[] = []
-  const client = createTrelloClient(async (url) => {
+  const client = createDrawClient(async (url) => {
     requests.push(url)
     if (url.includes('/cards/card-1/attachments')) {
       return jsonResponse([
@@ -383,14 +383,14 @@ test('getCardDetail requests card detail, attachments, and comments', async () =
           name: 'Extension Api',
         },
       ],
-      name: 'Ship Trello view',
+      name: 'Ship Draw view',
       url: 'https://trello.com/c/card-1',
     })
   })
 
   await expect(
     client.getCardDetail(
-      { id: 'card-1', name: 'Ship Trello view' },
+      { id: 'card-1', name: 'Ship Draw view' },
       {
         apiKey: validApiKey,
         token: validToken,
@@ -419,7 +419,7 @@ test('getCardDetail requests card detail, attachments, and comments', async () =
           name: 'Extension Api',
         },
       ],
-      name: 'Ship Trello view',
+      name: 'Ship Draw view',
       url: 'https://trello.com/c/card-1',
     },
     comments: [
@@ -479,9 +479,9 @@ test('getCardDetail requests card detail, attachments, and comments', async () =
 })
 
 test('getCardDetail uses one batch request when enabled', async () => {
-  const cache = createMemoryTrelloApiCache()
+  const cache = createMemoryDrawApiCache()
   const requests: string[] = []
-  const client = createTrelloClient(
+  const client = createDrawClient(
     async (url) => {
       requests.push(url)
       return jsonResponse([
@@ -489,7 +489,7 @@ test('getCardDetail uses one batch request when enabled', async () => {
           200: {
             desc: 'Detailed card description',
             id: 'card-1',
-            name: 'Ship Trello view',
+            name: 'Ship Draw view',
           },
         },
         {
@@ -508,7 +508,7 @@ test('getCardDetail uses one batch request when enabled', async () => {
 
   await expect(
     client.getCardDetail(
-      { id: 'card-1', name: 'Ship Trello view' },
+      { id: 'card-1', name: 'Ship Draw view' },
       {
         apiKey: validApiKey,
         token: validToken,
@@ -519,7 +519,7 @@ test('getCardDetail uses one batch request when enabled', async () => {
     card: {
       desc: 'Detailed card description',
       id: 'card-1',
-      name: 'Ship Trello view',
+      name: 'Ship Draw view',
     },
     comments: [{ data: { text: 'Looks good' }, id: 'comment-1' }],
   })
@@ -546,7 +546,7 @@ test('getCardDetail uses one batch request when enabled', async () => {
 })
 
 test('getCardDetail reports failed batch subrequests', async () => {
-  const client = createTrelloClient(
+  const client = createDrawClient(
     async () => {
       return jsonResponse([
         { 200: { id: 'card-1', name: 'Card' } },
@@ -568,13 +568,13 @@ test('getCardDetail reports failed batch subrequests', async () => {
         token: validToken,
       },
     ),
-  ).rejects.toThrow('Trello request failed: 404 attachment not found')
+  ).rejects.toThrow('Draw request failed: 404 attachment not found')
 })
 
 test('updateCard sends title and description to trello', async () => {
   const requests: string[] = []
   const requestInits: ({ readonly method?: string } | undefined)[] = []
-  const client = createTrelloClient(async (url, init) => {
+  const client = createDrawClient(async (url, init) => {
     requests.push(url)
     requestInits.push(init)
     return jsonResponse({
@@ -589,7 +589,7 @@ test('updateCard sends title and description to trello', async () => {
 
   await expect(
     client.updateCard(
-      { id: 'card-1', name: 'Ship Trello view' },
+      { id: 'card-1', name: 'Ship Draw view' },
       {
         desc: 'Updated description',
         name: 'Updated title',
@@ -624,7 +624,7 @@ test('updateCard sends title and description to trello', async () => {
 test('moveCard sends target list and bottom position to trello', async () => {
   const requests: string[] = []
   const requestInits: ({ readonly method?: string } | undefined)[] = []
-  const client = createTrelloClient(async (url, init) => {
+  const client = createDrawClient(async (url, init) => {
     requests.push(url)
     requestInits.push(init)
     return jsonResponse({
@@ -634,14 +634,14 @@ test('moveCard sends target list and bottom position to trello', async () => {
       id: 'card-1',
       idBoard: 'board-1',
       idList: 'list-2',
-      name: 'Ship Trello view',
+      name: 'Ship Draw view',
       url: 'https://trello.com/c/card-1',
     })
   })
 
   await expect(
     client.moveCard(
-      { id: 'card-1', idList: 'list-1', name: 'Ship Trello view' },
+      { id: 'card-1', idList: 'list-1', name: 'Ship Draw view' },
       {
         idList: 'list-2',
         pos: 'bottom',
@@ -658,7 +658,7 @@ test('moveCard sends target list and bottom position to trello', async () => {
     id: 'card-1',
     idBoard: 'board-1',
     idList: 'list-2',
-    name: 'Ship Trello view',
+    name: 'Ship Draw view',
     url: 'https://trello.com/c/card-1',
   })
 
@@ -678,7 +678,7 @@ test('moveCard sends target list and bottom position to trello', async () => {
 test('createCard sends target list, title, and bottom position to trello', async () => {
   const requests: string[] = []
   const requestInits: ({ readonly method?: string } | undefined)[] = []
-  const client = createTrelloClient(async (url, init) => {
+  const client = createDrawClient(async (url, init) => {
     requests.push(url)
     requestInits.push(init)
     return jsonResponse({
@@ -729,8 +729,8 @@ test('createCard sends target list, title, and bottom position to trello', async
 })
 
 test('createCard invalidates cached cards for target list', async () => {
-  const cache = createMemoryTrelloApiCache()
-  const client = createTrelloClient(async (url) => {
+  const cache = createMemoryDrawApiCache()
+  const client = createDrawClient(async (url) => {
     const path = new URL(url).pathname
     if (path === '/1/boards/board-1/lists') {
       return jsonResponse([{ id: 'list-1', name: 'Todo' }])
@@ -780,7 +780,7 @@ test('createCard invalidates cached cards for target list', async () => {
 
 test('listBoardLabels requests board labels with credentials', async () => {
   const requests: string[] = []
-  const client = createTrelloClient(async (url) => {
+  const client = createDrawClient(async (url) => {
     requests.push(url)
     return jsonResponse([
       {
@@ -821,7 +821,7 @@ test('listBoardLabels requests board labels with credentials', async () => {
 test('createLabel creates a board label with a title and color', async () => {
   const requests: string[] = []
   const requestInits: ({ readonly method?: string } | undefined)[] = []
-  const client = createTrelloClient(async (url, init) => {
+  const client = createDrawClient(async (url, init) => {
     requests.push(url)
     requestInits.push(init)
     return jsonResponse({
@@ -865,7 +865,7 @@ test('createLabel creates a board label with a title and color', async () => {
 test('addCardLabel sends label id to trello', async () => {
   const requests: string[] = []
   const requestInits: ({ readonly method?: string } | undefined)[] = []
-  const client = createTrelloClient(async (url, init) => {
+  const client = createDrawClient(async (url, init) => {
     requests.push(url)
     requestInits.push(init)
     return jsonResponse({
@@ -878,13 +878,13 @@ test('addCardLabel sends label id to trello', async () => {
           name: 'Extension Api',
         },
       ],
-      name: 'Ship Trello view',
+      name: 'Ship Draw view',
     })
   })
 
   await expect(
     client.addCardLabel(
-      { id: 'card-1', name: 'Ship Trello view' },
+      { id: 'card-1', name: 'Ship Draw view' },
       {
         color: 'blue',
         id: 'label-1',
@@ -906,7 +906,7 @@ test('addCardLabel sends label id to trello', async () => {
         name: 'Extension Api',
       },
     ],
-    name: 'Ship Trello view',
+    name: 'Ship Draw view',
   })
 
   expect(requests).toHaveLength(1)
@@ -921,7 +921,7 @@ test('addCardLabel sends label id to trello', async () => {
 test('addCardComment sends comment text to trello', async () => {
   const requests: string[] = []
   const requestInits: ({ readonly method?: string } | undefined)[] = []
-  const client = createTrelloClient(async (url, init) => {
+  const client = createDrawClient(async (url, init) => {
     requests.push(url)
     requestInits.push(init)
     return jsonResponse({
@@ -934,7 +934,7 @@ test('addCardComment sends comment text to trello', async () => {
 
   await expect(
     client.addCardComment(
-      { id: 'card-1', name: 'Ship Trello view' },
+      { id: 'card-1', name: 'Ship Draw view' },
       'Looks good',
       {
         apiKey: validApiKey,
@@ -958,8 +958,8 @@ test('addCardComment sends comment text to trello', async () => {
 })
 
 test('addCardLabel invalidates cached card detail', async () => {
-  const cache = createMemoryTrelloApiCache()
-  const client = createTrelloClient(async (url) => {
+  const cache = createMemoryDrawApiCache()
+  const client = createDrawClient(async (url) => {
     const path = new URL(url).pathname
     if (path === '/1/cards/card-1/attachments') {
       return jsonResponse([])
@@ -970,7 +970,7 @@ test('addCardLabel invalidates cached card detail', async () => {
     return jsonResponse({
       id: 'card-1',
       labels: [],
-      name: 'Ship Trello view',
+      name: 'Ship Draw view',
     })
   }, cache)
   const credentials = {
@@ -979,7 +979,7 @@ test('addCardLabel invalidates cached card detail', async () => {
   }
 
   await client.getCardDetail(
-    { id: 'card-1', name: 'Ship Trello view' },
+    { id: 'card-1', name: 'Ship Draw view' },
     credentials,
   )
   expect(
@@ -989,7 +989,7 @@ test('addCardLabel invalidates cached card detail', async () => {
   ).toBe(true)
 
   await client.addCardLabel(
-    { id: 'card-1', name: 'Ship Trello view' },
+    { id: 'card-1', name: 'Ship Draw view' },
     { color: 'blue', id: 'label-1', name: 'Extension Api' },
     credentials,
   )
@@ -1004,7 +1004,7 @@ test('addCardLabel invalidates cached card detail', async () => {
 test('updateList sends title to trello', async () => {
   const requests: string[] = []
   const requestInits: ({ readonly method?: string } | undefined)[] = []
-  const client = createTrelloClient(async (url, init) => {
+  const client = createDrawClient(async (url, init) => {
     requests.push(url)
     requestInits.push(init)
     return jsonResponse({
@@ -1043,7 +1043,7 @@ test('updateList sends title to trello', async () => {
 test('createList sends title and board to trello', async () => {
   const requests: string[] = []
   const requestInits: ({ readonly method?: string } | undefined)[] = []
-  const client = createTrelloClient(async (url, init) => {
+  const client = createDrawClient(async (url, init) => {
     requests.push(url)
     requestInits.push(init)
     return jsonResponse({
@@ -1091,7 +1091,7 @@ test('addCardAttachment uploads a file as form data', async () => {
     }
     | undefined
   )[] = []
-  const client = createTrelloClient(async (url, init) => {
+  const client = createDrawClient(async (url, init) => {
     requests.push(url)
     requestInits.push(init)
     return jsonResponse({
@@ -1136,7 +1136,7 @@ test('addCardAttachment uploads a file as form data', async () => {
 
 test('search requests trello search with card and board params', async () => {
   const requests: string[] = []
-  const client = createTrelloClient(async (url) => {
+  const client = createDrawClient(async (url) => {
     requests.push(url)
     return jsonResponse({
       boards: [{ id: 'board-1', name: 'Roadmap' }],
@@ -1168,7 +1168,7 @@ test('search requests trello search with card and board params', async () => {
 })
 
 test('listBoards throws useful errors for failed requests', async () => {
-  const client = createTrelloClient(async () => {
+  const client = createDrawClient(async () => {
     return new Response('unauthorized', {
       status: 401,
       statusText: 'Unauthorized',
@@ -1180,11 +1180,11 @@ test('listBoards throws useful errors for failed requests', async () => {
       apiKey: 'bad-key',
       token: 'bad-token',
     }),
-  ).rejects.toThrow(new Error('Trello request failed: 401 unauthorized'))
+  ).rejects.toThrow(new Error('Draw request failed: 401 unauthorized'))
 })
 
 test('search throws useful errors for failed requests', async () => {
-  const client = createTrelloClient(async () => {
+  const client = createDrawClient(async () => {
     return new Response('unauthorized', {
       status: 401,
       statusText: 'Unauthorized',
@@ -1196,5 +1196,5 @@ test('search throws useful errors for failed requests', async () => {
       apiKey: 'bad-key',
       token: 'bad-token',
     }),
-  ).rejects.toThrow(new Error('Trello request failed: 401 unauthorized'))
+  ).rejects.toThrow(new Error('Draw request failed: 401 unauthorized'))
 })

@@ -2,7 +2,7 @@ import type { Test } from '@lvce-editor/test-with-playwright'
 import {
   connectWithCredentials,
   createBoards,
-  useMockDataAndShowTrello,
+  useMockDataAndShowDraw,
 } from './_trello.virtual-dom-view.shared.ts'
 
 export const name = 'trello.virtual-dom-view.refresh-boards'
@@ -16,7 +16,7 @@ export const test: Test = async ({ Command, expect, Locator }) => {
       name: 'Board 2',
     },
   ]
-  await useMockDataAndShowTrello(Command, {
+  await useMockDataAndShowDraw(Command, {
     boards: refreshedBoards,
     listBoardsResponses: [firstBoards, refreshedBoards],
   })

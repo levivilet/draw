@@ -1,8 +1,8 @@
 import type { ViewEvent } from '@lvce-editor/api'
 import type {
-  TrelloViewActionContext,
-  TrelloViewState,
-} from '../TrelloViewState/TrelloViewState.ts'
+  DrawViewActionContext,
+  DrawViewState,
+} from '../DrawViewState/DrawViewState.ts'
 
 const minCardDetailWidth = 200
 
@@ -15,11 +15,11 @@ const getEventNumber = (event: Readonly<ViewEvent>, key: string): number => {
 }
 
 export const startResizeCardDetail = (
-  context: Readonly<TrelloViewActionContext>,
+  context: Readonly<DrawViewActionContext>,
   event: Readonly<ViewEvent>,
 ): void => {
   const { requestRerender } = context
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   state.resizingCardDetail = true
   state.cardDetailResizeStartX = getEventNumber(event, 'clientX')
   state.cardDetailResizeStartWidth = state.cardDetailWidth
@@ -27,11 +27,11 @@ export const startResizeCardDetail = (
 }
 
 export const resizeCardDetail = (
-  context: Readonly<TrelloViewActionContext>,
+  context: Readonly<DrawViewActionContext>,
   event: Readonly<ViewEvent>,
 ): void => {
   const { requestRerender } = context
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   if (!state.resizingCardDetail) {
     return
   }
@@ -45,10 +45,10 @@ export const resizeCardDetail = (
 }
 
 export const stopResizeCardDetail = (
-  context: Readonly<TrelloViewActionContext>,
+  context: Readonly<DrawViewActionContext>,
 ): void => {
   const { requestRerender } = context
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   if (!state.resizingCardDetail) {
     return
   }

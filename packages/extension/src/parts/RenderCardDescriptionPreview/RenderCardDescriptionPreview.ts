@@ -7,7 +7,7 @@ import {
 import * as DomEventListenerFunctions from '../DomEventListenerFunctions/DomEventListenerFunctions.ts'
 import * as MergeClassNames from '../MergeClassNames/MergeClassNames.ts'
 import { renderMarkdown } from '../RenderMarkdown/RenderMarkdown.ts'
-import * as TrelloStrings from '../TrelloStrings/TrelloStrings.ts'
+import * as DrawStrings from '../DrawStrings/DrawStrings.ts'
 
 export const renderCardDescriptionPreview = (
   description: string,
@@ -18,22 +18,22 @@ export const renderCardDescriptionPreview = (
       {
         childCount: 1,
         className: MergeClassNames.mergeClassNames(
-          'TrelloCardDescriptionPreview',
-          'TrelloCardDescriptionPlaceholder',
+          'DrawCardDescriptionPreview',
+          'DrawCardDescriptionPlaceholder',
         ),
         name: 'editCardDescription',
         onClick: DomEventListenerFunctions.HandleClick,
         role: AriaRoles.None,
         type: VirtualDomElements.Div,
       },
-      text(TrelloStrings.addDetailedDescription()),
+      text(DrawStrings.addDetailedDescription()),
     ]
   }
   const markdown = renderMarkdown(description)
   return [
     {
       childCount: markdown.childCount,
-      className: 'TrelloCardDescriptionPreview',
+      className: 'DrawCardDescriptionPreview',
       name: 'editCardDescription',
       onClick: DomEventListenerFunctions.HandleClick,
       role: AriaRoles.None,

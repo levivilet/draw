@@ -1,123 +1,123 @@
 import type {
-  TrelloBoard,
-  TrelloBoardDetail,
-  TrelloAttachment,
-  TrelloCard,
-  TrelloCardCreate,
-  TrelloCardDetail,
-  TrelloCardMove,
-  TrelloCardUpdate,
-  TrelloComment,
-  TrelloCredentials,
-  TrelloLabel,
-  TrelloLabelCreate,
-  TrelloList,
-  TrelloListCreate,
-  TrelloListUpdate,
-  TrelloSearchResult,
-} from '../TrelloTypes/TrelloTypes.ts'
+  DrawBoard,
+  DrawBoardDetail,
+  DrawAttachment,
+  DrawCard,
+  DrawCardCreate,
+  DrawCardDetail,
+  DrawCardMove,
+  DrawCardUpdate,
+  DrawComment,
+  DrawCredentials,
+  DrawLabel,
+  DrawLabelCreate,
+  DrawList,
+  DrawListCreate,
+  DrawListUpdate,
+  DrawSearchResult,
+} from '../DrawTypes/DrawTypes.ts'
 
-export interface TrelloCacheFirstResult<T> {
+export interface DrawCacheFirstResult<T> {
   readonly cached: T | undefined
   readonly fresh: Promise<T>
 }
 
-export interface TrelloCardDetailPartsResult {
-  readonly cached: TrelloCardDetail | undefined
+export interface DrawCardDetailPartsResult {
+  readonly cached: DrawCardDetail | undefined
   readonly fresh: {
-    readonly attachments: Promise<TrelloCardDetail['attachments']>
-    readonly card: Promise<TrelloCard>
-    readonly comments: Promise<TrelloCardDetail['comments']>
+    readonly attachments: Promise<DrawCardDetail['attachments']>
+    readonly card: Promise<DrawCard>
+    readonly comments: Promise<DrawCardDetail['comments']>
   }
 }
 
-export interface TrelloClient {
+export interface DrawClient {
   readonly addCardAttachment: (
-    card: TrelloCard,
+    card: DrawCard,
     file: File,
-    credentials: TrelloCredentials,
-  ) => Promise<TrelloAttachment>
+    credentials: DrawCredentials,
+  ) => Promise<DrawAttachment>
   readonly addCardComment: (
-    card: TrelloCard,
+    card: DrawCard,
     text: string,
-    credentials: TrelloCredentials,
-  ) => Promise<TrelloComment>
+    credentials: DrawCredentials,
+  ) => Promise<DrawComment>
   readonly addCardLabel: (
-    card: TrelloCard,
-    label: TrelloLabel,
-    credentials: TrelloCredentials,
-  ) => Promise<TrelloCard>
+    card: DrawCard,
+    label: DrawLabel,
+    credentials: DrawCredentials,
+  ) => Promise<DrawCard>
   readonly createCard: (
-    list: TrelloList,
-    create: TrelloCardCreate,
-    credentials: TrelloCredentials,
-  ) => Promise<TrelloCard>
+    list: DrawList,
+    create: DrawCardCreate,
+    credentials: DrawCredentials,
+  ) => Promise<DrawCard>
   readonly createLabel: (
-    board: TrelloBoard,
-    create: TrelloLabelCreate,
-    credentials: TrelloCredentials,
-  ) => Promise<TrelloLabel>
+    board: DrawBoard,
+    create: DrawLabelCreate,
+    credentials: DrawCredentials,
+  ) => Promise<DrawLabel>
   readonly createList: (
-    board: TrelloBoard,
-    create: TrelloListCreate,
-    credentials: TrelloCredentials,
-  ) => Promise<TrelloList>
+    board: DrawBoard,
+    create: DrawListCreate,
+    credentials: DrawCredentials,
+  ) => Promise<DrawList>
   readonly getBoardDetail: (
-    board: TrelloBoard,
-    credentials: TrelloCredentials,
-  ) => Promise<TrelloBoardDetail>
+    board: DrawBoard,
+    credentials: DrawCredentials,
+  ) => Promise<DrawBoardDetail>
   readonly getBoardDetailCacheFirst: (
-    board: TrelloBoard,
-    credentials: TrelloCredentials,
-  ) => Promise<TrelloCacheFirstResult<TrelloBoardDetail>>
+    board: DrawBoard,
+    credentials: DrawCredentials,
+  ) => Promise<DrawCacheFirstResult<DrawBoardDetail>>
   readonly getCardDetail: (
-    card: TrelloCard,
-    credentials: TrelloCredentials,
-  ) => Promise<TrelloCardDetail>
+    card: DrawCard,
+    credentials: DrawCredentials,
+  ) => Promise<DrawCardDetail>
   readonly getCardDetailCacheFirst: (
-    card: TrelloCard,
-    credentials: TrelloCredentials,
-  ) => Promise<TrelloCacheFirstResult<TrelloCardDetail>>
+    card: DrawCard,
+    credentials: DrawCredentials,
+  ) => Promise<DrawCacheFirstResult<DrawCardDetail>>
   readonly getCardDetailPartsCacheFirst: (
-    card: TrelloCard,
-    credentials: TrelloCredentials,
-  ) => Promise<TrelloCardDetailPartsResult>
+    card: DrawCard,
+    credentials: DrawCredentials,
+  ) => Promise<DrawCardDetailPartsResult>
   readonly listBoardLabels: (
-    board: TrelloBoard,
-    credentials: TrelloCredentials,
-  ) => Promise<readonly TrelloLabel[]>
+    board: DrawBoard,
+    credentials: DrawCredentials,
+  ) => Promise<readonly DrawLabel[]>
   readonly listBoards: (
-    credentials: TrelloCredentials,
-  ) => Promise<readonly TrelloBoard[]>
+    credentials: DrawCredentials,
+  ) => Promise<readonly DrawBoard[]>
   readonly listBoardsCacheFirst: (
-    credentials: TrelloCredentials,
-  ) => Promise<TrelloCacheFirstResult<readonly TrelloBoard[]>>
+    credentials: DrawCredentials,
+  ) => Promise<DrawCacheFirstResult<readonly DrawBoard[]>>
   readonly moveCard: (
-    card: TrelloCard,
-    move: TrelloCardMove,
-    credentials: TrelloCredentials,
-  ) => Promise<TrelloCard>
+    card: DrawCard,
+    move: DrawCardMove,
+    credentials: DrawCredentials,
+  ) => Promise<DrawCard>
   readonly search: (
     query: string,
-    credentials: TrelloCredentials,
-  ) => Promise<readonly TrelloSearchResult[]>
+    credentials: DrawCredentials,
+  ) => Promise<readonly DrawSearchResult[]>
   readonly searchCacheFirst: (
     query: string,
-    credentials: TrelloCredentials,
-  ) => Promise<TrelloCacheFirstResult<readonly TrelloSearchResult[]>>
+    credentials: DrawCredentials,
+  ) => Promise<DrawCacheFirstResult<readonly DrawSearchResult[]>>
   readonly updateCard: (
-    card: TrelloCard,
-    update: TrelloCardUpdate,
-    credentials: TrelloCredentials,
-  ) => Promise<TrelloCard>
+    card: DrawCard,
+    update: DrawCardUpdate,
+    credentials: DrawCredentials,
+  ) => Promise<DrawCard>
   readonly updateList: (
-    list: TrelloList,
-    update: TrelloListUpdate,
-    credentials: TrelloCredentials,
-  ) => Promise<TrelloList>
+    list: DrawList,
+    update: DrawListUpdate,
+    credentials: DrawCredentials,
+  ) => Promise<DrawList>
 }
 
-export interface TrelloResponse {
+export interface DrawResponse {
   readonly json: () => Promise<unknown>
   readonly ok: boolean
   readonly status: number
@@ -125,16 +125,16 @@ export interface TrelloResponse {
   readonly text: () => Promise<string>
 }
 
-export interface TrelloRequestInit {
+export interface DrawRequestInit {
   readonly body?: Readonly<FormData>
   readonly method?: string
 }
 
-export interface TrelloClientOptions {
+export interface DrawClientOptions {
   readonly readBatchRequestsEnabled?: () => Promise<boolean>
 }
 
 export type FetchLike = (
   input: string,
-  init?: TrelloRequestInit,
-) => Promise<TrelloResponse>
+  init?: DrawRequestInit,
+) => Promise<DrawResponse>

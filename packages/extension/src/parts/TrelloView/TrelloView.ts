@@ -1,27 +1,27 @@
 import type { View } from '@lvce-editor/api'
 import { viewId } from '../Constants/Constants.ts'
 import {
-  type ActiveTrelloViewInstance,
+  type ActiveDrawViewInstance,
   createInstance,
 } from '../CreateInstance/CreateInstance.ts'
 import { renderEventListeners } from '../RenderEventListeners/RenderEventListeners.ts'
-import * as TrelloStrings from '../TrelloStrings/TrelloStrings.ts'
+import * as DrawStrings from '../DrawStrings/DrawStrings.ts'
 
-type TrelloView = Omit<View<ActiveTrelloViewInstance>, 'commands'> & {
-  readonly commands: NonNullable<View<ActiveTrelloViewInstance>['commands']>
+type DrawView = Omit<View<ActiveDrawViewInstance>, 'commands'> & {
+  readonly commands: NonNullable<View<ActiveDrawViewInstance>['commands']>
   readonly eventListeners?: ReturnType<typeof renderEventListeners>
 }
 
 const runViewAction =
-  (action: (instance: ActiveTrelloViewInstance) => Promise<void>) =>
+  (action: (instance: ActiveDrawViewInstance) => Promise<void>) =>
     async (
-      instance: ActiveTrelloViewInstance,
-    ): Promise<ActiveTrelloViewInstance> => {
+      instance: ActiveDrawViewInstance,
+    ): Promise<ActiveDrawViewInstance> => {
       await action(instance)
       return instance
     }
 
-export const view: TrelloView = {
+export const view: DrawView = {
   commands: {
     'trello.backToBoards': runViewAction((instance) => instance.backToBoards()),
     'trello.logout': runViewAction((instance) => instance.logout()),
@@ -31,32 +31,32 @@ export const view: TrelloView = {
   },
   create: createInstance,
   // @ts-ignore
-  displayName: TrelloStringsdraw(),
+  displayName: DrawStringsdraw(),
   eventListeners: renderEventListeners(),
   icon: 'list-tree',
   id: viewId,
   kind: 'virtualDom',
   preferredLocation: 'preview',
-  title: TrelloStringsdraw(),
+  title: DrawStringsdraw(),
 }
 
 export {
   readCardDetailPopupEnabledPreference,
-  resetTrelloViewDependencyFactory,
-  setTrelloViewDependencyFactory,
+  resetDrawViewDependencyFactory,
+  setDrawViewDependencyFactory,
 } from '../DependencyFactory/DependencyFactory.ts'
 export {
-  backToBoardsActiveTrelloViewInstance,
-  cancelNewCardActiveTrelloViewInstance,
-  closeBoardFilterActiveTrelloViewInstance,
-  closeCardDetailActiveTrelloViewInstance,
-  logoutActiveTrelloViewInstance,
-  openCardActiveTrelloViewInstance,
-  refreshBoardsActiveTrelloViewInstance,
-  reloadActiveTrelloViewInstances,
-  saveCardDetailActiveTrelloViewInstance,
-  startAddCardActiveTrelloViewInstance,
-  submitNewCardActiveTrelloViewInstance,
+  backToBoardsActiveDrawViewInstance,
+  cancelNewCardActiveDrawViewInstance,
+  closeBoardFilterActiveDrawViewInstance,
+  closeCardDetailActiveDrawViewInstance,
+  logoutActiveDrawViewInstance,
+  openCardActiveDrawViewInstance,
+  refreshBoardsActiveDrawViewInstance,
+  reloadActiveDrawViewInstances,
+  saveCardDetailActiveDrawViewInstance,
+  startAddCardActiveDrawViewInstance,
+  submitNewCardActiveDrawViewInstance,
   addList,
   addCard,
   openMockBoard,

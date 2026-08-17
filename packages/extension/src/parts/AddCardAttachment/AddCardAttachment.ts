@@ -1,27 +1,27 @@
-import type { TrelloApiCache } from '../TrelloApiCache/TrelloApiCache.ts'
-import type { FetchLike } from '../TrelloClientTypes/TrelloClientTypes.ts'
+import type { DrawApiCache } from '../DrawApiCache/DrawApiCache.ts'
+import type { FetchLike } from '../DrawClientTypes/DrawClientTypes.ts'
 import type {
-  TrelloAttachment,
-  TrelloCard,
-  TrelloCredentials,
-} from '../TrelloTypes/TrelloTypes.ts'
+  DrawAttachment,
+  DrawCard,
+  DrawCredentials,
+} from '../DrawTypes/DrawTypes.ts'
 import { deleteCachedCardAttachments } from '../GetCardDetail/GetCardDetail.ts'
 import { requestJson } from '../RequestJson/RequestJson.ts'
 
 export const addCardAttachment = async (
   fetchLike: FetchLike,
-  card: TrelloCard,
+  card: DrawCard,
   file: File,
-  credentials: TrelloCredentials,
-  cache?: TrelloApiCache,
-): Promise<TrelloAttachment> => {
+  credentials: DrawCredentials,
+  cache?: DrawApiCache,
+): Promise<DrawAttachment> => {
   const formData = new FormData()
   formData.set('file', file, file.name)
   formData.set('name', file.name)
   if (file.type) {
     formData.set('mimeType', file.type)
   }
-  const attachment = await requestJson<TrelloAttachment>(
+  const attachment = await requestJson<DrawAttachment>(
     fetchLike,
     `/cards/${card.id}/attachments`,
     credentials,

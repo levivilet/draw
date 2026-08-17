@@ -1,11 +1,11 @@
-import type { TrelloCard, TrelloList } from '../TrelloTypes/TrelloTypes.ts'
+import type { DrawCard, DrawList } from '../DrawTypes/DrawTypes.ts'
 
 const includesQuery = (value: string | undefined, query: string): boolean => {
   return Boolean(value?.toLowerCase().includes(query))
 }
 
 export const cardMatchesFilter = (
-  card: Readonly<TrelloCard>,
+  card: Readonly<DrawCard>,
   filterValue: string,
 ): boolean => {
   const query = filterValue.trim().toLowerCase()
@@ -24,9 +24,9 @@ export const cardMatchesFilter = (
 }
 
 export const filterListCards = (
-  list: Readonly<TrelloList>,
+  list: Readonly<DrawList>,
   filterValue: string,
-): TrelloList => {
+): DrawList => {
   if (!filterValue.trim()) {
     return list
   }

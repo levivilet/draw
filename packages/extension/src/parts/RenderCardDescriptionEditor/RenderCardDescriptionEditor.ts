@@ -3,52 +3,52 @@ import {
   VirtualDomElements,
   type VirtualDomNode,
 } from '@lvce-editor/virtual-dom-worker'
-import type { TrelloViewState } from '../TrelloViewState/TrelloViewState.ts'
+import type { DrawViewState } from '../DrawViewState/DrawViewState.ts'
 import * as DomEventListenerFunctions from '../DomEventListenerFunctions/DomEventListenerFunctions.ts'
 import * as MergeClassNames from '../MergeClassNames/MergeClassNames.ts'
 import { renderCardDescriptionCancelButton } from '../RenderCardDescriptionCancelButton/RenderCardDescriptionCancelButton.ts'
-import * as TrelloStrings from '../TrelloStrings/TrelloStrings.ts'
+import * as DrawStrings from '../DrawStrings/DrawStrings.ts'
 
 export const renderCardDescriptionEditor = (
-  state: Readonly<TrelloViewState>,
+  state: Readonly<DrawViewState>,
 ): readonly VirtualDomNode[] => {
   const { draftCardDescription, savingCardDetail } = state
   return [
     {
       childCount: 2,
-      className: 'TrelloCardDescriptionEditor',
+      className: 'DrawCardDescriptionEditor',
       type: VirtualDomElements.Div,
     },
     {
       childCount: 0,
       className: MergeClassNames.mergeClassNames(
-        'TrelloTextArea',
-        'TrelloCardDescriptionTextArea',
+        'DrawTextArea',
+        'DrawCardDescriptionTextArea',
       ),
       name: 'cardDescription',
       onBlur: DomEventListenerFunctions.HandleBlur,
       onFocus: DomEventListenerFunctions.HandleFocus,
       onInput: DomEventListenerFunctions.HandleInput,
-      placeholder: TrelloStrings.addDetailedDescription(),
+      placeholder: DrawStrings.addDetailedDescription(),
       type: VirtualDomElements.TextArea,
       value: draftCardDescription,
     },
     {
       childCount: 2,
-      className: 'TrelloCardDetailActions',
+      className: 'DrawCardDetailActions',
       type: VirtualDomElements.Div,
     },
     {
       childCount: 1,
       className: MergeClassNames.mergeClassNames(
-        'TrelloButton',
-        'TrelloCardDetailSaveButton',
+        'DrawButton',
+        'DrawCardDetailSaveButton',
       ),
       name: 'saveCardDetail',
       onClick: DomEventListenerFunctions.HandleClick,
       type: VirtualDomElements.Button,
     },
-    text(savingCardDetail ? TrelloStrings.saving() : TrelloStrings.save()),
+    text(savingCardDetail ? DrawStrings.saving() : DrawStrings.save()),
     ...renderCardDescriptionCancelButton(savingCardDetail),
   ]
 }

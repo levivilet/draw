@@ -18,7 +18,7 @@ test('extension has expected metadata, connect sources, and opt-in settings', as
   )
   expect(manifest.configuration['trello.batchRequestsEnabled']).toEqual({
     default: false,
-    description: "Use Trello's batch API for supported read requests.",
+    description: "Use Draw's batch API for supported read requests.",
     type: 'boolean',
   })
   expect(manifest.configuration['trello.cardDetailPopupEnabled']).toEqual({

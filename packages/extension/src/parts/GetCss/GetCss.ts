@@ -1,13 +1,13 @@
-import type { TrelloViewState } from '../TrelloViewState/TrelloViewState.ts'
+import type { DrawViewState } from '../DrawViewState/DrawViewState.ts'
 import { getBoardBackgroundCss } from '../BoardBackground/BoardBackground.ts'
 
-const getCardDetailCss = (state: Readonly<TrelloViewState>): string => {
+const getCardDetailCss = (state: Readonly<DrawViewState>): string => {
   return `drawCardDetailPanel {
-  --TrelloCardDetailWidth: ${state.cardDetailWidth}px;
+  --DrawCardDetailWidth: ${state.cardDetailWidth}px;
 }`
 }
 
-export const getCss = (state: Readonly<TrelloViewState>): string => {
+export const getCss = (state: Readonly<DrawViewState>): string => {
   const boardBackgroundCss = state.boardDetail
     ? getBoardBackgroundCss(
       state.boardDetail.board,

@@ -3,13 +3,13 @@ import {
   VirtualDomElements,
   type VirtualDomNode,
 } from '@lvce-editor/virtual-dom-worker'
-import type { TrelloAttachment } from '../TrelloTypes/TrelloTypes.ts'
+import type { DrawAttachment } from '../DrawTypes/DrawTypes.ts'
 import { getAttachmentImageUrl } from '../AttachmentHelpers/AttachmentHelpers.ts'
 import * as DomEventListenerFunctions from '../DomEventListenerFunctions/DomEventListenerFunctions.ts'
-import * as TrelloStrings from '../TrelloStrings/TrelloStrings.ts'
+import * as DrawStrings from '../DrawStrings/DrawStrings.ts'
 
 export const renderImageAttachment = (
-  attachment: Readonly<TrelloAttachment>,
+  attachment: Readonly<DrawAttachment>,
   attachmentImageUrls: Readonly<Record<string, string>>,
   failed: boolean,
 ): readonly VirtualDomNode[] => {
@@ -19,17 +19,17 @@ export const renderImageAttachment = (
     return [
       {
         childCount: 1,
-        className: 'TrelloCardDetailImageError',
+        className: 'DrawCardDetailImageError',
         type: VirtualDomElements.Div,
       },
-      text(TrelloStrings.imageCouldNotBeLoaded()),
+      text(DrawStrings.imageCouldNotBeLoaded()),
     ]
   }
   return [
     {
-      alt: attachment.name || TrelloStrings.cardAttachment(),
+      alt: attachment.name || DrawStrings.cardAttachment(),
       childCount: 0,
-      className: 'TrelloCardDetailImage',
+      className: 'DrawCardDetailImage',
       name: attachment.id,
       onError: DomEventListenerFunctions.HandleImageError,
       src: imageUrl,

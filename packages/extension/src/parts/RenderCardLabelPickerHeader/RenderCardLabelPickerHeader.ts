@@ -5,26 +5,26 @@ import {
 } from '@lvce-editor/virtual-dom-worker'
 import * as DomEventListenerFunctions from '../DomEventListenerFunctions/DomEventListenerFunctions.ts'
 import * as MergeClassNames from '../MergeClassNames/MergeClassNames.ts'
-import * as TrelloStrings from '../TrelloStrings/TrelloStrings.ts'
+import * as DrawStrings from '../DrawStrings/DrawStrings.ts'
 
 export const renderCardLabelPickerHeader = (): readonly VirtualDomNode[] => {
   return [
     {
       childCount: 2,
-      className: 'TrelloCardLabelPickerHeader',
+      className: 'DrawCardLabelPickerHeader',
       type: VirtualDomElements.Div,
     },
     {
       childCount: 1,
-      className: 'TrelloCardLabelPickerTitle',
+      className: 'DrawCardLabelPickerTitle',
       type: VirtualDomElements.Div,
     },
-    text(TrelloStrings.labels()),
+    text(DrawStrings.labels()),
     {
       childCount: 1,
       className: MergeClassNames.mergeClassNames(
-        'TrelloButton',
-        'TrelloCardLabelPickerCloseButton',
+        'DrawButton',
+        'DrawCardLabelPickerCloseButton',
       ),
       name: 'closeCardLabelPicker',
       onClick: DomEventListenerFunctions.HandleClick,

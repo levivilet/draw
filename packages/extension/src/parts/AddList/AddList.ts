@@ -1,21 +1,21 @@
-import type { TrelloList } from '../TrelloTypes/TrelloTypes.ts'
+import type { DrawList } from '../DrawTypes/DrawTypes.ts'
 import type {
-  TrelloViewActionContext,
-  TrelloViewState,
-} from '../TrelloViewState/TrelloViewState.ts'
+  DrawViewActionContext,
+  DrawViewState,
+} from '../DrawViewState/DrawViewState.ts'
 import { getErrorMessage } from '../GetErrorMessage/GetErrorMessage.ts'
-import * as TrelloStrings from '../TrelloStrings/TrelloStrings.ts'
+import * as DrawStrings from '../DrawStrings/DrawStrings.ts'
 
 const addListFormName = 'addList'
 
 const appendList = (
-  state: Readonly<TrelloViewState>,
-  list: TrelloList,
+  state: Readonly<DrawViewState>,
+  list: DrawList,
 ): void => {
   if (!state.boardDetail) {
     return
   }
-  const mutableState = state as TrelloViewState
+  const mutableState = state as DrawViewState
   mutableState.boardDetail = {
     ...state.boardDetail,
     lists: [...state.boardDetail.lists, list],
@@ -23,10 +23,10 @@ const appendList = (
 }
 
 export const startAddList = (
-  context: Readonly<TrelloViewActionContext>,
+  context: Readonly<DrawViewActionContext>,
 ): void => {
   const { requestRerender } = context
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   state.addingList = true
   state.draftNewListTitle = ''
   state.focusedName = 'newListTitle'
@@ -36,10 +36,10 @@ export const startAddList = (
 }
 
 export const cancelAddList = (
-  context: Readonly<TrelloViewActionContext>,
+  context: Readonly<DrawViewActionContext>,
 ): void => {
   const { requestRerender } = context
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   state.addingList = false
   state.draftNewListTitle = ''
   state.savingNewList = false
@@ -48,21 +48,21 @@ export const cancelAddList = (
 }
 
 export const submitAddList = async (
-  context: Readonly<TrelloViewActionContext>,
+  context: Readonly<DrawViewActionContext>,
   formName: string | undefined,
 ): Promise<boolean> => {
   if (formName !== addListFormName) {
     return false
   }
   const { client, requestRerender } = context
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   if (!state.credentials || !state.boardDetail || state.savingNewList) {
     return true
   }
   const name = state.draftNewListTitle.trim()
   state.addingList = true
   if (!name) {
-    state.error = TrelloStrings.listTitleRequired()
+    state.error = DrawStrings.listTitleRequired()
     requestRerender()
     return true
   }

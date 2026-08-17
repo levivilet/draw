@@ -4,13 +4,13 @@ import {
   VirtualDomElements,
   type VirtualDomNode,
 } from '@lvce-editor/virtual-dom-worker'
-import type { TrelloViewState } from '../TrelloViewState/TrelloViewState.ts'
+import type { DrawViewState } from '../DrawViewState/DrawViewState.ts'
 import * as DomEventListenerFunctions from '../DomEventListenerFunctions/DomEventListenerFunctions.ts'
 import * as MergeClassNames from '../MergeClassNames/MergeClassNames.ts'
-import * as TrelloStrings from '../TrelloStrings/TrelloStrings.ts'
+import * as DrawStrings from '../DrawStrings/DrawStrings.ts'
 
 const renderBoardFilterPopup = (
-  state: Readonly<TrelloViewState>,
+  state: Readonly<DrawViewState>,
 ): readonly VirtualDomNode[] => {
   const { boardFilterOpen, draftBoardFilter } = state
   if (!boardFilterOpen) {
@@ -18,74 +18,74 @@ const renderBoardFilterPopup = (
   }
   return [
     {
-      'aria-label': TrelloStrings.filterCards(),
+      'aria-label': DrawStrings.filterCards(),
       childCount: 3,
-      className: 'TrelloBoardFilterPopup',
+      className: 'DrawBoardFilterPopup',
       onKeyDown: DomEventListenerFunctions.HandleKeyDown,
       type: VirtualDomElements.Div,
     },
     {
       childCount: 2,
-      className: 'TrelloBoardFilterPopupHeader',
+      className: 'DrawBoardFilterPopupHeader',
       type: VirtualDomElements.Div,
     },
     {
       childCount: 1,
-      className: 'TrelloBoardFilterPopupTitle',
+      className: 'DrawBoardFilterPopupTitle',
       type: VirtualDomElements.Div,
     },
-    text(TrelloStrings.filter()),
+    text(DrawStrings.filter()),
     {
-      'aria-label': TrelloStrings.close(),
+      'aria-label': DrawStrings.close(),
       childCount: 1,
       className: MergeClassNames.mergeClassNames(
-        'TrelloButton',
-        'TrelloBoardFilterCloseButton',
+        'DrawButton',
+        'DrawBoardFilterCloseButton',
       ),
       name: 'closeBoardFilter',
       onClick: DomEventListenerFunctions.HandleClick,
-      title: TrelloStrings.close(),
+      title: DrawStrings.close(),
       type: VirtualDomElements.Button,
     },
     text('x'),
     {
       childCount: 2,
-      className: 'TrelloBoardFilterField',
+      className: 'DrawBoardFilterField',
       type: VirtualDomElements.Label,
     },
     {
       childCount: 1,
-      className: 'TrelloBoardFilterLabel',
+      className: 'DrawBoardFilterLabel',
       type: VirtualDomElements.Span,
     },
-    text(TrelloStrings.keyword()),
+    text(DrawStrings.keyword()),
     {
       autocomplete: 'off',
       childCount: 0,
       className: MergeClassNames.mergeClassNames(
-        'TrelloInput',
-        'TrelloBoardFilterInput',
+        'DrawInput',
+        'DrawBoardFilterInput',
       ),
       name: 'boardFilter',
       onBlur: DomEventListenerFunctions.HandleBlur,
       onFocus: DomEventListenerFunctions.HandleFocus,
       onInput: DomEventListenerFunctions.HandleInput,
       onKeyDown: DomEventListenerFunctions.HandleKeyDown,
-      placeholder: TrelloStrings.filterCards(),
+      placeholder: DrawStrings.filterCards(),
       type: VirtualDomElements.Input,
       value: draftBoardFilter,
     },
     {
       childCount: 1,
-      className: 'TrelloBoardFilterHint',
+      className: 'DrawBoardFilterHint',
       type: VirtualDomElements.Div,
     },
-    text(TrelloStrings.filterCardsHint()),
+    text(DrawStrings.filterCardsHint()),
   ]
 }
 
 const renderBoardFilterOverlay = (
-  state: Readonly<TrelloViewState>,
+  state: Readonly<DrawViewState>,
 ): readonly VirtualDomNode[] => {
   const { boardFilterOpen } = state
   if (!boardFilterOpen) {
@@ -94,7 +94,7 @@ const renderBoardFilterOverlay = (
   return [
     {
       childCount: 0,
-      className: 'TrelloBoardFilterOverlay',
+      className: 'DrawBoardFilterOverlay',
       name: 'closeBoardFilter',
       onClick: DomEventListenerFunctions.HandleClick,
       role: AriaRoles.None,
@@ -104,7 +104,7 @@ const renderBoardFilterOverlay = (
 }
 
 export const renderBoardFilter = (
-  state: Readonly<TrelloViewState>,
+  state: Readonly<DrawViewState>,
 ): readonly VirtualDomNode[] => {
   const overlay = renderBoardFilterOverlay(state)
   const popup = renderBoardFilterPopup(state)

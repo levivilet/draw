@@ -12,7 +12,7 @@ const createBoardDetail = (board, lists) => {
   }
 }
 
-const useMockDataAndShowTrello = async (Command, mockData) => {
+const useMockDataAndShowDraw = async (Command, mockData) => {
   await Command.executeExtensionCommand('trello.test.useMockData', mockData)
   await Command.executeExtensionCommand('trello.show')
 }
@@ -51,7 +51,7 @@ export const test: Test = async ({ Command, expect, Locator }) => {
     id: 'board-1',
     name: 'Roadmap',
   }
-  await useMockDataAndShowTrello(Command, {
+  await useMockDataAndShowDraw(Command, {
     boardDetails: {
       'board-1': createBoardDetail(board, []),
     },

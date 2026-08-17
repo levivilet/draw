@@ -1,11 +1,11 @@
-import type { TrelloCard } from '../TrelloTypes/TrelloTypes.ts'
-import type { TrelloViewState } from '../TrelloViewState/TrelloViewState.ts'
+import type { DrawCard } from '../DrawTypes/DrawTypes.ts'
+import type { DrawViewState } from '../DrawViewState/DrawViewState.ts'
 
 export const updateSelectedCard = (
-  state: Readonly<TrelloViewState>,
-  card: Readonly<TrelloCard>,
+  state: Readonly<DrawViewState>,
+  card: Readonly<DrawCard>,
 ): void => {
-  const mutableState = state as TrelloViewState
+  const mutableState = state as DrawViewState
   if (mutableState.selectedCardDetail?.card.id !== card.id) {
     return
   }

@@ -1,23 +1,23 @@
-import type { TrelloBoard } from '../TrelloTypes/TrelloTypes.ts'
+import type { DrawBoard } from '../DrawTypes/DrawTypes.ts'
 import type {
-  TrelloViewActionContext,
-  TrelloViewState,
-} from '../TrelloViewState/TrelloViewState.ts'
+  DrawViewActionContext,
+  DrawViewState,
+} from '../DrawViewState/DrawViewState.ts'
 import { isSameJson } from '../CacheFirstHelpers/CacheFirstHelpers.ts'
 import { getErrorMessage } from '../GetErrorMessage/GetErrorMessage.ts'
 import { updateRecentBoardViews } from '../RecentBoardStorage/RecentBoardStorage.ts'
 import { resolveBoardCoverImages } from '../ResolveBoardCoverImages/ResolveBoardCoverImages.ts'
-import * as TrelloStrings from '../TrelloStrings/TrelloStrings.ts'
+import * as DrawStrings from '../DrawStrings/DrawStrings.ts'
 
 const findBoard = (
-  context: TrelloViewActionContext,
+  context: DrawViewActionContext,
   boardId: string,
-): TrelloBoard | undefined => {
+): DrawBoard | undefined => {
   const { state } = context
   return (
     state.boards.find((item) => item.id === boardId) ||
     state.searchResults.find(
-      (item): item is TrelloBoard & { readonly type: 'board' } => {
+      (item): item is DrawBoard & { readonly type: 'board' } => {
         return item.type === 'board' && item.id === boardId
       },
     )
@@ -25,18 +25,18 @@ const findBoard = (
 }
 
 export const openBoard = async (
-  context: TrelloViewActionContext,
+  context: DrawViewActionContext,
   boardId: string,
 ): Promise<void> => {
   const { client, currentBoardStorage, recentStorage, requestRerender } =
     context
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   if (!state.credentials) {
     return
   }
   const board = findBoard(context, boardId)
   if (!board) {
-    state.error = TrelloStrings.boardNotFound(boardId)
+    state.error = DrawStrings.boardNotFound(boardId)
     requestRerender()
     return
   }

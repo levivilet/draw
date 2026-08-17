@@ -5,7 +5,7 @@ import {
 } from '@lvce-editor/virtual-dom-worker'
 import * as DomEventListenerFunctions from '../DomEventListenerFunctions/DomEventListenerFunctions.ts'
 import * as MergeClassNames from '../MergeClassNames/MergeClassNames.ts'
-import * as TrelloStrings from '../TrelloStrings/TrelloStrings.ts'
+import * as DrawStrings from '../DrawStrings/DrawStrings.ts'
 
 export const renderCardDescriptionCancelButton = (
   disabled: boolean,
@@ -14,8 +14,8 @@ export const renderCardDescriptionCancelButton = (
     {
       childCount: 1,
       className: MergeClassNames.mergeClassNames(
-        'TrelloButton',
-        'TrelloCardDetailCancelButton',
+        'DrawButton',
+        'DrawCardDetailCancelButton',
       ),
       disabled,
       name: 'cancelCardDescriptionEdit',
@@ -24,6 +24,6 @@ export const renderCardDescriptionCancelButton = (
         DomEventListenerFunctions.HandleCardDescriptionCancelPointerDown,
       type: VirtualDomElements.Button,
     },
-    text(TrelloStrings.cancel()),
+    text(DrawStrings.cancel()),
   ]
 }

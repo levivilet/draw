@@ -1,5 +1,5 @@
 import { expect, test } from '@jest/globals'
-import type { TrelloCardDetail } from '../src/parts/TrelloTypes/TrelloTypes.ts'
+import type { DrawCardDetail } from '../src/parts/DrawTypes/DrawTypes.ts'
 import { createInitialState } from '../src/parts/CreateInitialState/CreateInitialState.ts'
 import { renderAuth } from '../src/parts/RenderAuth/RenderAuth.ts'
 import { renderBoards } from '../src/parts/RenderBoards/RenderBoards.ts'
@@ -7,7 +7,7 @@ import { renderCardDetailPanel } from '../src/parts/RenderCardDetailPanel/Render
 
 const imageUrl = 'https://example.com/attachment.png'
 
-const cardDetail: TrelloCardDetail = {
+const cardDetail: DrawCardDetail = {
   attachments: [
     {
       id: 'attachment-1',
@@ -58,10 +58,10 @@ test('card detail rendering covers loading and active editor states', () => {
   })
 
   expect(
-    active.some((node) => node.className === 'TrelloCardDetailImage'),
+    active.some((node) => node.className === 'DrawCardDetailImage'),
   ).toBe(true)
   expect(
-    active.some((node) => node.className === 'TrelloCardCommentAvatar'),
+    active.some((node) => node.className === 'DrawCardCommentAvatar'),
   ).toBe(true)
   expect(active.some((node) => node.text === 'Saving...')).toBe(true)
   expect(active.some((node) => node.text === 'Loading labels...')).toBe(true)
@@ -97,7 +97,7 @@ test('card attachment drop area covers the open card while dragging and uploadin
     selectedCardDetail: cardDetail,
   })
   expect(
-    dragging.some((node) => node.className === 'TrelloCardAttachmentDropArea'),
+    dragging.some((node) => node.className === 'DrawCardAttachmentDropArea'),
   ).toBe(true)
   expect(dragging.some((node) => node.text === 'Drop files to upload')).toBe(
     true,
@@ -105,11 +105,11 @@ test('card attachment drop area covers the open card while dragging and uploadin
   expect(
     dragging.some(
       (node) =>
-        node.className === 'TrelloCardDetailPanel TrelloCardDetailPanelPopup',
+        node.className === 'DrawCardDetailPanel DrawCardDetailPanelPopup',
     ),
   ).toBe(true)
   expect(
-    dragging.some((node) => node.className === 'TrelloCardDetailHeader'),
+    dragging.some((node) => node.className === 'DrawCardDetailHeader'),
   ).toBe(false)
 
   const uploading = renderCardDetailPanel({

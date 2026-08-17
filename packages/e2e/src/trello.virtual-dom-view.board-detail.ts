@@ -6,7 +6,7 @@ import {
   createList,
   createMockData,
   openBoard,
-  useMockDataAndShowTrello,
+  useMockDataAndShowDraw,
 } from './_trello.virtual-dom-view.shared.ts'
 
 export const name = 'trello.virtual-dom-view.board-detail'
@@ -20,7 +20,7 @@ export const test: Test = async ({ Command, expect, Locator }) => {
       lists: [createList('list-1', 'Todo', createCards(1))],
     },
   })
-  await useMockDataAndShowTrello(Command, mockData)
+  await useMockDataAndShowDraw(Command, mockData)
   await connectWithCredentials({ Command, expect, Locator })
   await openBoard(Command, Locator, expect)
 

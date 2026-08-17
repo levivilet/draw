@@ -62,7 +62,7 @@ test('getRecentlyViewedBoards sorts by trello and local viewed dates', () => {
       {
         dateLastView: '2026-01-01T00:00:00.000Z',
         id: 'board-1',
-        name: 'Trello older',
+        name: 'Draw older',
       },
       {
         id: 'board-2',
@@ -84,7 +84,7 @@ test('getRecentlyViewedBoards sorts by trello and local viewed dates', () => {
 
   expect(getRecentlyViewedBoards(state).map((board) => board.name)).toEqual([
     'Local newer',
-    'Trello older',
+    'Draw older',
   ])
 })
 
@@ -476,12 +476,12 @@ test('label helpers prefer label names and known color classes', () => {
       id: 'label-3',
     }),
   ).toBe('Label')
-  expect(getLabelColorClassName('blue')).toBe('TrelloCardLabelColorBlue')
+  expect(getLabelColorClassName('blue')).toBe('DrawCardLabelColorBlue')
   expect(getLabelColorClassName('green_dark')).toBe(
-    'TrelloCardLabelColorGreenDark',
+    'DrawCardLabelColorGreenDark',
   )
   expect(getLabelColorClassName('yellow_light')).toBe(
-    'TrelloCardLabelColorYellowLight',
+    'DrawCardLabelColorYellowLight',
   )
-  expect(getLabelColorClassName('unknown')).toBe('TrelloCardLabelColorNeutral')
+  expect(getLabelColorClassName('unknown')).toBe('DrawCardLabelColorNeutral')
 })

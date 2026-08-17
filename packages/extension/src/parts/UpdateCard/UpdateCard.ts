@@ -1,21 +1,21 @@
-import type { TrelloApiCache } from '../TrelloApiCache/TrelloApiCache.ts'
-import type { FetchLike } from '../TrelloClientTypes/TrelloClientTypes.ts'
+import type { DrawApiCache } from '../DrawApiCache/DrawApiCache.ts'
+import type { FetchLike } from '../DrawClientTypes/DrawClientTypes.ts'
 import type {
-  TrelloCard,
-  TrelloCardUpdate,
-  TrelloCredentials,
-} from '../TrelloTypes/TrelloTypes.ts'
+  DrawCard,
+  DrawCardUpdate,
+  DrawCredentials,
+} from '../DrawTypes/DrawTypes.ts'
 import { deleteCachedCardDetail } from '../GetCardDetail/GetCardDetail.ts'
 import { requestJson } from '../RequestJson/RequestJson.ts'
 
 export const updateCard = async (
   fetchLike: FetchLike,
-  card: TrelloCard,
-  update: TrelloCardUpdate,
-  credentials: TrelloCredentials,
-  cache?: TrelloApiCache,
-): Promise<TrelloCard> => {
-  const updatedCard = await requestJson<TrelloCard>(
+  card: DrawCard,
+  update: DrawCardUpdate,
+  credentials: DrawCredentials,
+  cache?: DrawApiCache,
+): Promise<DrawCard> => {
+  const updatedCard = await requestJson<DrawCard>(
     fetchLike,
     `/cards/${card.id}`,
     credentials,

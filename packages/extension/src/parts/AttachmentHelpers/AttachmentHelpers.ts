@@ -1,9 +1,9 @@
-import type { TrelloAttachment } from '../TrelloTypes/TrelloTypes.ts'
+import type { DrawAttachment } from '../DrawTypes/DrawTypes.ts'
 
 const imageUrlPattern = /\.(?:avif|gif|jpe?g|png|svg|webp)(?:[?#]|$)/i
 
 export const isImageAttachment = (
-  attachment: Readonly<TrelloAttachment>,
+  attachment: Readonly<DrawAttachment>,
 ): boolean => {
   if (attachment.mimeType?.startsWith('image/')) {
     return true
@@ -15,7 +15,7 @@ export const isImageAttachment = (
 }
 
 export const getAttachmentImageUrl = (
-  attachment: Readonly<TrelloAttachment>,
+  attachment: Readonly<DrawAttachment>,
 ): string => {
   if (attachment.url && imageUrlPattern.test(attachment.url)) {
     return attachment.url

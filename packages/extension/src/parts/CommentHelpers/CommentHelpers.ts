@@ -1,5 +1,5 @@
-import type { TrelloComment } from '../TrelloTypes/TrelloTypes.ts'
-import * as TrelloStrings from '../TrelloStrings/TrelloStrings.ts'
+import type { DrawComment } from '../DrawTypes/DrawTypes.ts'
+import * as DrawStrings from '../DrawStrings/DrawStrings.ts'
 
 const getCommentDateFormatter = (() => {
   let commentDateFormatter: Intl.DateTimeFormat | undefined
@@ -34,20 +34,20 @@ const getDerivedInitials = (name: string): string => {
   return `${parts[0][0]}${parts.at(-1)?.[0]}`.toUpperCase()
 }
 
-export const getCommentAuthor = (comment: Readonly<TrelloComment>): string => {
+export const getCommentAuthor = (comment: Readonly<DrawComment>): string => {
   return (
     comment.memberCreator?.fullName?.trim() ||
     comment.memberCreator?.username?.trim() ||
-    TrelloStrings.unknownMember()
+    DrawStrings.unknownMember()
   )
 }
 
-export const getCommentText = (comment: Readonly<TrelloComment>): string => {
-  return comment.data.text?.trim() || TrelloStrings.noCommentText()
+export const getCommentText = (comment: Readonly<DrawComment>): string => {
+  return comment.data.text?.trim() || DrawStrings.noCommentText()
 }
 
 export const getCommentInitials = (
-  comment: Readonly<TrelloComment>,
+  comment: Readonly<DrawComment>,
 ): string => {
   const memberName =
     comment.memberCreator?.fullName?.trim() ||
@@ -61,7 +61,7 @@ export const getCommentInitials = (
 }
 
 export const getCommentDateText = (
-  comment: Readonly<TrelloComment>,
+  comment: Readonly<DrawComment>,
 ): string => {
   if (!comment.date) {
     return ''
@@ -74,7 +74,7 @@ export const getCommentDateText = (
 }
 
 export const getCommentAvatarUrl = (
-  comment: Readonly<TrelloComment>,
+  comment: Readonly<DrawComment>,
 ): string => {
   const avatarUrl = comment.memberCreator?.avatarUrl?.trim() || ''
   if (!avatarUrl) {

@@ -13,15 +13,15 @@ import {
   testCacheName as testCurrentBoardCacheName,
 } from '../CurrentBoardStorage/CurrentBoardStorage.ts'
 import {
-  createMockTrelloClient,
-  type MockTrelloData,
-} from '../MockTrelloClient/MockTrelloClient.ts'
+  createMockDrawClient,
+  type MockDrawData,
+} from '../MockDrawClient/MockDrawClient.ts'
 import {
   createCacheRecentBoardStorage,
   testCacheName as testRecentBoardCacheName,
 } from '../RecentBoardStorage/RecentBoardStorage.ts'
-import { clearTrelloTestCaches } from '../TestStorage/TestStorage.ts'
-import * as TrelloView from '../TrelloView/TrelloView.ts'
+import { clearDrawTestCaches } from '../TestStorage/TestStorage.ts'
+import * as DrawView from '../DrawView/DrawView.ts'
 
 const state = {
   isActivated: false,
@@ -33,100 +33,100 @@ export const activate = async (): Promise<void> => {
   }
   state.isActivated = true
   await activateExtensionApi()
-  registerView(TrelloView.view)
+  registerView(DrawView.view)
   registerCommand({
     execute() {
-      return executeCommand('Layout.toggleSideBarView', TrelloView.viewId)
+      return executeCommand('Layout.toggleSideBarView', DrawView.viewId)
     },
     id: 'trello.show',
   })
   registerCommand({
     execute() {
-      return TrelloView.cancelNewCardActiveTrelloViewInstance()
+      return DrawView.cancelNewCardActiveDrawViewInstance()
     },
     id: 'trello.cancelNewCard',
   })
   registerCommand({
     execute() {
-      return TrelloView.closeCardDetailActiveTrelloViewInstance()
+      return DrawView.closeCardDetailActiveDrawViewInstance()
     },
     id: 'trello.closeCardDetail',
   })
   registerCommand({
     execute() {
-      return TrelloView.closeBoardFilterActiveTrelloViewInstance()
+      return DrawView.closeBoardFilterActiveDrawViewInstance()
     },
     id: 'trello.closeBoardFilter',
   })
   registerCommand({
     execute(cardId: string) {
-      return TrelloView.openCardActiveTrelloViewInstance(cardId)
+      return DrawView.openCardActiveDrawViewInstance(cardId)
     },
     id: 'trello.openCard',
   })
   registerCommand({
     execute() {
-      return TrelloView.saveCardDetailActiveTrelloViewInstance()
+      return DrawView.saveCardDetailActiveDrawViewInstance()
     },
     id: 'trello.saveCardDetail',
   })
   registerCommand({
     execute(listId: string) {
-      return TrelloView.startAddCardActiveTrelloViewInstance(listId)
+      return DrawView.startAddCardActiveDrawViewInstance(listId)
     },
     id: 'trello.startAddCard',
   })
   registerCommand({
     execute() {
-      return TrelloView.submitNewCardActiveTrelloViewInstance()
+      return DrawView.submitNewCardActiveDrawViewInstance()
     },
     id: 'trello.submitNewCard',
   })
   registerCommand({
     execute(options: any) {
-      return TrelloView.addList(options)
+      return DrawView.addList(options)
     },
     id: 'trello.addList',
   })
   registerCommand({
     execute(options: any) {
-      return TrelloView.openMockBoard(options)
+      return DrawView.openMockBoard(options)
     },
     id: 'trello.openMockBoard',
   })
   registerCommand({
     execute(options: any) {
-      return TrelloView.addCard(options)
+      return DrawView.addCard(options)
     },
     id: 'trello.addCard',
   })
   registerCommand({
-    async execute(data: Readonly<MockTrelloData>) {
-      await clearTrelloTestCaches()
-      TrelloView.setTrelloViewDependencyFactory(() => ({
-        client: createMockTrelloClient(data),
+    async execute(data: Readonly<MockDrawData>) {
+      await clearDrawTestCaches()
+      DrawView.setDrawViewDependencyFactory(() => ({
+        client: createMockDrawClient(data),
         currentBoardStorage: createCacheCurrentBoardStorage(
           testCurrentBoardCacheName,
         ),
         isTest: true,
         readCardDetailPopupEnabled:
-          TrelloView.readCardDetailPopupEnabledPreference,
+          DrawView.readCardDetailPopupEnabledPreference,
         recentStorage: createCacheRecentBoardStorage(testRecentBoardCacheName),
         storage: createCacheCredentialStorage(testCredentialCacheName),
       }))
-      await TrelloView.reloadActiveTrelloViewInstances()
+      await DrawView.reloadActiveDrawViewInstances()
       return { ok: true }
     },
     id: 'trello.test.useMockData',
   })
   registerCommand({
     async execute() {
-      TrelloView.resetTrelloViewDependencyFactory()
-      await TrelloView.reloadActiveTrelloViewInstances()
+      DrawView.resetDrawViewDependencyFactory()
+      await DrawView.reloadActiveDrawViewInstances()
       return { ok: true }
     },
     id: 'trello.test.reset',
   })
 }
 
-export const deactivate = (): void => {}
+export const deactivate = (): void => { }

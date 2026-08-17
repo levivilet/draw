@@ -4,53 +4,53 @@ type Command = TestApi['Command']
 type Expect = TestApi['expect']
 type Locator = TestApi['Locator']
 
-export interface TrelloBoard {
+export interface DrawBoard {
   readonly id: string
   readonly name: string
 }
 
-export interface TrelloCard {
+export interface DrawCard {
   readonly desc?: string
   readonly id: string
-  readonly labels?: readonly TrelloLabel[]
+  readonly labels?: readonly DrawLabel[]
   readonly name: string
 }
 
-export interface TrelloLabel {
+export interface DrawLabel {
   readonly color?: string
   readonly id: string
   readonly name?: string
 }
 
-export interface TrelloCardDetail {
+export interface DrawCardDetail {
   readonly attachments: readonly unknown[]
-  readonly card: TrelloCard
+  readonly card: DrawCard
   readonly comments: readonly unknown[]
 }
 
-export interface TrelloList {
-  readonly cards: readonly TrelloCard[]
+export interface DrawList {
+  readonly cards: readonly DrawCard[]
   readonly id: string
   readonly name: string
 }
 
-export interface TrelloBoardDetail {
-  readonly board: TrelloBoard
-  readonly lists: readonly TrelloList[]
+export interface DrawBoardDetail {
+  readonly board: DrawBoard
+  readonly lists: readonly DrawList[]
 }
 
-export interface MockTrelloData {
+export interface MockDrawData {
   readonly boardDetailErrors?: Readonly<Record<string, string>>
-  readonly boardDetails?: Readonly<Record<string, TrelloBoardDetail>>
-  readonly boardLabels?: Readonly<Record<string, readonly TrelloLabel[]>>
-  readonly boards?: readonly TrelloBoard[]
-  readonly cardDetails?: Readonly<Record<string, TrelloCardDetail>>
+  readonly boardDetails?: Readonly<Record<string, DrawBoardDetail>>
+  readonly boardLabels?: Readonly<Record<string, readonly DrawLabel[]>>
+  readonly boards?: readonly DrawBoard[]
+  readonly cardDetails?: Readonly<Record<string, DrawCardDetail>>
   readonly error?: string
   readonly listBoardsError?: string
-  readonly listBoardsResponses?: readonly (readonly TrelloBoard[])[]
+  readonly listBoardsResponses?: readonly (readonly DrawBoard[])[]
 }
 
-export const createCards = (count: number): readonly TrelloCard[] => {
+export const createCards = (count: number): readonly DrawCard[] => {
   return Array.from({ length: count }, (_, index) => {
     const number = index + 1
     return {
@@ -63,8 +63,8 @@ export const createCards = (count: number): readonly TrelloCard[] => {
 export const createList = (
   id: string,
   name: string,
-  cards: readonly TrelloCard[],
-): TrelloList => {
+  cards: readonly DrawCard[],
+): DrawList => {
   return {
     cards,
     id,
@@ -73,9 +73,9 @@ export const createList = (
 }
 
 export const createBoardDetail = (
-  board: TrelloBoard,
-  lists: readonly TrelloList[],
-): TrelloBoardDetail => {
+  board: DrawBoard,
+  lists: readonly DrawList[],
+): DrawBoardDetail => {
   return {
     board,
     lists,
@@ -83,23 +83,23 @@ export const createBoardDetail = (
 }
 
 export const createMockData = (
-  boards: readonly TrelloBoard[],
+  boards: readonly DrawBoard[],
   boardDetails: Readonly<
-    Record<string, TrelloBoardDetail>
+    Record<string, DrawBoardDetail>
   > = Object.fromEntries(
     boards.map((board) => [
       board.id,
       createBoardDetail(board, [createList('list-1', 'Todo', createCards(1))]),
     ]),
   ),
-): MockTrelloData => {
+): MockDrawData => {
   return {
     boardDetails,
     boards,
   }
 }
 
-export const createBoards = (count: number): readonly TrelloBoard[] => {
+export const createBoards = (count: number): readonly DrawBoard[] => {
   return Array.from({ length: count }, (_, index) => {
     const number = index + 1
     return {
@@ -109,9 +109,9 @@ export const createBoards = (count: number): readonly TrelloBoard[] => {
   })
 }
 
-export const useMockDataAndShowTrello = async (
+export const useMockDataAndShowDraw = async (
   Command: Command,
-  mockData: Readonly<MockTrelloData>,
+  mockData: Readonly<MockDrawData>,
 ): Promise<void> => {
   await Command.executeExtensionCommand('trello.test.useMockData', mockData)
   await Command.executeExtensionCommand('trello.show')

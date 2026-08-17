@@ -6,7 +6,7 @@ import {
   createList,
   createMockData,
   openBoard,
-  useMockDataAndShowTrello,
+  useMockDataAndShowDraw,
 } from './_trello.virtual-dom-view.shared.ts'
 
 export const name = 'trello.virtual-dom-view.board-detail-multiple-lists'
@@ -19,7 +19,7 @@ export const test: Test = async ({ Command, expect, Locator }) => {
     createList('list-2', 'Doing', [{ id: 'card-2', name: 'Build work' }]),
     createList('list-3', 'Done', [{ id: 'card-3', name: 'Ship work' }]),
   ]
-  await useMockDataAndShowTrello(
+  await useMockDataAndShowDraw(
     Command,
     createMockData(boards, {
       'board-1': createBoardDetail(boards[0], listsData),

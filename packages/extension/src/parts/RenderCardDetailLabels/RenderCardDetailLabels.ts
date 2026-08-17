@@ -3,49 +3,49 @@ import {
   VirtualDomElements,
   type VirtualDomNode,
 } from '@lvce-editor/virtual-dom-worker'
-import type { TrelloLabel } from '../TrelloTypes/TrelloTypes.ts'
-import type { TrelloViewState } from '../TrelloViewState/TrelloViewState.ts'
+import type { DrawLabel } from '../DrawTypes/DrawTypes.ts'
+import type { DrawViewState } from '../DrawViewState/DrawViewState.ts'
 import * as DomEventListenerFunctions from '../DomEventListenerFunctions/DomEventListenerFunctions.ts'
 import * as MergeClassNames from '../MergeClassNames/MergeClassNames.ts'
 import { renderCardDetailLabel } from '../RenderCardDetailLabel/RenderCardDetailLabel.ts'
 import { renderCardLabelPicker } from '../RenderCardLabelPicker/RenderCardLabelPicker.ts'
-import * as TrelloStrings from '../TrelloStrings/TrelloStrings.ts'
+import * as DrawStrings from '../DrawStrings/DrawStrings.ts'
 
 const renderLabels = (
-  labels: readonly TrelloLabel[] | undefined,
+  labels: readonly DrawLabel[] | undefined,
 ): readonly VirtualDomNode[] => {
   if (!labels || labels.length === 0) {
     return [
       {
         childCount: 1,
         className: MergeClassNames.mergeClassNames(
-          'TrelloButton',
-          'TrelloCardLabelAddButton',
+          'DrawButton',
+          'DrawCardLabelAddButton',
         ),
         name: 'openCardLabelPicker',
         onClick: DomEventListenerFunctions.HandleClick,
         type: VirtualDomElements.Button,
       },
-      text(TrelloStrings.labels()),
+      text(DrawStrings.labels()),
     ]
   }
   return [
     {
       childCount: 2,
-      className: 'TrelloCardLabelRow',
+      className: 'DrawCardLabelRow',
       type: VirtualDomElements.Div,
     },
     {
       childCount: labels.length,
-      className: 'TrelloCardLabels',
+      className: 'DrawCardLabels',
       type: VirtualDomElements.Div,
     },
     ...labels.flatMap(renderCardDetailLabel),
     {
       childCount: 1,
       className: MergeClassNames.mergeClassNames(
-        'TrelloButton',
-        'TrelloCardLabelAddIconButton',
+        'DrawButton',
+        'DrawCardLabelAddIconButton',
       ),
       name: 'openCardLabelPicker',
       onClick: DomEventListenerFunctions.HandleClick,
@@ -56,8 +56,8 @@ const renderLabels = (
 }
 
 const renderLabelPicker = (
-  state: Readonly<TrelloViewState>,
-  labels: readonly TrelloLabel[] | undefined,
+  state: Readonly<DrawViewState>,
+  labels: readonly DrawLabel[] | undefined,
 ): readonly VirtualDomNode[] => {
   const { cardLabelPickerOpen } = state
   if (!cardLabelPickerOpen) {
@@ -67,8 +67,8 @@ const renderLabelPicker = (
 }
 
 export const renderCardDetailLabels = (
-  state: Readonly<TrelloViewState>,
-  labels: readonly TrelloLabel[] | undefined,
+  state: Readonly<DrawViewState>,
+  labels: readonly DrawLabel[] | undefined,
 ): readonly VirtualDomNode[] => {
   const { cardLabelPickerOpen } = state
   const labelDom = renderLabels(labels)
@@ -76,7 +76,7 @@ export const renderCardDetailLabels = (
   return [
     {
       childCount: 1 + (cardLabelPickerOpen ? 1 : 0),
-      className: 'TrelloCardLabelSection',
+      className: 'DrawCardLabelSection',
       type: VirtualDomElements.Div,
     },
     ...labelDom,

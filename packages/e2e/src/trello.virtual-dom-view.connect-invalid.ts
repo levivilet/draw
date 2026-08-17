@@ -2,7 +2,7 @@ import type { Test } from '@lvce-editor/test-with-playwright'
 import {
   createBoards,
   createMockData,
-  useMockDataAndShowTrello,
+  useMockDataAndShowDraw,
 } from './_trello.virtual-dom-view.shared.ts'
 
 export const name = 'trello.virtual-dom-view.connect-invalid'
@@ -10,7 +10,7 @@ export const name = 'trello.virtual-dom-view.connect-invalid'
 
 export const test: Test = async ({ Command, expect, Locator }) => {
   const boards = createBoards(1)
-  await useMockDataAndShowTrello(Command, createMockData(boards))
+  await useMockDataAndShowDraw(Command, createMockData(boards))
 
   const connect = Locator('button[name="connect"]')
   await expect(connect).toBeVisible()

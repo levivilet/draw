@@ -3,7 +3,7 @@ import {
   VirtualDomElements,
   type VirtualDomNode,
 } from '@lvce-editor/virtual-dom-worker'
-import type { TrelloLabel } from '../TrelloTypes/TrelloTypes.ts'
+import type { DrawLabel } from '../DrawTypes/DrawTypes.ts'
 import * as DomEventListenerFunctions from '../DomEventListenerFunctions/DomEventListenerFunctions.ts'
 import {
   getLabelColorClassName,
@@ -12,14 +12,14 @@ import {
 import * as MergeClassNames from '../MergeClassNames/MergeClassNames.ts'
 
 export const renderCardDetailLabel = (
-  label: Readonly<TrelloLabel>,
+  label: Readonly<DrawLabel>,
 ): readonly VirtualDomNode[] => {
   return [
     {
       childCount: 1,
       className: MergeClassNames.mergeClassNames(
-        'TrelloCardLabel',
-        'TrelloCardLabelButton',
+        'DrawCardLabel',
+        'DrawCardLabelButton',
         getLabelColorClassName(label.color),
       ),
       name: 'openCardLabelPicker',

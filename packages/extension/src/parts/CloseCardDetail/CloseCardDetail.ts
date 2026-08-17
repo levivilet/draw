@@ -1,11 +1,11 @@
 import type {
-  TrelloViewActionContext,
-  TrelloViewState,
-} from '../TrelloViewState/TrelloViewState.ts'
+  DrawViewActionContext,
+  DrawViewState,
+} from '../DrawViewState/DrawViewState.ts'
 
-export const closeCardDetail = (context: TrelloViewActionContext): void => {
+export const closeCardDetail = (context: DrawViewActionContext): void => {
   const { requestRerender } = context
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   state.selectedCardDetail = undefined
   state.cardAttachmentDropActive = false
   state.cardAttachmentsLoading = false

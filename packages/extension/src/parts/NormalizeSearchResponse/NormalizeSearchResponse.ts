@@ -1,27 +1,27 @@
 import type {
-  TrelloBoard,
-  TrelloCard,
-  TrelloSearchResult,
-} from '../TrelloTypes/TrelloTypes.ts'
+  DrawBoard,
+  DrawCard,
+  DrawSearchResult,
+} from '../DrawTypes/DrawTypes.ts'
 
-export interface TrelloSearchResponse {
-  readonly boards?: readonly TrelloBoard[]
-  readonly cards?: readonly TrelloCard[]
+export interface DrawSearchResponse {
+  readonly boards?: readonly DrawBoard[]
+  readonly cards?: readonly DrawCard[]
 }
 
 export const normalizeSearchResponse = (
-  response: Readonly<TrelloSearchResponse>,
-): readonly TrelloSearchResult[] => {
+  response: Readonly<DrawSearchResponse>,
+): readonly DrawSearchResult[] => {
   const cards = response.cards || []
   const boards = response.boards || []
   return [
-    ...cards.map((card): TrelloSearchResult => {
+    ...cards.map((card): DrawSearchResult => {
       return {
         ...card,
         type: 'card',
       }
     }),
-    ...boards.map((board): TrelloSearchResult => {
+    ...boards.map((board): DrawSearchResult => {
       return {
         ...board,
         type: 'board',

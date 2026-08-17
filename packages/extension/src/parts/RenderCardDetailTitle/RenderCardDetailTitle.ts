@@ -3,24 +3,24 @@ import {
   VirtualDomElements,
   type VirtualDomNode,
 } from '@lvce-editor/virtual-dom-worker'
-import type { TrelloViewState } from '../TrelloViewState/TrelloViewState.ts'
+import type { DrawViewState } from '../DrawViewState/DrawViewState.ts'
 import * as DomEventListenerFunctions from '../DomEventListenerFunctions/DomEventListenerFunctions.ts'
 import * as MergeClassNames from '../MergeClassNames/MergeClassNames.ts'
 
 export const renderCardDetailTitle = (
-  state: Readonly<TrelloViewState>,
+  state: Readonly<DrawViewState>,
 ): readonly VirtualDomNode[] => {
   const { draftCardTitle, editingCardTitle } = state
   const className = editingCardTitle
     ? MergeClassNames.mergeClassNames(
-        'TrelloCardDetailTitleInput',
-        'TrelloCardDetailTitleInputEditing',
-      )
-    : 'TrelloCardDetailTitleInput'
+      'DrawCardDetailTitleInput',
+      'DrawCardDetailTitleInputEditing',
+    )
+    : 'DrawCardDetailTitleInput'
   return [
     {
       childCount: 2,
-      className: 'TrelloCardDetailTitleSizer',
+      className: 'DrawCardDetailTitleSizer',
       type: VirtualDomElements.Div,
     },
     {
@@ -38,7 +38,7 @@ export const renderCardDetailTitle = (
     {
       ariaHidden: true,
       childCount: 1,
-      className: 'TrelloCardDetailTitleMirror',
+      className: 'DrawCardDetailTitleMirror',
       type: VirtualDomElements.Div,
     },
     text(draftCardTitle || ' '),

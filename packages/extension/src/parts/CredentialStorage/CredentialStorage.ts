@@ -1,4 +1,4 @@
-import type { TrelloCredentials } from '../TrelloTypes/TrelloTypes.ts'
+import type { DrawCredentials } from '../DrawTypes/DrawTypes.ts'
 import {
   createLocalCacheRequestUrl,
   deleteLocalCacheRequest,
@@ -7,8 +7,8 @@ import {
 
 export interface CredentialStorage {
   readonly delete: () => Promise<void>
-  readonly read: () => Promise<TrelloCredentials | undefined>
-  readonly write: (credentials: TrelloCredentials) => Promise<void>
+  readonly read: () => Promise<DrawCredentials | undefined>
+  readonly write: (credentials: DrawCredentials) => Promise<void>
 }
 
 export interface SecretStorageApi {
@@ -25,7 +25,7 @@ export const credentialsRequestUrl = createLocalCacheRequestUrl(
   legacyCredentialsRequestUrl,
 )
 
-const isCredentials = (value: unknown): value is TrelloCredentials => {
+const isCredentials = (value: unknown): value is DrawCredentials => {
   if (!value || typeof value !== 'object') {
     return false
   }
@@ -35,7 +35,7 @@ const isCredentials = (value: unknown): value is TrelloCredentials => {
 
 const parseCredentials = (
   value: string | undefined,
-): TrelloCredentials | undefined => {
+): DrawCredentials | undefined => {
   if (value === undefined) {
     return undefined
   }
@@ -70,7 +70,7 @@ export const createCacheCredentialStorage = (
         legacyCredentialsRequestUrl,
       )
     },
-    async read(): Promise<TrelloCredentials | undefined> {
+    async read(): Promise<DrawCredentials | undefined> {
       const cache = await caches.open(selectedCacheName)
       const response = await matchLocalCacheRequest(
         cache,
@@ -86,7 +86,7 @@ export const createCacheCredentialStorage = (
       }
       return value
     },
-    async write(credentials: TrelloCredentials): Promise<void> {
+    async write(credentials: DrawCredentials): Promise<void> {
       const cache = await caches.open(selectedCacheName)
       await cache.put(credentialsRequestUrl, Response.json(credentials))
     },
@@ -94,17 +94,17 @@ export const createCacheCredentialStorage = (
 }
 
 export const createMemoryCredentialStorage = (
-  initial?: TrelloCredentials,
+  initial?: DrawCredentials,
 ): CredentialStorage => {
   let value = initial
   return {
     async delete(): Promise<void> {
       value = undefined
     },
-    async read(): Promise<TrelloCredentials | undefined> {
+    async read(): Promise<DrawCredentials | undefined> {
       return value
     },
-    async write(credentials: TrelloCredentials): Promise<void> {
+    async write(credentials: DrawCredentials): Promise<void> {
       value = credentials
     },
   }
@@ -134,11 +134,11 @@ export const createSecretCredentialStorage = (
       }
       await legacyStorage.delete()
     },
-    async read(): Promise<TrelloCredentials | undefined> {
+    async read(): Promise<DrawCredentials | undefined> {
       if (!secretStorageSupported) {
         return legacyStorage.read()
       }
-      let storedCredentials: TrelloCredentials | undefined
+      let storedCredentials: DrawCredentials | undefined
       try {
         storedCredentials = parseCredentials(
           await secretStorage.getSecret(credentialsSecretKey),
@@ -166,7 +166,7 @@ export const createSecretCredentialStorage = (
       await legacyStorage.delete()
       return legacyCredentials
     },
-    async write(credentials: TrelloCredentials): Promise<void> {
+    async write(credentials: DrawCredentials): Promise<void> {
       if (secretStorageSupported) {
         try {
           await secretStorage.storeSecret(

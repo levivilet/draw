@@ -1,12 +1,12 @@
 import type {
-  TrelloViewActionContext,
-  TrelloViewState,
-} from '../TrelloViewState/TrelloViewState.ts'
+  DrawViewActionContext,
+  DrawViewState,
+} from '../DrawViewState/DrawViewState.ts'
 
 export const cancelCardDescriptionEdit = (
-  context: TrelloViewActionContext,
+  context: DrawViewActionContext,
 ): void => {
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   state.draftCardDescription = state.selectedCardDetail?.card.desc || ''
   state.editingCardDescription = false
   state.focusedName = ''

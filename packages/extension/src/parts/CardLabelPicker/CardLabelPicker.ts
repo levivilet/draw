@@ -1,13 +1,13 @@
-import type { TrelloLabel } from '../TrelloTypes/TrelloTypes.ts'
+import type { DrawLabel } from '../DrawTypes/DrawTypes.ts'
 import type {
-  TrelloViewActionContext,
-  TrelloViewState,
-} from '../TrelloViewState/TrelloViewState.ts'
+  DrawViewActionContext,
+  DrawViewState,
+} from '../DrawViewState/DrawViewState.ts'
 import { getErrorMessage } from '../GetErrorMessage/GetErrorMessage.ts'
 import { updateBoardDetailCard } from '../UpdateBoardDetailCard/UpdateBoardDetailCard.ts'
 
 const hasLabel = (
-  labels: readonly TrelloLabel[] | undefined,
+  labels: readonly DrawLabel[] | undefined,
   labelId: string,
 ): boolean => {
   return Boolean(
@@ -18,10 +18,10 @@ const hasLabel = (
 }
 
 const mergeLabels = (
-  currentLabels: readonly TrelloLabel[] | undefined,
-  updatedLabels: readonly TrelloLabel[] | undefined,
-  addedLabel: TrelloLabel,
-): readonly TrelloLabel[] => {
+  currentLabels: readonly DrawLabel[] | undefined,
+  updatedLabels: readonly DrawLabel[] | undefined,
+  addedLabel: DrawLabel,
+): readonly DrawLabel[] => {
   if (updatedLabels) {
     return updatedLabels
   }
@@ -32,10 +32,10 @@ const mergeLabels = (
 }
 
 export const openCardLabelPicker = async (
-  context: TrelloViewActionContext,
+  context: DrawViewActionContext,
 ): Promise<void> => {
   const { client, requestRerender } = context
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   if (!state.credentials || !state.boardDetail || !state.selectedCardDetail) {
     return
   }
@@ -63,10 +63,10 @@ export const openCardLabelPicker = async (
 }
 
 export const closeCardLabelPicker = (
-  context: Readonly<TrelloViewActionContext>,
+  context: Readonly<DrawViewActionContext>,
 ): void => {
   const { requestRerender } = context
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   state.cardLabelCreateOpen = false
   state.cardLabelPickerOpen = false
   state.draftLabelSearchQuery = ''
@@ -83,11 +83,11 @@ export const closeCardLabelPicker = (
 }
 
 export const addCardLabel = async (
-  context: TrelloViewActionContext,
+  context: DrawViewActionContext,
   labelId: string,
 ): Promise<void> => {
   const { client, requestRerender } = context
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   if (
     !state.credentials ||
     !state.selectedCardDetail ||

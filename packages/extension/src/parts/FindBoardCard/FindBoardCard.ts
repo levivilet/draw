@@ -1,10 +1,10 @@
-import type { TrelloCard } from '../TrelloTypes/TrelloTypes.ts'
-import type { TrelloViewState } from '../TrelloViewState/TrelloViewState.ts'
+import type { DrawCard } from '../DrawTypes/DrawTypes.ts'
+import type { DrawViewState } from '../DrawViewState/DrawViewState.ts'
 
 export const findBoardCard = (
-  state: Readonly<TrelloViewState>,
+  state: Readonly<DrawViewState>,
   cardId: string,
-): TrelloCard | undefined => {
+): DrawCard | undefined => {
   const lists = state.boardDetail?.lists || []
   for (const list of lists) {
     const card = list.cards.find((item) => item.id === cardId)

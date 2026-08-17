@@ -1,8 +1,8 @@
-import type { TrelloLabel } from '../TrelloTypes/TrelloTypes.ts'
-import * as TrelloStrings from '../TrelloStrings/TrelloStrings.ts'
+import type { DrawLabel } from '../DrawTypes/DrawTypes.ts'
+import * as DrawStrings from '../DrawStrings/DrawStrings.ts'
 
-export const getLabelText = (label: Readonly<TrelloLabel>): string => {
-  return label.name?.trim() || label.color?.trim() || TrelloStrings.label()
+export const getLabelText = (label: Readonly<DrawLabel>): string => {
+  return label.name?.trim() || label.color?.trim() || DrawStrings.label()
 }
 
 export const labelColors = [
@@ -51,7 +51,7 @@ const toLabelColorClassSuffix = (color: string): string => {
 
 export const getLabelColorClassName = (color: string | undefined): string => {
   if (!color || !knownLabelColors.has(color)) {
-    return 'TrelloCardLabelColorNeutral'
+    return 'DrawCardLabelColorNeutral'
   }
-  return `TrelloCardLabelColor${toLabelColorClassSuffix(color)}`
+  return `DrawCardLabelColor${toLabelColorClassSuffix(color)}`
 }

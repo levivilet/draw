@@ -3,7 +3,7 @@ import {
   connectWithCredentials,
   createBoards,
   createMockData,
-  useMockDataAndShowTrello,
+  useMockDataAndShowDraw,
 } from './_trello.virtual-dom-view.shared.ts'
 
 export const name = 'trello.virtual-dom-view.boards'
@@ -12,7 +12,7 @@ export const name = 'trello.virtual-dom-view.boards'
 export const test: Test = async ({ Command, expect, Locator, Main }) => {
   await Main.closeAllEditors()
   const boards = createBoards(1)
-  await useMockDataAndShowTrello(Command, createMockData(boards))
+  await useMockDataAndShowDraw(Command, createMockData(boards))
   await connectWithCredentials({ Command, expect, Locator })
 
   const board = Locator('button[name="board:board-1"]')

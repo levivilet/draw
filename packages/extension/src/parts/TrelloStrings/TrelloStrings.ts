@@ -95,7 +95,7 @@ export const noLabelsAvailable = (): string =>
 export const noSearchResults = (): string =>
   getString(UiStrings.NoSearchResults)
 export const openCard = (): string => getString(UiStrings.OpenCard)
-export const openInTrello = (): string => getString(UiStrings.OpenInTrello)
+export const openInDraw = (): string => getString(UiStrings.OpenInDraw)
 export const personalBoards = (): string => getString(UiStrings.PersonalBoards)
 export const recentlyViewed = (): string => getString(UiStrings.RecentlyViewed)
 export const refreshBoards = (): string => getString(UiStrings.RefreshBoards)
@@ -105,7 +105,7 @@ export const saving = (): string => getString(UiStrings.Saving)
 export const searchLabels = (): string => getString(UiStrings.SearchLabels)
 export const searchResultsFor = (query: string): string =>
   getStringWithPlaceholder(UiStrings.SearchResultsFor, query)
-export const searchTrello = (): string => getString(UiStrings.SearchTrello)
+export const searchDraw = (): string => getString(UiStrings.SearchDraw)
 export const searching = (): string => getString(UiStrings.Searching)
 export const selectAColor = (): string => getString(UiStrings.SelectAColor)
 export const selectLabelColor = (color: string): string =>

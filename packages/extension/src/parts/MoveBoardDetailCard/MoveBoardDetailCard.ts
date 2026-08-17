@@ -1,13 +1,13 @@
-import type { TrelloCard, TrelloCardMove } from '../TrelloTypes/TrelloTypes.ts'
-import type { TrelloViewState } from '../TrelloViewState/TrelloViewState.ts'
+import type { DrawCard, DrawCardMove } from '../DrawTypes/DrawTypes.ts'
+import type { DrawViewState } from '../DrawViewState/DrawViewState.ts'
 
 export const moveBoardDetailCard = (
-  state: Readonly<TrelloViewState>,
-  card: Readonly<TrelloCard>,
+  state: Readonly<DrawViewState>,
+  card: Readonly<DrawCard>,
   targetListId: string,
-  position: TrelloCardMove['pos'],
+  position: DrawCardMove['pos'],
 ): void => {
-  const mutableState = state as TrelloViewState
+  const mutableState = state as DrawViewState
   if (!mutableState.boardDetail) {
     return
   }

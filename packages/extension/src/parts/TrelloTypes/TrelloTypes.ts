@@ -1,102 +1,102 @@
 // cspell:ignore prefs
 
-export interface TrelloCredentials {
+export interface DrawCredentials {
   readonly apiKey: string
   readonly token: string
 }
 
-export interface TrelloOrganization {
+export interface DrawOrganization {
   readonly displayName?: string
   readonly id: string
   readonly name: string
 }
 
-export interface TrelloBoardBackgroundImage {
+export interface DrawBoardBackgroundImage {
   readonly height?: number
   readonly url?: string
   readonly width?: number
 }
 
-export interface TrelloBoardPreferences {
+export interface DrawBoardPreferences {
   readonly backgroundBottomColor?: string
   readonly backgroundBrightness?: string
   readonly backgroundColor?: string
   readonly backgroundImage?: string | null
-  readonly backgroundImageScaled?: readonly TrelloBoardBackgroundImage[]
+  readonly backgroundImageScaled?: readonly DrawBoardBackgroundImage[]
   readonly backgroundTile?: boolean
   readonly backgroundTopColor?: string
 }
 
-export interface TrelloBoard {
+export interface DrawBoard {
   readonly dateLastView?: string
   readonly id: string
   readonly idOrganization?: string
   readonly name: string
-  readonly organization?: TrelloOrganization
-  readonly prefs?: TrelloBoardPreferences
+  readonly organization?: DrawOrganization
+  readonly prefs?: DrawBoardPreferences
   readonly url?: string
 }
 
-export interface TrelloLabel {
+export interface DrawLabel {
   readonly color?: string
   readonly id: string
   readonly idBoard?: string
   readonly name?: string
 }
 
-export interface TrelloLabelCreate {
+export interface DrawLabelCreate {
   readonly color: string
   readonly name: string
 }
 
-export interface TrelloCardBadges {
+export interface DrawCardBadges {
   readonly comments?: number
 }
 
-export interface TrelloCardCoverScaled {
+export interface DrawCardCoverScaled {
   readonly height?: number
   readonly url?: string
   readonly width?: number
 }
 
-export interface TrelloCardCover {
+export interface DrawCardCover {
   readonly color?: string | null
-  readonly scaled?: readonly TrelloCardCoverScaled[]
+  readonly scaled?: readonly DrawCardCoverScaled[]
   readonly sharedSourceUrl?: string | null
   readonly size?: string
   readonly url?: string | null
 }
 
-export interface TrelloCard {
-  readonly attachments?: readonly TrelloAttachment[]
-  readonly badges?: TrelloCardBadges
-  readonly cover?: TrelloCardCover | null
+export interface DrawCard {
+  readonly attachments?: readonly DrawAttachment[]
+  readonly badges?: DrawCardBadges
+  readonly cover?: DrawCardCover | null
   readonly desc?: string
   readonly id: string
   readonly idBoard?: string
   readonly idList?: string
-  readonly labels?: readonly TrelloLabel[]
+  readonly labels?: readonly DrawLabel[]
   readonly name: string
   readonly url?: string
 }
 
-export interface TrelloAttachmentPreview {
+export interface DrawAttachmentPreview {
   readonly url?: string
 }
 
-export interface TrelloAttachment {
+export interface DrawAttachment {
   readonly id: string
   readonly mimeType?: string
   readonly name?: string
-  readonly previews?: readonly TrelloAttachmentPreview[]
+  readonly previews?: readonly DrawAttachmentPreview[]
   readonly url?: string
 }
 
-export interface TrelloCommentData {
+export interface DrawCommentData {
   readonly text?: string
 }
 
-export interface TrelloCommentMember {
+export interface DrawCommentMember {
   readonly avatarHash?: string
   readonly avatarUrl?: string
   readonly fullName?: string
@@ -105,62 +105,62 @@ export interface TrelloCommentMember {
   readonly username?: string
 }
 
-export interface TrelloComment {
-  readonly data: TrelloCommentData
+export interface DrawComment {
+  readonly data: DrawCommentData
   readonly date?: string
   readonly id: string
-  readonly memberCreator?: TrelloCommentMember
+  readonly memberCreator?: DrawCommentMember
 }
 
-export interface TrelloCardDetail {
-  readonly attachments: readonly TrelloAttachment[]
-  readonly card: TrelloCard
-  readonly comments: readonly TrelloComment[]
+export interface DrawCardDetail {
+  readonly attachments: readonly DrawAttachment[]
+  readonly card: DrawCard
+  readonly comments: readonly DrawComment[]
 }
 
-export interface TrelloCardUpdate {
+export interface DrawCardUpdate {
   readonly desc: string
   readonly name: string
 }
 
-export interface TrelloCardCreate {
+export interface DrawCardCreate {
   readonly name: string
   readonly pos: 'bottom'
 }
 
-export interface TrelloCardMove {
+export interface DrawCardMove {
   readonly idList: string
   readonly pos: 'bottom' | 'top'
 }
 
-export interface TrelloList {
-  readonly cards: readonly TrelloCard[]
+export interface DrawList {
+  readonly cards: readonly DrawCard[]
   readonly id: string
   readonly name: string
 }
 
-export interface TrelloListCreate {
+export interface DrawListCreate {
   readonly name: string
   readonly pos: 'bottom'
 }
 
-export interface TrelloListUpdate {
+export interface DrawListUpdate {
   readonly name: string
 }
 
-export interface TrelloBoardDetail {
-  readonly board: TrelloBoard
-  readonly lists: readonly TrelloList[]
+export interface DrawBoardDetail {
+  readonly board: DrawBoard
+  readonly lists: readonly DrawList[]
 }
 
-export interface TrelloBoardSearchResult extends TrelloBoard {
+export interface DrawBoardSearchResult extends DrawBoard {
   readonly type: 'board'
 }
 
-export interface TrelloCardSearchResult extends TrelloCard {
+export interface DrawCardSearchResult extends DrawCard {
   readonly type: 'card'
 }
 
-export type TrelloSearchResult =
-  | TrelloBoardSearchResult
-  | TrelloCardSearchResult
+export type DrawSearchResult =
+  | DrawBoardSearchResult
+  | DrawCardSearchResult

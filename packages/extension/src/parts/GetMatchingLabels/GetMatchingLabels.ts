@@ -1,10 +1,10 @@
-import type { TrelloLabel } from '../TrelloTypes/TrelloTypes.ts'
-import type { TrelloViewState } from '../TrelloViewState/TrelloViewState.ts'
+import type { DrawLabel } from '../DrawTypes/DrawTypes.ts'
+import type { DrawViewState } from '../DrawViewState/DrawViewState.ts'
 import { getLabelText } from '../LabelHelpers/LabelHelpers.ts'
 
 export const getMatchingLabels = (
-  state: Readonly<TrelloViewState>,
-): readonly TrelloLabel[] => {
+  state: Readonly<DrawViewState>,
+): readonly DrawLabel[] => {
   const { boardLabels, draftLabelSearchQuery } = state
   const query = draftLabelSearchQuery.trim().toLowerCase()
   return boardLabels.filter((label) => {

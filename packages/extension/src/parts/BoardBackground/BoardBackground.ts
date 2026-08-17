@@ -1,9 +1,9 @@
 // cspell:ignore prefs
 
 import type {
-  TrelloBoard,
-  TrelloBoardBackgroundImage,
-} from '../TrelloTypes/TrelloTypes.ts'
+  DrawBoard,
+  DrawBoardBackgroundImage,
+} from '../DrawTypes/DrawTypes.ts'
 
 const hexColorPattern = /^#[\da-f]{3}(?:[\da-f]{3})?(?:[\da-f]{2})?$/i
 
@@ -16,12 +16,12 @@ const escapeCssString = (value: string): string => {
     .replaceAll('\f', '\\c ')
 }
 
-const getImageSize = (image: Readonly<TrelloBoardBackgroundImage>): number => {
+const getImageSize = (image: Readonly<DrawBoardBackgroundImage>): number => {
   return (image.width || 0) * (image.height || 0)
 }
 
 const getLargestBackgroundImage = (
-  images: readonly TrelloBoardBackgroundImage[] | undefined,
+  images: readonly DrawBoardBackgroundImage[] | undefined,
 ): string => {
   if (!images || images.length === 0) {
     return ''
@@ -35,7 +35,7 @@ const getLargestBackgroundImage = (
   return largest.url || ''
 }
 
-const getBackgroundImage = (board: Readonly<TrelloBoard>): string => {
+const getBackgroundImage = (board: Readonly<DrawBoard>): string => {
   return (
     getLargestBackgroundImage(board.prefs?.backgroundImageScaled) ||
     board.prefs?.backgroundImage ||
@@ -43,7 +43,7 @@ const getBackgroundImage = (board: Readonly<TrelloBoard>): string => {
   )
 }
 
-const getBackgroundColor = (board: Readonly<TrelloBoard>): string => {
+const getBackgroundColor = (board: Readonly<DrawBoard>): string => {
   const color =
     board.prefs?.backgroundBottomColor ||
     board.prefs?.backgroundTopColor ||
@@ -55,22 +55,22 @@ const getBackgroundColor = (board: Readonly<TrelloBoard>): string => {
   return color
 }
 
-const hasBoardBackground = (board: Readonly<TrelloBoard>): boolean => {
+const hasBoardBackground = (board: Readonly<DrawBoard>): boolean => {
   return Boolean(getBackgroundImage(board) || getBackgroundColor(board))
 }
 
 export const getBoardBackgroundClassName = (
-  board: Readonly<TrelloBoard>,
+  board: Readonly<DrawBoard>,
   enabled: boolean,
 ): string => {
   if (!enabled || !hasBoardBackground(board)) {
-    return 'TrelloView TrelloBoardDetail'
+    return 'DrawView DrawBoardDetail'
   }
-  return 'TrelloView TrelloBoardDetail TrelloBoardDetailWithBackground'
+  return 'DrawView DrawBoardDetail DrawBoardDetailWithBackground'
 }
 
 export const getBoardBackgroundCss = (
-  board: Readonly<TrelloBoard>,
+  board: Readonly<DrawBoard>,
   enabled: boolean,
 ): string => {
   if (!enabled) {
@@ -81,19 +81,19 @@ export const getBoardBackgroundCss = (
   const color = getBackgroundColor(board)
   if (image) {
     properties.push(
-      `--TrelloBoardBackgroundImage: url("${escapeCssString(image)}")`,
+      `--DrawBoardBackgroundImage: url("${escapeCssString(image)}")`,
     )
     properties.push(
-      `--TrelloBoardBackgroundRepeat: ${board.prefs?.backgroundTile ? 'repeat' : 'no-repeat'
+      `--DrawBoardBackgroundRepeat: ${board.prefs?.backgroundTile ? 'repeat' : 'no-repeat'
       }`,
     )
     properties.push(
-      `--TrelloBoardBackgroundSize: ${board.prefs?.backgroundTile ? 'auto' : 'cover'
+      `--DrawBoardBackgroundSize: ${board.prefs?.backgroundTile ? 'auto' : 'cover'
       }`,
     )
   }
   if (color) {
-    properties.push(`--TrelloBoardBackgroundColor: ${color}`)
+    properties.push(`--DrawBoardBackgroundColor: ${color}`)
   }
   if (properties.length === 0) {
     return ''

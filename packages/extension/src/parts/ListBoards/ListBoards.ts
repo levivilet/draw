@@ -1,11 +1,11 @@
 // cspell:ignore prefs
 
-import type { TrelloApiCache } from '../TrelloApiCache/TrelloApiCache.ts'
-import type { FetchLike } from '../TrelloClientTypes/TrelloClientTypes.ts'
+import type { DrawApiCache } from '../DrawApiCache/DrawApiCache.ts'
+import type { FetchLike } from '../DrawClientTypes/DrawClientTypes.ts'
 import type {
-  TrelloBoard,
-  TrelloCredentials,
-} from '../TrelloTypes/TrelloTypes.ts'
+  DrawBoard,
+  DrawCredentials,
+} from '../DrawTypes/DrawTypes.ts'
 import { readCachedJson, requestJson } from '../RequestJson/RequestJson.ts'
 
 const listBoardsParams = {
@@ -15,10 +15,10 @@ const listBoardsParams = {
 } as const
 
 export const readCachedListBoards = (
-  cache: TrelloApiCache | undefined,
-  credentials: TrelloCredentials,
-): Promise<readonly TrelloBoard[] | undefined> => {
-  return readCachedJson<readonly TrelloBoard[]>(
+  cache: DrawApiCache | undefined,
+  credentials: DrawCredentials,
+): Promise<readonly DrawBoard[] | undefined> => {
+  return readCachedJson<readonly DrawBoard[]>(
     cache,
     '/members/me/boards',
     credentials,
@@ -28,10 +28,10 @@ export const readCachedListBoards = (
 
 export const listBoards = (
   fetchLike: FetchLike,
-  credentials: TrelloCredentials,
-  cache?: TrelloApiCache,
-): Promise<readonly TrelloBoard[]> => {
-  return requestJson<readonly TrelloBoard[]>(
+  credentials: DrawCredentials,
+  cache?: DrawApiCache,
+): Promise<readonly DrawBoard[]> => {
+  return requestJson<readonly DrawBoard[]>(
     fetchLike,
     '/members/me/boards',
     credentials,

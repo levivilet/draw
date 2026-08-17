@@ -2,14 +2,14 @@ import type { Test } from '@lvce-editor/test-with-playwright'
 import {
   connectWithCredentials,
   createMockData,
-  useMockDataAndShowTrello,
+  useMockDataAndShowDraw,
 } from './_trello.virtual-dom-view.shared.ts'
 
 export const name = 'trello.virtual-dom-view.boards-empty'
 // export const skip = true
 
 export const test: Test = async ({ Command, expect, Locator }) => {
-  await useMockDataAndShowTrello(Command, createMockData([]))
+  await useMockDataAndShowDraw(Command, createMockData([]))
   await connectWithCredentials({ Command, expect, Locator })
 
   const noBoards = Locator('text=No boards found')

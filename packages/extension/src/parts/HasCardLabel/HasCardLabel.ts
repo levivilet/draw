@@ -1,7 +1,7 @@
-import type { TrelloLabel } from '../TrelloTypes/TrelloTypes.ts'
+import type { DrawLabel } from '../DrawTypes/DrawTypes.ts'
 
 export const hasCardLabel = (
-  labels: readonly TrelloLabel[] | undefined,
+  labels: readonly DrawLabel[] | undefined,
   labelId: string,
 ): boolean => {
   return Boolean(

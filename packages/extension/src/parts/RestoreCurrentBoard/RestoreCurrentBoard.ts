@@ -1,25 +1,25 @@
-import type { TrelloBoard } from '../TrelloTypes/TrelloTypes.ts'
+import type { DrawBoard } from '../DrawTypes/DrawTypes.ts'
 import type {
-  TrelloViewActionContext,
-  TrelloViewState,
-} from '../TrelloViewState/TrelloViewState.ts'
+  DrawViewActionContext,
+  DrawViewState,
+} from '../DrawViewState/DrawViewState.ts'
 import { isSameJson } from '../CacheFirstHelpers/CacheFirstHelpers.ts'
 import { getErrorMessage } from '../GetErrorMessage/GetErrorMessage.ts'
 
 const findBoard = (
-  boards: readonly TrelloBoard[],
+  boards: readonly DrawBoard[],
   boardId: string,
-): TrelloBoard | undefined => {
+): DrawBoard | undefined => {
   return boards.find((board) => {
     return board.id === boardId
   })
 }
 
 export const restoreCurrentBoard = async (
-  context: Readonly<TrelloViewActionContext>,
+  context: Readonly<DrawViewActionContext>,
 ): Promise<void> => {
   const { client, currentBoardStorage } = context
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   if (!state.credentials || state.error) {
     return
   }

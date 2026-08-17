@@ -1,5 +1,5 @@
 import type { ViewEvent } from '@lvce-editor/api'
-import type { TrelloViewActionContext } from '../TrelloViewState/TrelloViewState.ts'
+import type { DrawViewActionContext } from '../DrawViewState/DrawViewState.ts'
 import { cancelAddCard } from '../AddCard/AddCard.ts'
 import { cancelWriteComment, submitComment } from '../AddComment/AddComment.ts'
 import { cancelAddList } from '../AddList/AddList.ts'
@@ -19,7 +19,7 @@ const getEventBoolean = (event: Readonly<ViewEvent>, key: string): boolean => {
 }
 
 export const handleKeyDownEvent = async (
-  context: TrelloViewActionContext,
+  context: DrawViewActionContext,
   event: Readonly<ViewEvent>,
 ): Promise<void> => {
   const key = getEventString(event, 'key') || getEventString(event, 'code')

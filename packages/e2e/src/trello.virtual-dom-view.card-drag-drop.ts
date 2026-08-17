@@ -7,7 +7,7 @@ import {
   createList,
   createMockData,
   openBoard,
-  useMockDataAndShowTrello,
+  useMockDataAndShowDraw,
 } from './_trello.virtual-dom-view.shared.ts'
 
 export const name = 'trello.virtual-dom-view.card-drag-drop'
@@ -24,7 +24,7 @@ export const test: Test = async ({ Command, expect, Locator }) => {
   const boardDetails = {
     'board-1': createBoardDetail(boards[0], [todo, doing]),
   }
-  await useMockDataAndShowTrello(Command, createMockData(boards, boardDetails))
+  await useMockDataAndShowDraw(Command, createMockData(boards, boardDetails))
   await connectWithCredentials({ Command, expect, Locator })
   await openBoard(Command, Locator, expect)
 
@@ -37,7 +37,7 @@ export const test: Test = async ({ Command, expect, Locator }) => {
 
   await planWork.dispatchEvent('dragstart', '{}')
   await buildWork.dispatchEvent('dragover', '{}')
-  await expect(doingList).toHaveClass('TrelloList TrelloListDragTarget')
+  await expect(doingList).toHaveClass('DrawList DrawListDragTarget')
   await buildWork.dispatchEvent('drop', '{"value":"card-1"}')
 
   const cards = doingList.locator('buttondrawCard')

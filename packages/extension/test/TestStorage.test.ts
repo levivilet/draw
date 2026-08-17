@@ -4,11 +4,11 @@ import {
   testCacheName as testCredentialCacheName,
 } from '../src/parts/CredentialStorage/CredentialStorage.ts'
 import {
-  clearTrelloTestCaches,
+  clearDrawTestCaches,
   testCacheNames,
 } from '../src/parts/TestStorage/TestStorage.ts'
 
-test('clearTrelloTestCaches deletes only test cache names', async () => {
+test('clearDrawTestCaches deletes only test cache names', async () => {
   const deleted: string[] = []
   const cacheStorage = {
     async delete(cacheName: string): Promise<boolean> {
@@ -17,14 +17,14 @@ test('clearTrelloTestCaches deletes only test cache names', async () => {
     },
   } as unknown as CacheStorage
 
-  await clearTrelloTestCaches(cacheStorage)
+  await clearDrawTestCaches(cacheStorage)
 
   expect(deleted).toEqual([...testCacheNames])
   expect(deleted).toContain(testCredentialCacheName)
   expect(deleted).not.toContain(credentialCacheName)
 })
 
-test('clearTrelloTestCaches does nothing when Cache Storage is unavailable', async () => {
+test('clearDrawTestCaches does nothing when Cache Storage is unavailable', async () => {
   const originalCaches = globalThis.caches
   Object.defineProperty(globalThis, 'caches', {
     configurable: true,
@@ -32,7 +32,7 @@ test('clearTrelloTestCaches does nothing when Cache Storage is unavailable', asy
   })
 
   try {
-    await expect(clearTrelloTestCaches()).resolves.toBeUndefined()
+    await expect(clearDrawTestCaches()).resolves.toBeUndefined()
   } finally {
     Object.defineProperty(globalThis, 'caches', {
       configurable: true,

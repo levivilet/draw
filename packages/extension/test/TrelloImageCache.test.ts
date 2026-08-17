@@ -1,13 +1,13 @@
 import { expect, test } from '@jest/globals'
-import type { TrelloCredentials } from '../src/parts/TrelloTypes/TrelloTypes.ts'
-import { getCredentialFingerprint } from '../src/parts/TrelloApiCache/TrelloApiCache.ts'
+import type { DrawCredentials } from '../src/parts/DrawTypes/DrawTypes.ts'
+import { getCredentialFingerprint } from '../src/parts/DrawApiCache/DrawApiCache.ts'
 import {
-  createTrelloImageCache,
-  testTrelloImageCacheName,
-} from '../src/parts/TrelloImageCache/TrelloImageCache.ts'
+  createDrawImageCache,
+  testDrawImageCacheName,
+} from '../src/parts/DrawImageCache/DrawImageCache.ts'
 
 const imageUrl = 'https://example.com/card-cover.png'
-const credentials: TrelloCredentials = {
+const credentials: DrawCredentials = {
   apiKey: 'api-key',
   token: 'token',
 }
@@ -51,7 +51,7 @@ const createMemoryCacheStorage = (
   } as unknown as Cache
   const cacheStorage = {
     async open(cacheName: string): Promise<Cache> {
-      expect(cacheName).toBe(testTrelloImageCacheName)
+      expect(cacheName).toBe(testDrawImageCacheName)
       return cache
     },
   } as unknown as CacheStorage
@@ -61,13 +61,13 @@ const createMemoryCacheStorage = (
 test('resolveImageUrl fetches, caches, and returns object url on cache miss', async () => {
   const { cacheStorage, putUrls } = createMemoryCacheStorage()
   const fetchUrls: string[] = []
-  const imageCache = createTrelloImageCache(
+  const imageCache = createDrawImageCache(
     cacheStorage,
     async (url): Promise<Response> => {
       fetchUrls.push(url)
       return createPngResponse('fresh image')
     },
-    testTrelloImageCacheName,
+    testDrawImageCacheName,
   )
 
   const objectUrl = await imageCache.resolveImageUrl(imageUrl, credentials)
@@ -83,12 +83,12 @@ test('resolveImageUrl reads account-scoped Cache Storage before fetching', async
   const { cacheStorage, putUrls } = createMemoryCacheStorage({
     [cacheUrl]: createPngResponse('cached image'),
   })
-  const imageCache = createTrelloImageCache(
+  const imageCache = createDrawImageCache(
     cacheStorage,
     async (): Promise<Response> => {
       throw new Error('Expected cached image to be used')
     },
-    testTrelloImageCacheName,
+    testDrawImageCacheName,
   )
 
   const objectUrl = await imageCache.resolveImageUrl(imageUrl, credentials)
@@ -100,14 +100,14 @@ test('resolveImageUrl reads account-scoped Cache Storage before fetching', async
 
 test('resolveImageUrl fails closed for non-ok image responses', async () => {
   const { cacheStorage, putUrls } = createMemoryCacheStorage()
-  const imageCache = createTrelloImageCache(
+  const imageCache = createDrawImageCache(
     cacheStorage,
     async (): Promise<Response> => {
       return new Response('not found', {
         status: 404,
       })
     },
-    testTrelloImageCacheName,
+    testDrawImageCacheName,
   )
 
   await expect(imageCache.resolveImageUrl(imageUrl, credentials)).resolves.toBe(
@@ -117,7 +117,7 @@ test('resolveImageUrl fails closed for non-ok image responses', async () => {
   imageCache.dispose()
 })
 
-test('resolveImageUrl authenticates Trello download URLs', async () => {
+test('resolveImageUrl authenticates Draw download URLs', async () => {
   const { cacheStorage } = createMemoryCacheStorage()
   const requests: Array<
     readonly [
@@ -130,13 +130,13 @@ test('resolveImageUrl authenticates Trello download URLs', async () => {
   > = []
   const trelloUrl =
     'https://trello.com/1/cards/card-1/attachments/attachment-1/download/image.png'
-  const imageCache = createTrelloImageCache(
+  const imageCache = createDrawImageCache(
     cacheStorage,
     async (url, init): Promise<Response> => {
       requests.push([url, init])
       return createPngResponse('private image')
     },
-    testTrelloImageCacheName,
+    testDrawImageCacheName,
   )
 
   await imageCache.resolveImageUrl(trelloUrl, credentials)
@@ -155,7 +155,7 @@ test('resolveImageUrl authenticates Trello download URLs', async () => {
   imageCache.dispose()
 })
 
-test('resolveImageUrl does not send Trello credentials to external hosts', async () => {
+test('resolveImageUrl does not send Draw credentials to external hosts', async () => {
   const { cacheStorage } = createMemoryCacheStorage()
   const requests: Array<
     readonly [
@@ -166,13 +166,13 @@ test('resolveImageUrl does not send Trello credentials to external hosts', async
       ),
     ]
   > = []
-  const imageCache = createTrelloImageCache(
+  const imageCache = createDrawImageCache(
     cacheStorage,
     async (url, init): Promise<Response> => {
       requests.push([url, init])
       return createPngResponse('external image')
     },
-    testTrelloImageCacheName,
+    testDrawImageCacheName,
   )
 
   await imageCache.resolveImageUrl(imageUrl, credentials)
@@ -181,16 +181,16 @@ test('resolveImageUrl does not send Trello credentials to external hosts', async
   imageCache.dispose()
 })
 
-test('resolveImageUrl isolates cached images by Trello account', async () => {
+test('resolveImageUrl isolates cached images by Draw account', async () => {
   const { cacheStorage, putUrls } = createMemoryCacheStorage()
   const fetchUrls: string[] = []
-  const imageCache = createTrelloImageCache(
+  const imageCache = createDrawImageCache(
     cacheStorage,
     async (url): Promise<Response> => {
       fetchUrls.push(url)
       return createPngResponse('image')
     },
-    testTrelloImageCacheName,
+    testDrawImageCacheName,
   )
   const otherCredentials = { ...credentials, token: 'other-token' }
 

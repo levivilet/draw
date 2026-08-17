@@ -1,13 +1,13 @@
 import type {
-  TrelloAttachment,
-  TrelloCard,
-  TrelloCardDetail,
-  TrelloComment,
-} from '../TrelloTypes/TrelloTypes.ts'
+  DrawAttachment,
+  DrawCard,
+  DrawCardDetail,
+  DrawComment,
+} from '../DrawTypes/DrawTypes.ts'
 import type {
-  TrelloViewActionContext,
-  TrelloViewState,
-} from '../TrelloViewState/TrelloViewState.ts'
+  DrawViewActionContext,
+  DrawViewState,
+} from '../DrawViewState/DrawViewState.ts'
 import {
   getAttachmentImageUrl,
   isImageAttachment,
@@ -18,19 +18,19 @@ import {
 } from '../CacheFirstHelpers/CacheFirstHelpers.ts'
 import { findBoardCard } from '../FindBoardCard/FindBoardCard.ts'
 import { getErrorMessage } from '../GetErrorMessage/GetErrorMessage.ts'
-import * as TrelloStrings from '../TrelloStrings/TrelloStrings.ts'
+import * as DrawStrings from '../DrawStrings/DrawStrings.ts'
 
 const isCurrentCardLoad = (
-  state: Readonly<TrelloViewState>,
+  state: Readonly<DrawViewState>,
   cardId: string,
 ): boolean => {
   return state.cardDetailLoadingCardId === cardId
 }
 
 const getCurrentDetailForCard = (
-  state: Readonly<TrelloViewState>,
+  state: Readonly<DrawViewState>,
   cardId: string,
-): TrelloCardDetail | undefined => {
+): DrawCardDetail | undefined => {
   const { selectedCardDetail } = state
   if (selectedCardDetail?.card.id === cardId) {
     return selectedCardDetail
@@ -39,7 +39,7 @@ const getCurrentDetailForCard = (
 }
 
 const isCardAlreadyOpen = (
-  state: Readonly<TrelloViewState>,
+  state: Readonly<DrawViewState>,
   cardId: string,
 ): boolean => {
   return (
@@ -49,10 +49,10 @@ const isCardAlreadyOpen = (
 }
 
 const applyFreshCard = (
-  state: Readonly<TrelloViewState>,
-  freshCard: Readonly<TrelloCard>,
+  state: Readonly<DrawViewState>,
+  freshCard: Readonly<DrawCard>,
 ): void => {
-  const mutableState = state as TrelloViewState
+  const mutableState = state as DrawViewState
   const current = getCurrentDetailForCard(state, freshCard.id)
   if (!current) {
     applyCardDetail(mutableState, {
@@ -75,11 +75,11 @@ const applyFreshCard = (
 }
 
 const applyFreshComments = (
-  state: Readonly<TrelloViewState>,
+  state: Readonly<DrawViewState>,
   cardId: string,
-  comments: readonly TrelloComment[],
+  comments: readonly DrawComment[],
 ): void => {
-  const mutableState = state as TrelloViewState
+  const mutableState = state as DrawViewState
   const current = getCurrentDetailForCard(state, cardId)
   if (!current) {
     return
@@ -91,11 +91,11 @@ const applyFreshComments = (
 }
 
 const applyFreshAttachments = (
-  state: Readonly<TrelloViewState>,
+  state: Readonly<DrawViewState>,
   cardId: string,
-  attachments: readonly TrelloAttachment[],
+  attachments: readonly DrawAttachment[],
 ): void => {
-  const mutableState = state as TrelloViewState
+  const mutableState = state as DrawViewState
   const current = getCurrentDetailForCard(state, cardId)
   if (!current) {
     return
@@ -107,11 +107,11 @@ const applyFreshAttachments = (
 }
 
 export const resolveCardAttachmentImages = async (
-  context: TrelloViewActionContext,
+  context: DrawViewActionContext,
   cardId: string,
-  attachments: readonly TrelloAttachment[],
+  attachments: readonly DrawAttachment[],
 ): Promise<void> => {
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   const { credentials } = state
   if (!credentials) {
     return
@@ -151,12 +151,12 @@ export const resolveCardAttachmentImages = async (
 }
 
 const loadCardComments = async (
-  context: TrelloViewActionContext,
+  context: DrawViewActionContext,
   cardId: string,
-  commentsPromise: Readonly<Promise<readonly TrelloComment[]>>,
-  cardPromise: Readonly<Promise<Readonly<TrelloCard>>>,
+  commentsPromise: Readonly<Promise<readonly DrawComment[]>>,
+  cardPromise: Readonly<Promise<Readonly<DrawCard>>>,
 ): Promise<void> => {
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   try {
     const comments = await commentsPromise
     if (!getCurrentDetailForCard(state, cardId)) {
@@ -179,12 +179,12 @@ const loadCardComments = async (
 }
 
 const loadCardAttachments = async (
-  context: TrelloViewActionContext,
+  context: DrawViewActionContext,
   cardId: string,
-  attachmentsPromise: Readonly<Promise<readonly TrelloAttachment[]>>,
-  cardPromise: Readonly<Promise<Readonly<TrelloCard>>>,
+  attachmentsPromise: Readonly<Promise<readonly DrawAttachment[]>>,
+  cardPromise: Readonly<Promise<Readonly<DrawCard>>>,
 ): Promise<void> => {
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   try {
     const attachments = await attachmentsPromise
     if (!getCurrentDetailForCard(state, cardId)) {
@@ -208,11 +208,11 @@ const loadCardAttachments = async (
 }
 
 export const openCard = async (
-  context: TrelloViewActionContext,
+  context: DrawViewActionContext,
   cardId: string,
 ): Promise<void> => {
   const { client, requestRerender } = context
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   if (!state.credentials || !state.boardDetail) {
     return
   }
@@ -221,7 +221,7 @@ export const openCard = async (
   }
   const card = findBoardCard(state, cardId)
   if (!card) {
-    state.error = TrelloStrings.cardNotFound(cardId)
+    state.error = DrawStrings.cardNotFound(cardId)
     requestRerender()
     return
   }
@@ -276,7 +276,7 @@ export const openCard = async (
     )
     const freshCard = await freshCardPromise
     const selectedCardDetail = state.selectedCardDetail as
-      | TrelloCardDetail
+      | DrawCardDetail
       | undefined
     if (
       isCurrentCardLoad(state, card.id) &&

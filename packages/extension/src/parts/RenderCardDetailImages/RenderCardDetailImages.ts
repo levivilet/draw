@@ -1,14 +1,14 @@
 import { text, VirtualDomElements } from '@lvce-editor/virtual-dom-worker'
-import type { TrelloAttachment } from '../TrelloTypes/TrelloTypes.ts'
+import type { DrawAttachment } from '../DrawTypes/DrawTypes.ts'
 import type { VirtualDomSegment } from '../VirtualDomSegment/VirtualDomSegment.ts'
 import { isImageAttachment } from '../AttachmentHelpers/AttachmentHelpers.ts'
 import { renderImageAttachment } from '../RenderImageAttachment/RenderImageAttachment.ts'
 import { renderListTitle } from '../RenderListTitle/RenderListTitle.ts'
-import * as TrelloStrings from '../TrelloStrings/TrelloStrings.ts'
+import * as DrawStrings from '../DrawStrings/DrawStrings.ts'
 
 export const renderCardDetailImages = (
   loading: boolean,
-  attachments: readonly TrelloAttachment[],
+  attachments: readonly DrawAttachment[],
   attachmentImageUrls: Readonly<Record<string, string>>,
   failedImageIds: readonly string[],
 ): VirtualDomSegment => {
@@ -16,13 +16,13 @@ export const renderCardDetailImages = (
     return {
       childCount: 2,
       dom: [
-        ...renderListTitle(TrelloStrings.images()),
+        ...renderListTitle(DrawStrings.images()),
         {
           childCount: 1,
-          className: 'TrelloCardDetailEmpty',
+          className: 'DrawCardDetailEmpty',
           type: VirtualDomElements.Div,
         },
-        text(TrelloStrings.loadingImages()),
+        text(DrawStrings.loadingImages()),
       ],
     }
   }
@@ -33,10 +33,10 @@ export const renderCardDetailImages = (
   return {
     childCount: 2,
     dom: [
-      ...renderListTitle(TrelloStrings.images()),
+      ...renderListTitle(DrawStrings.images()),
       {
         childCount: imageAttachments.length,
-        className: 'TrelloCardDetailImages',
+        className: 'DrawCardDetailImages',
         type: VirtualDomElements.Div,
       },
       ...imageAttachments.flatMap((attachment) =>

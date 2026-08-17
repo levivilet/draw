@@ -6,7 +6,7 @@ import {
   createList,
   openBoard,
   openCard,
-  useMockDataAndShowTrello,
+  useMockDataAndShowDraw,
 } from './_trello.virtual-dom-view.shared.ts'
 
 export const name = 'trello.virtual-dom-view.card-detail-popup'
@@ -23,7 +23,7 @@ export const test: Test = async ({ Command, expect, Locator }) => {
       createList('list-1', 'Todo', [card]),
     ]),
   }
-  await useMockDataAndShowTrello(Command, {
+  await useMockDataAndShowDraw(Command, {
     boardDetails,
     boards,
     cardDetails: {

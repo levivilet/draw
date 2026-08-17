@@ -1,31 +1,31 @@
-import type { TrelloCard, TrelloList } from '../TrelloTypes/TrelloTypes.ts'
+import type { DrawCard, DrawList } from '../DrawTypes/DrawTypes.ts'
 import type {
-  TrelloViewActionContext,
-  TrelloViewState,
-} from '../TrelloViewState/TrelloViewState.ts'
+  DrawViewActionContext,
+  DrawViewState,
+} from '../DrawViewState/DrawViewState.ts'
 import { getErrorMessage } from '../GetErrorMessage/GetErrorMessage.ts'
-import * as TrelloStrings from '../TrelloStrings/TrelloStrings.ts'
+import * as DrawStrings from '../DrawStrings/DrawStrings.ts'
 
 const addCardPrefix = 'addCard:'
 
 const findList = (
-  state: Readonly<TrelloViewState>,
+  state: Readonly<DrawViewState>,
   listId: string,
-): TrelloList | undefined => {
+): DrawList | undefined => {
   return state.boardDetail?.lists.find((list) => {
     return list.id === listId
   })
 }
 
 const appendCardToList = (
-  state: Readonly<TrelloViewState>,
+  state: Readonly<DrawViewState>,
   listId: string,
-  card: TrelloCard,
+  card: DrawCard,
 ): void => {
   if (!state.boardDetail) {
     return
   }
-  const mutableState = state as TrelloViewState
+  const mutableState = state as DrawViewState
   mutableState.boardDetail = {
     ...state.boardDetail,
     lists: state.boardDetail.lists.map((list) => {
@@ -41,11 +41,11 @@ const appendCardToList = (
 }
 
 export const startAddCard = (
-  context: Readonly<TrelloViewActionContext>,
+  context: Readonly<DrawViewActionContext>,
   listId: string,
 ): void => {
   const { requestRerender } = context
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   state.addingCardListId = listId
   state.focusedName = `newCardTitle:${listId}`
   state.savingNewCard = false
@@ -54,10 +54,10 @@ export const startAddCard = (
 }
 
 export const cancelAddCard = (
-  context: Readonly<TrelloViewActionContext>,
+  context: Readonly<DrawViewActionContext>,
 ): void => {
   const { requestRerender } = context
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   state.addingCardListId = ''
   state.savingNewCard = false
   state.error = ''
@@ -65,14 +65,14 @@ export const cancelAddCard = (
 }
 
 export const submitAddCard = async (
-  context: Readonly<TrelloViewActionContext>,
+  context: Readonly<DrawViewActionContext>,
   formName: string | undefined,
 ): Promise<void> => {
   if (!formName?.startsWith(addCardPrefix)) {
     return
   }
   const { client, requestRerender } = context
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   if (!state.credentials || !state.boardDetail || state.savingNewCard) {
     return
   }
@@ -84,7 +84,7 @@ export const submitAddCard = async (
   const name = state.draftNewCardTitle.trim()
   state.addingCardListId = listId
   if (!name) {
-    state.error = TrelloStrings.cardTitleRequired()
+    state.error = DrawStrings.cardTitleRequired()
     requestRerender()
     return
   }

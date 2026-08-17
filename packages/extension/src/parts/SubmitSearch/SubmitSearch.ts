@@ -1,16 +1,16 @@
 import type {
-  TrelloViewActionContext,
-  TrelloViewState,
-} from '../TrelloViewState/TrelloViewState.ts'
+  DrawViewActionContext,
+  DrawViewState,
+} from '../DrawViewState/DrawViewState.ts'
 import { isSameJson } from '../CacheFirstHelpers/CacheFirstHelpers.ts'
 import { clearBoardSpecificState } from '../ClearBoardSpecificState/ClearBoardSpecificState.ts'
 import { getErrorMessage } from '../GetErrorMessage/GetErrorMessage.ts'
 
 export const submitSearch = async (
-  context: TrelloViewActionContext,
+  context: DrawViewActionContext,
 ): Promise<void> => {
   const { client, requestRerender } = context
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   if (!state.credentials || !state.searchEnabled) {
     return
   }

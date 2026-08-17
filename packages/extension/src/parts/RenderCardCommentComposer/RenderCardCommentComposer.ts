@@ -3,14 +3,14 @@ import {
   VirtualDomElements,
   type VirtualDomNode,
 } from '@lvce-editor/virtual-dom-worker'
-import type { TrelloViewState } from '../TrelloViewState/TrelloViewState.ts'
+import type { DrawViewState } from '../DrawViewState/DrawViewState.ts'
 import * as DomEventListenerFunctions from '../DomEventListenerFunctions/DomEventListenerFunctions.ts'
 import * as MergeClassNames from '../MergeClassNames/MergeClassNames.ts'
 import { renderCardCommentButton } from '../RenderCardCommentButton/RenderCardCommentButton.ts'
-import * as TrelloStrings from '../TrelloStrings/TrelloStrings.ts'
+import * as DrawStrings from '../DrawStrings/DrawStrings.ts'
 
 export const renderCardCommentComposer = (
-  state: Readonly<TrelloViewState>,
+  state: Readonly<DrawViewState>,
 ): readonly VirtualDomNode[] => {
   const { draftComment, savingComment, writingComment } = state
   if (!writingComment) {
@@ -18,57 +18,57 @@ export const renderCardCommentComposer = (
       {
         childCount: 1,
         className: MergeClassNames.mergeClassNames(
-          'TrelloButton',
-          'TrelloCardCommentWriteButton',
+          'DrawButton',
+          'DrawCardCommentWriteButton',
         ),
         name: 'startWriteComment',
         onClick: DomEventListenerFunctions.HandleClick,
         type: VirtualDomElements.Button,
       },
-      text(TrelloStrings.writeAComment()),
+      text(DrawStrings.writeAComment()),
     ]
   }
   return [
     {
       childCount: 2,
-      className: 'TrelloCardCommentComposer',
+      className: 'DrawCardCommentComposer',
       type: VirtualDomElements.Div,
     },
     {
       autofocus: true,
       childCount: 0,
       className: MergeClassNames.mergeClassNames(
-        'TrelloTextArea',
-        'TrelloCardCommentTextArea',
+        'DrawTextArea',
+        'DrawCardCommentTextArea',
       ),
       disabled: savingComment,
       name: 'cardComment',
       onInput: DomEventListenerFunctions.HandleInput,
       onKeyDown: DomEventListenerFunctions.HandleKeyDown,
-      placeholder: TrelloStrings.writeACommentPlaceholder(),
+      placeholder: DrawStrings.writeACommentPlaceholder(),
       type: VirtualDomElements.TextArea,
       value: draftComment,
     },
     {
       childCount: 2,
-      className: 'TrelloCardCommentActions',
+      className: 'DrawCardCommentActions',
       type: VirtualDomElements.Div,
     },
     ...renderCardCommentButton(
       'submitComment',
-      savingComment ? TrelloStrings.saving() : TrelloStrings.save(),
+      savingComment ? DrawStrings.saving() : DrawStrings.save(),
       MergeClassNames.mergeClassNames(
-        'TrelloButton',
-        'TrelloCardCommentSaveButton',
+        'DrawButton',
+        'DrawCardCommentSaveButton',
       ),
       savingComment,
     ),
     ...renderCardCommentButton(
       'cancelWriteComment',
-      TrelloStrings.cancel(),
+      DrawStrings.cancel(),
       MergeClassNames.mergeClassNames(
-        'TrelloButton',
-        'TrelloCardCommentCancelButton',
+        'DrawButton',
+        'DrawCardCommentCancelButton',
       ),
       savingComment,
     ),

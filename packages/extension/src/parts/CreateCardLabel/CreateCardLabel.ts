@@ -1,16 +1,16 @@
 import type {
-  TrelloViewActionContext,
-  TrelloViewState,
-} from '../TrelloViewState/TrelloViewState.ts'
+  DrawViewActionContext,
+  DrawViewState,
+} from '../DrawViewState/DrawViewState.ts'
 import { addCardLabel } from '../CardLabelPicker/CardLabelPicker.ts'
 import { getErrorMessage } from '../GetErrorMessage/GetErrorMessage.ts'
-import * as TrelloStrings from '../TrelloStrings/TrelloStrings.ts'
+import * as DrawStrings from '../DrawStrings/DrawStrings.ts'
 
 export const openCardLabelCreate = (
-  context: Readonly<TrelloViewActionContext>,
+  context: Readonly<DrawViewActionContext>,
 ): void => {
   const { requestRerender } = context
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   const name = state.draftLabelSearchQuery.trim()
   if (!name) {
     return
@@ -23,10 +23,10 @@ export const openCardLabelCreate = (
 }
 
 export const closeCardLabelCreate = (
-  context: Readonly<TrelloViewActionContext>,
+  context: Readonly<DrawViewActionContext>,
 ): void => {
   const { requestRerender } = context
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   state.cardLabelCreateOpen = false
   state.draftNewLabelColor = 'green'
   state.draftNewLabelName = ''
@@ -35,20 +35,20 @@ export const closeCardLabelCreate = (
 }
 
 export const selectCardLabelColor = (
-  context: Readonly<TrelloViewActionContext>,
+  context: Readonly<DrawViewActionContext>,
   color: string,
 ): void => {
   const { requestRerender } = context
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   state.draftNewLabelColor = color
   requestRerender()
 }
 
 export const createCardLabel = async (
-  context: TrelloViewActionContext,
+  context: DrawViewActionContext,
 ): Promise<void> => {
   const { client, requestRerender } = context
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   const name = state.draftNewLabelName.trim()
   if (
     !state.credentials ||
@@ -60,7 +60,7 @@ export const createCardLabel = async (
     return
   }
   if (!name) {
-    state.error = TrelloStrings.labelTitleRequired()
+    state.error = DrawStrings.labelTitleRequired()
     requestRerender()
     return
   }

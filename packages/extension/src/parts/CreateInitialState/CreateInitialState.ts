@@ -1,7 +1,7 @@
-import type { TrelloViewState } from '../TrelloViewState/TrelloViewState.ts'
+import type { DrawViewState } from '../DrawViewState/DrawViewState.ts'
 import { getAssetBaseUrl } from '../AssetBaseUrl/AssetBaseUrl.ts'
 
-export const createInitialState = (): TrelloViewState => {
+export const createInitialState = (): DrawViewState => {
   return {
     activeSearchQuery: '',
     addingCardLabelId: '',

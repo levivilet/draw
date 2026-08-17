@@ -3,7 +3,7 @@ import {
   connectWithCredentials,
   createBoards,
   createMockData,
-  useMockDataAndShowTrello,
+  useMockDataAndShowDraw,
 } from './_trello.virtual-dom-view.shared.ts'
 
 export const name = 'trello.virtual-dom-view.sign-out'
@@ -11,7 +11,7 @@ export const skip = true
 
 export const test: Test = async ({ Command, expect, Locator }) => {
   const boards = createBoards(1)
-  await useMockDataAndShowTrello(Command, createMockData(boards))
+  await useMockDataAndShowDraw(Command, createMockData(boards))
   await connectWithCredentials({ Command, expect, Locator })
 
   const logout = Locator('button[title="Sign Out"]')

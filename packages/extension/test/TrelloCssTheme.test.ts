@@ -12,7 +12,7 @@ const lightLabelTextColorPattern =
   /\drawCardLabelColorGreenLight \{[^}]*color: #172b4d;/s
 const authFormMaxWidthPattern = /\drawAuthForm\s*\{[^}]*max-width: 760px;/
 
-const readTrelloCss = async (): Promise<string> => {
+const readDrawCss = async (): Promise<string> => {
   return readFile(new URL('../media/trello.css', import.meta.url), 'utf8')
 }
 
@@ -25,43 +25,43 @@ const getCssAfterTokenLayer = (css: string): string => {
 }
 
 test('trello css defines local theme tokens from editor theme variables', async () => {
-  const css = await readTrelloCss()
+  const css = await readDrawCss()
 
   expect(css).toContain('drawView,\ndrawBoardDetail {')
-  expect(css).toContain('--TrelloForeground: var(')
+  expect(css).toContain('--DrawForeground: var(')
   expect(css).toContain('--WorkbenchForeground')
   expect(css).toContain('--ListForeground')
   expect(css).toContain('--SideBarForeground')
-  expect(css).toContain('--TrelloSurface: var(')
+  expect(css).toContain('--DrawSurface: var(')
   expect(css).toContain('--MainBackground')
   expect(css).toContain('--PanelBackground')
   expect(css).toContain('--WidgetBackground')
   expect(css).toContain('--InputBoxBackground')
-  expect(css).toContain('--TrelloButtonBackground: var(')
+  expect(css).toContain('--DrawButtonBackground: var(')
   expect(css).toContain('--SplitButtonBackground')
   expect(css).toContain('--BadgeBackground')
   expect(css).toContain('--LinkForeground')
-  expect(css).toContain('--TrelloScrollbarThumb: var(')
+  expect(css).toContain('--DrawScrollbarThumb: var(')
   expect(css).toContain('--vscode-scrollbarSlider-background')
   expect(css).toContain('--EditorScrollBarBackground')
-  expect(css).toContain('--TrelloBorder: var(')
+  expect(css).toContain('--DrawBorder: var(')
   expect(css).toContain('--ContrastBorder')
   expect(css).toContain('--InputBoxBorder')
 })
 
 test('trello scroll containers use native themed scrollbars', async () => {
-  const css = await readTrelloCss()
+  const css = await readDrawCss()
 
   expect(css).toContain(
     'drawLists,\ndrawCards,\ndrawCardDetailPanel {',
   )
   expect(css).toContain(
-    'scrollbar-color: var(--TrelloScrollbarThumb) var(--TrelloScrollbarTrack);',
+    'scrollbar-color: var(--DrawScrollbarThumb) var(--DrawScrollbarTrack);',
   )
 })
 
 test('trello component styles use local tokens instead of dark theme fallbacks', async () => {
-  const css = await readTrelloCss()
+  const css = await readDrawCss()
   const componentCss = getCssAfterTokenLayer(css)
 
   expect(componentCss).not.toMatch(genericEditorVariablePattern)
@@ -70,7 +70,7 @@ test('trello component styles use local tokens instead of dark theme fallbacks',
 })
 
 test('trello readable content allows text selection', async () => {
-  const css = await readTrelloCss()
+  const css = await readDrawCss()
 
   expect(css).toContain('drawTitle,\ndrawWelcome,')
   expect(css).toContain('drawCardDescriptionPreview,')
@@ -79,20 +79,20 @@ test('trello readable content allows text selection', async () => {
 })
 
 test('trello auth form matches the welcome section maximum width', async () => {
-  const css = await readTrelloCss()
+  const css = await readDrawCss()
 
   expect(css).toMatch(authFormMaxWidthPattern)
 })
 
 test('trello card description preview uses pointer cursor', async () => {
-  const css = await readTrelloCss()
+  const css = await readDrawCss()
 
   expect(css).toContain('drawCardDescriptionPreview {')
   expect(css).toContain('cursor: pointer;')
 })
 
 test('trello label picker uses contrasting text colors', async () => {
-  const css = await readTrelloCss()
+  const css = await readDrawCss()
 
   expect(css).toMatch(labelChoiceTextColorPattern)
   expect(css).toMatch(lightLabelTextColorPattern)

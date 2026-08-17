@@ -1,10 +1,10 @@
-import type { TrelloViewState } from '../TrelloViewState/TrelloViewState.ts'
-import * as TrelloStrings from '../TrelloStrings/TrelloStrings.ts'
+import type { DrawViewState } from '../DrawViewState/DrawViewState.ts'
+import * as DrawStrings from '../DrawStrings/DrawStrings.ts'
 
-export const getTitle = (state: Readonly<TrelloViewState>): string => {
+export const getTitle = (state: Readonly<DrawViewState>): string => {
   const { boardDetail } = state
   if (boardDetail) {
-    return TrelloStringsdrawBoard(boardDetail.board.name)
+    return DrawStringsdrawBoard(boardDetail.board.name)
   }
-  return TrelloStringsdraw()
+  return DrawStringsdraw()
 }

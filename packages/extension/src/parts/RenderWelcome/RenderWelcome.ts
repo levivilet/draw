@@ -4,13 +4,13 @@ import {
   type VirtualDomNode,
 } from '@lvce-editor/virtual-dom-worker'
 import { trelloPowerUpsUrl } from '../Constants/Constants.ts'
-import * as TrelloStrings from '../TrelloStrings/TrelloStrings.ts'
+import * as DrawStrings from '../DrawStrings/DrawStrings.ts'
 
 const renderWelcomeText = (value: string): readonly VirtualDomNode[] => {
   return [
     {
       childCount: 1,
-      className: 'TrelloWelcomeText',
+      className: 'DrawWelcomeText',
       type: VirtualDomElements.Div,
     },
     text(value),
@@ -21,7 +21,7 @@ const renderWelcomeNote = (value: string): readonly VirtualDomNode[] => {
   return [
     {
       childCount: 1,
-      className: 'TrelloWelcomeNote',
+      className: 'DrawWelcomeNote',
       type: VirtualDomElements.Div,
     },
     text(value),
@@ -32,7 +32,7 @@ const renderWelcomeLink = (): readonly VirtualDomNode[] => {
   return [
     {
       childCount: 1,
-      className: 'TrelloWelcomeLink',
+      className: 'DrawWelcomeLink',
       href: trelloPowerUpsUrl,
       rel: 'noopener noreferrer',
       target: '_blank',
@@ -50,18 +50,18 @@ const renderWelcomeStep = (
   return [
     {
       childCount: 2,
-      className: 'TrelloWelcomeStep',
+      className: 'DrawWelcomeStep',
       type: VirtualDomElements.Li,
     },
     {
       childCount: 1,
-      className: 'TrelloWelcomeStepNumber',
+      className: 'DrawWelcomeStepNumber',
       type: VirtualDomElements.Span,
     },
     text(number),
     {
       childCount,
-      className: 'TrelloWelcomeStepText',
+      className: 'DrawWelcomeStepText',
       type: VirtualDomElements.Span,
     },
     ...children,
@@ -72,16 +72,16 @@ const renderWelcomeSteps = (): readonly VirtualDomNode[] => {
   return [
     {
       childCount: 3,
-      className: 'TrelloWelcomeSteps',
+      className: 'DrawWelcomeSteps',
       type: VirtualDomElements.Ol,
     },
     ...renderWelcomeStep(
       '1',
-      [text(TrelloStrings.welcomePowerUp()), ...renderWelcomeLink(), text('.')],
+      [text(DrawStrings.welcomePowerUp()), ...renderWelcomeLink(), text('.')],
       3,
     ),
-    ...renderWelcomeStep('2', [text(TrelloStrings.welcomeApiKey())], 1),
-    ...renderWelcomeStep('3', [text(TrelloStrings.welcomeToken())], 1),
+    ...renderWelcomeStep('2', [text(DrawStrings.welcomeApiKey())], 1),
+    ...renderWelcomeStep('3', [text(DrawStrings.welcomeToken())], 1),
   ]
 }
 
@@ -89,17 +89,17 @@ export const renderWelcome = (): readonly VirtualDomNode[] => {
   return [
     {
       childCount: 4,
-      className: 'TrelloWelcome',
+      className: 'DrawWelcome',
       type: VirtualDomElements.Div,
     },
     {
       childCount: 1,
-      className: 'TrelloWelcomeTitle',
+      className: 'DrawWelcomeTitle',
       type: VirtualDomElements.H3,
     },
-    text(TrelloStrings.welcome()),
-    ...renderWelcomeText(TrelloStrings.welcomeDescription()),
+    text(DrawStrings.welcome()),
+    ...renderWelcomeText(DrawStrings.welcomeDescription()),
     ...renderWelcomeSteps(),
-    ...renderWelcomeNote(TrelloStrings.welcomeSecurity()),
+    ...renderWelcomeNote(DrawStrings.welcomeSecurity()),
   ]
 }

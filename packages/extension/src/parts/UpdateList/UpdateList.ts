@@ -1,18 +1,18 @@
-import type { FetchLike } from '../TrelloClientTypes/TrelloClientTypes.ts'
+import type { FetchLike } from '../DrawClientTypes/DrawClientTypes.ts'
 import type {
-  TrelloCredentials,
-  TrelloList,
-  TrelloListUpdate,
-} from '../TrelloTypes/TrelloTypes.ts'
+  DrawCredentials,
+  DrawList,
+  DrawListUpdate,
+} from '../DrawTypes/DrawTypes.ts'
 import { requestJson } from '../RequestJson/RequestJson.ts'
 
 export const updateList = async (
   fetchLike: FetchLike,
-  list: TrelloList,
-  update: TrelloListUpdate,
-  credentials: TrelloCredentials,
-): Promise<TrelloList> => {
-  const updatedList = await requestJson<Omit<TrelloList, 'cards'>>(
+  list: DrawList,
+  update: DrawListUpdate,
+  credentials: DrawCredentials,
+): Promise<DrawList> => {
+  const updatedList = await requestJson<Omit<DrawList, 'cards'>>(
     fetchLike,
     `/lists/${list.id}`,
     credentials,

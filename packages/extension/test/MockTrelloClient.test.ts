@@ -1,51 +1,51 @@
 import { expect, test } from '@jest/globals'
-import type { TrelloClient } from '../src/parts/TrelloClient/TrelloClient.ts'
+import type { DrawClient } from '../src/parts/DrawClient/DrawClient.ts'
 import type {
-  TrelloBoard,
-  TrelloCard,
-  TrelloCardDetail,
-  TrelloCredentials,
-  TrelloLabel,
-  TrelloList,
-} from '../src/parts/TrelloTypes/TrelloTypes.ts'
+  DrawBoard,
+  DrawCard,
+  DrawCardDetail,
+  DrawCredentials,
+  DrawLabel,
+  DrawList,
+} from '../src/parts/DrawTypes/DrawTypes.ts'
 import {
-  createMockTrelloClient,
-  type MockTrelloData,
-} from '../src/parts/MockTrelloClient/MockTrelloClient.ts'
+  createMockDrawClient,
+  type MockDrawData,
+} from '../src/parts/MockDrawClient/MockDrawClient.ts'
 
-const credentials: TrelloCredentials = {
+const credentials: DrawCredentials = {
   apiKey: 'abcdefghijklmnopqrstuvwxyz123456',
   token: 'abcdefghijklmnopqrstuvwxyz123456abcdefghijklmnopqrstuvwxyz123456',
 }
 
-const board: TrelloBoard = {
+const board: DrawBoard = {
   id: 'board-1',
   name: 'Roadmap',
 }
 
-const card: TrelloCard = {
+const card: DrawCard = {
   id: 'card-1',
   idList: 'list-1',
   name: 'Ship tests',
 }
 
-const label: TrelloLabel = {
+const label: DrawLabel = {
   color: 'blue',
   id: 'label-1',
   idBoard: board.id,
   name: 'Testing',
 }
 
-const list: TrelloList = {
+const list: DrawList = {
   cards: [card],
   id: 'list-1',
   name: 'Todo',
 }
 
 const createClient = (
-  overrides: Readonly<MockTrelloData> = {},
-): TrelloClient => {
-  return createMockTrelloClient({
+  overrides: Readonly<MockDrawData> = {},
+): DrawClient => {
+  return createMockDrawClient({
     boardDetails: {
       [board.id]: {
         board,
@@ -65,8 +65,8 @@ const createClient = (
 }
 
 test('mock client reports its shared error from every operation', async () => {
-  const client = createMockTrelloClient({
-    error: 'Trello unavailable',
+  const client = createMockDrawClient({
+    error: 'Draw unavailable',
   })
   const calls = [
     client.addCardComment(card, 'Hello', credentials),
@@ -89,7 +89,7 @@ test('mock client reports its shared error from every operation', async () => {
   ]
 
   for (const call of calls) {
-    await expect(call).rejects.toThrow('Trello unavailable')
+    await expect(call).rejects.toThrow('Draw unavailable')
   }
 })
 
@@ -142,8 +142,8 @@ test('mock client reports operation-specific errors', async () => {
 })
 
 test('mock client supports empty data and cache-first fallbacks', async () => {
-  const client = createMockTrelloClient({})
-  const externalCard: TrelloCard = {
+  const client = createMockDrawClient({})
+  const externalCard: DrawCard = {
     id: 'external-card',
     name: 'External card',
   }
@@ -194,7 +194,7 @@ test('mock client uses scripted board responses before its fallback boards', asy
     id: 'board-scripted',
     name: 'Scripted',
   }
-  const client = createMockTrelloClient({
+  const client = createMockDrawClient({
     boards: [board],
     listBoardsResponses: [[scriptedBoard]],
   })
@@ -204,7 +204,7 @@ test('mock client uses scripted board responses before its fallback boards', asy
 })
 
 test('mock client creates records when their parent data is absent', async () => {
-  const client = createMockTrelloClient({
+  const client = createMockDrawClient({
     boardDetails: {
       unrelated: {
         board: {
@@ -244,7 +244,7 @@ test('mock client creates records when their parent data is absent', async () =>
 })
 
 test('mock client adds a label once and updates matching board cards', async () => {
-  const client = createMockTrelloClient({
+  const client = createMockDrawClient({
     boardDetails: {
       [board.id]: {
         board,
@@ -305,8 +305,8 @@ test('mock client adds a label once and updates matching board cards', async () 
 test('mock client preserves card details while moving and updating cards', async () => {
   const detailWithoutCollections = {
     card,
-  } as unknown as TrelloCardDetail
-  const client = createMockTrelloClient({
+  } as unknown as DrawCardDetail
+  const client = createMockDrawClient({
     boardDetails: {
       [board.id]: {
         board,

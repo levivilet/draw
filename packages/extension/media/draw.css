@@ -1,105 +1,102 @@
 drawView,
 drawBoardDetail {
-  --TrelloBackground: var(--MainBackground, var(--SideBarBackground, #1e2324));
-  --TrelloForeground: var(
+  --DrawBackground: var(--MainBackground, var(--SideBarBackground, #1e2324));
+  --DrawForeground: var(
     --WorkbenchForeground,
     var(--ListForeground, var(--SideBarForeground, #cccccc))
   );
-  --TrelloForegroundStrong: var(--MarkdownForeground, var(--TrelloForeground));
-  --TrelloForegroundMuted: color-mix(
+  --DrawForegroundStrong: var(--MarkdownForeground, var(--DrawForeground));
+  --DrawForegroundMuted: color-mix(
     in srgb,
-    var(--TrelloForeground) 68%,
-    var(--TrelloBackground)
+    var(--DrawForeground) 68%,
+    var(--DrawBackground)
   );
-  --TrelloSurface: var(
+  --DrawSurface: var(
     --SideBarBackground,
-    var(--PanelBackground, var(--WidgetBackground, var(--TrelloBackground)))
+    var(--PanelBackground, var(--WidgetBackground, var(--DrawBackground)))
   );
-  --TrelloSurfaceAlt: var(
+  --DrawSurfaceAlt: var(
     --WidgetBackground,
     var(
       --InputBoxBackground,
-      color-mix(in srgb, var(--TrelloSurface) 88%, var(--TrelloForeground) 12%)
+      color-mix(in srgb, var(--DrawSurface) 88%, var(--DrawForeground) 12%)
     )
   );
-  --TrelloInputBackground: var(
+  --DrawInputBackground: var(
     --InputBackground,
-    var(--InputBoxBackground, var(--TrelloSurfaceAlt))
+    var(--InputBoxBackground, var(--DrawSurfaceAlt))
   );
-  --TrelloInputForeground: var(
+  --DrawInputForeground: var(
     --InputForeground,
-    var(--InputBoxForeground, var(--TrelloForegroundStrong))
+    var(--InputBoxForeground, var(--DrawForegroundStrong))
   );
-  --TrelloBorder: var(
+  --DrawBorder: var(
     --ContrastBorder,
     var(
       --SideBarBorder,
       var(
         --InputBoxBorder,
-        color-mix(in srgb, var(--TrelloForeground) 22%, transparent)
+        color-mix(in srgb, var(--DrawForeground) 22%, transparent)
       )
     )
   );
-  --TrelloBorderSubtle: color-mix(
+  --DrawBorderSubtle: color-mix(
     in srgb,
-    var(--TrelloForeground) 16%,
+    var(--DrawForeground) 16%,
     transparent
   );
-  --TrelloBorderStrong: color-mix(
+  --DrawBorderStrong: color-mix(
     in srgb,
-    var(--TrelloForeground) 32%,
+    var(--DrawForeground) 32%,
     transparent
   );
-  --TrelloHoverBackground: color-mix(
+  --DrawHoverBackground: color-mix(
     in srgb,
-    var(--TrelloSurface) 84%,
-    var(--TrelloForeground) 16%
+    var(--DrawSurface) 84%,
+    var(--DrawForeground) 16%
   );
-  --TrelloActiveBackground: color-mix(
+  --DrawActiveBackground: color-mix(
     in srgb,
-    var(--TrelloSurface) 76%,
-    var(--TrelloForeground) 24%
+    var(--DrawSurface) 76%,
+    var(--DrawForeground) 24%
   );
-  --TrelloFocus: var(
+  --DrawFocus: var(
     --FocusBorder,
     var(--SplitButtonBackground, var(--LinkForeground, #3794ff))
   );
-  --TrelloFocusSoft: color-mix(in srgb, var(--TrelloFocus) 30%, transparent);
-  --TrelloBadgeBackground: var(--BadgeBackground, var(--TrelloFocus));
-  --TrelloButtonBackground: var(
+  --DrawFocusSoft: color-mix(in srgb, var(--DrawFocus) 30%, transparent);
+  --DrawBadgeBackground: var(--BadgeBackground, var(--DrawFocus));
+  --DrawButtonBackground: var(
     --SplitButtonBackground,
-    var(--ButtonBackground, var(--TrelloFocus))
+    var(--ButtonBackground, var(--DrawFocus))
   );
-  --TrelloButtonForeground: var(--SplitButtonForeground, #ffffff);
-  --TrelloButtonHoverBackground: var(
+  --DrawButtonForeground: var(--SplitButtonForeground, #ffffff);
+  --DrawButtonHoverBackground: var(
     --SplitButtonHoverBackground,
     color-mix(
       in srgb,
-      var(--TrelloButtonBackground) 82%,
-      var(--TrelloForeground) 18%
+      var(--DrawButtonBackground) 82%,
+      var(--DrawForeground) 18%
     )
   );
-  --TrelloLinkForeground: var(
+  --DrawLinkForeground: var(
     --LinkForeground,
-    var(--TextLinkForeground, var(--TrelloFocus))
+    var(--TextLinkForeground, var(--DrawFocus))
   );
-  --TrelloShadow: color-mix(in srgb, var(--TrelloBackground) 72%, transparent);
-  --TrelloScrollbarThumb: var(
+  --DrawShadow: color-mix(in srgb, var(--DrawBackground) 72%, transparent);
+  --DrawScrollbarThumb: var(
     --vscode-scrollbarSlider-background,
     var(
       --EditorScrollBarBackground,
-      color-mix(in srgb, var(--TrelloForeground) 35%, transparent)
+      color-mix(in srgb, var(--DrawForeground) 35%, transparent)
     )
   );
-  --TrelloScrollbarTrack: transparent;
-  --TrelloErrorBackground: var(
+  --DrawScrollbarTrack: transparent;
+  --DrawErrorBackground: var(
     --ErrorBackground,
-    color-mix(in srgb, #c9372c 22%, var(--TrelloBackground))
+    color-mix(in srgb, #c9372c 22%, var(--DrawBackground))
   );
-  --TrelloErrorForeground: var(
-    --ErrorForeground,
-    var(--TrelloForegroundStrong)
-  );
+  --DrawErrorForeground: var(--ErrorForeground, var(--DrawForegroundStrong));
 }
 
 drawView {
@@ -110,8 +107,8 @@ drawView {
   height: 100%;
   /* contain: strict; */
   padding: 16px;
-  color: var(--TrelloForeground);
-  background: var(--TrelloBackground);
+  color: var(--DrawForeground);
+  background: var(--DrawBackground);
 }
 
 drawTitle {
@@ -126,7 +123,7 @@ drawListTitle {
   contain: content;
   font-size: 13px;
   line-height: 1.3;
-  color: var(--TrelloForegroundMuted);
+  color: var(--DrawForegroundMuted);
   text-transform: uppercase;
 }
 
@@ -155,7 +152,7 @@ drawListTitleInput {
   font-size: 13px;
   font-weight: 600;
   line-height: 1.3;
-  color: var(--TrelloForegroundStrong);
+  color: var(--DrawForegroundStrong);
   text-overflow: ellipsis;
   background: transparent;
   border: 1px solid transparent;
@@ -167,11 +164,11 @@ drawListTitleInput {
 }
 
 drawListTitleInput:focus {
-  color: var(--TrelloInputForeground);
-  background: var(--TrelloInputBackground);
-  border-color: var(--TrelloFocus);
+  color: var(--DrawInputForeground);
+  background: var(--DrawInputBackground);
+  border-color: var(--DrawFocus);
   outline: none;
-  box-shadow: inset 0 0 0 1px var(--TrelloFocus);
+  box-shadow: inset 0 0 0 1px var(--DrawFocus);
 }
 
 drawListCardCount {
@@ -179,7 +176,7 @@ drawListCardCount {
   contain: content;
   font-size: 12px;
   line-height: 1.3;
-  color: var(--TrelloForegroundMuted);
+  color: var(--DrawForegroundMuted);
   white-space: nowrap;
 }
 
@@ -197,7 +194,7 @@ drawField {
   gap: 5px;
   contain: content;
   font-size: 12px;
-  color: var(--TrelloForegroundMuted);
+  color: var(--DrawForegroundMuted);
 }
 
 drawAuthForm {
@@ -224,9 +221,9 @@ drawWelcome {
   max-width: 760px;
   margin-top: 8px;
   padding: 12px;
-  color: var(--TrelloForegroundMuted);
-  background: var(--TrelloSurface);
-  border: 1px solid var(--TrelloBorder);
+  color: var(--DrawForegroundMuted);
+  background: var(--DrawSurface);
+  border: 1px solid var(--DrawBorder);
   border-radius: 6px;
 }
 
@@ -236,7 +233,7 @@ drawWelcomeTitle {
   font-size: 14px;
   font-weight: 600;
   line-height: 1.3;
-  color: var(--TrelloForegroundStrong);
+  color: var(--DrawForegroundStrong);
 }
 
 drawWelcomeText {
@@ -252,8 +249,8 @@ drawWelcomeNote {
   padding-top: 8px;
   font-size: 12px;
   line-height: 1.55;
-  color: var(--TrelloForegroundMuted);
-  border-top: 1px solid var(--TrelloBorder);
+  color: var(--DrawForegroundMuted);
+  border-top: 1px solid var(--DrawBorder);
 }
 
 drawWelcomeSteps {
@@ -284,8 +281,8 @@ drawWelcomeStepNumber {
   width: 20px;
   height: 20px;
   contain: content;
-  color: var(--TrelloButtonForeground);
-  background: var(--TrelloButtonBackground);
+  color: var(--DrawButtonForeground);
+  background: var(--DrawButtonBackground);
   border-radius: 999px;
 }
 
@@ -296,7 +293,7 @@ drawWelcomeStepText {
 }
 
 drawWelcomeLink {
-  color: var(--TrelloLinkForeground);
+  color: var(--DrawLinkForeground);
   text-decoration: none;
   overflow-wrap: anywhere;
 }
@@ -338,9 +335,9 @@ drawTextArea {
   min-height: 28px;
   contain: content;
   padding: 4px 8px;
-  color: var(--TrelloInputForeground);
-  background: var(--TrelloInputBackground);
-  border: 1px solid var(--TrelloBorder);
+  color: var(--DrawInputForeground);
+  background: var(--DrawInputBackground);
+  border: 1px solid var(--DrawBorder);
   border-radius: 6px;
   transition:
     border-color 120ms ease,
@@ -350,8 +347,8 @@ drawTextArea {
 drawInput:focus,
 drawTextArea:focus {
   outline: none;
-  border-color: var(--TrelloFocus);
-  box-shadow: inset 0 0 0 1px var(--TrelloFocus);
+  border-color: var(--DrawFocus);
+  box-shadow: inset 0 0 0 1px var(--DrawFocus);
 }
 
 drawTextArea {
@@ -365,15 +362,15 @@ drawBoardButton {
   min-height: 28px;
   contain: content;
   padding: 4px 10px;
-  color: var(--TrelloButtonForeground);
-  background: var(--TrelloButtonBackground);
+  color: var(--DrawButtonForeground);
+  background: var(--DrawButtonBackground);
   border: 1px solid transparent;
   border-radius: 6px;
 }
 
 drawButton:hover,
 drawBoardButton:hover {
-  background: var(--TrelloButtonHoverBackground);
+  background: var(--DrawButtonHoverBackground);
 }
 
 drawBoardButton {
@@ -419,14 +416,14 @@ drawSearchResult {
   contain: content;
   padding: 8px;
   text-align: left;
-  color: var(--TrelloForegroundStrong);
-  background: var(--TrelloSurfaceAlt);
-  border: 1px solid var(--TrelloBorder);
+  color: var(--DrawForegroundStrong);
+  background: var(--DrawSurfaceAlt);
+  border: 1px solid var(--DrawBorder);
   border-radius: 6px;
 }
 
 buttondrawSearchResult:hover {
-  background: var(--TrelloHoverBackground);
+  background: var(--DrawHoverBackground);
 }
 
 drawBoardDetail {
@@ -436,8 +433,8 @@ drawBoardDetail {
 }
 
 drawBoardFilterActionActive {
-  color: var(--TrelloButtonForeground);
-  background: var(--TrelloButtonBackground);
+  color: var(--DrawButtonForeground);
+  background: var(--DrawButtonBackground);
   border-color: transparent;
 }
 
@@ -459,13 +456,13 @@ drawBoardFilterPopup {
   width: min(360px, calc(100% - 32px));
   contain: content;
   padding: 12px;
-  color: var(--TrelloForeground);
-  background: var(--TrelloSurface);
-  border: 1px solid var(--TrelloBorder);
+  color: var(--DrawForeground);
+  background: var(--DrawSurface);
+  border: 1px solid var(--DrawBorder);
   border-radius: 8px;
   box-shadow:
-    0 4px 8px var(--TrelloShadow),
-    0 12px 32px var(--TrelloShadow);
+    0 4px 8px var(--DrawShadow),
+    0 12px 32px var(--DrawShadow);
 }
 
 drawBoardFilterPopupHeader {
@@ -480,7 +477,7 @@ drawBoardFilterPopupTitle {
   padding-left: 28px;
   text-align: center;
   font-weight: 600;
-  color: var(--TrelloForegroundStrong);
+  color: var(--DrawForegroundStrong);
 }
 
 drawBoardFilterCloseButton {
@@ -493,15 +490,15 @@ drawBoardFilterCloseButton {
   height: 28px;
   min-height: 28px;
   padding: 0;
-  color: var(--TrelloForegroundMuted);
+  color: var(--DrawForegroundMuted);
   background: transparent;
   border-color: transparent;
 }
 
 drawBoardFilterCloseButton:hover,
 drawBoardFilterCloseButton:focus {
-  color: var(--TrelloForegroundStrong);
-  background: var(--TrelloHoverBackground);
+  color: var(--DrawForegroundStrong);
+  background: var(--DrawHoverBackground);
   outline: none;
 }
 
@@ -515,22 +512,22 @@ drawBoardFilterField {
 drawBoardFilterLabel {
   font-size: 12px;
   font-weight: 600;
-  color: var(--TrelloForegroundStrong);
+  color: var(--DrawForegroundStrong);
 }
 
 drawBoardFilterHint {
   contain: content;
   font-size: 11px;
   line-height: 1.4;
-  color: var(--TrelloForegroundMuted);
+  color: var(--DrawForegroundMuted);
 }
 
 drawBoardDetailWithBackground {
-  background-color: var(--TrelloBoardBackgroundColor, var(--TrelloBackground));
-  background-image: var(--TrelloBoardBackgroundImage, none);
+  background-color: var(--DrawBoardBackgroundColor, var(--DrawBackground));
+  background-image: var(--DrawBoardBackgroundImage, none);
   background-position: center;
-  background-repeat: var(--TrelloBoardBackgroundRepeat, no-repeat);
-  background-size: var(--TrelloBoardBackgroundSize, cover);
+  background-repeat: var(--DrawBoardBackgroundRepeat, no-repeat);
+  background-size: var(--DrawBoardBackgroundSize, cover);
 }
 
 drawBoardDetailContent {
@@ -545,7 +542,7 @@ drawBoardDetailContent {
 drawLists,
 drawCards,
 drawCardDetailPanel {
-  scrollbar-color: var(--TrelloScrollbarThumb) var(--TrelloScrollbarTrack);
+  scrollbar-color: var(--DrawScrollbarThumb) var(--DrawScrollbarTrack);
 }
 
 drawLists {
@@ -571,17 +568,17 @@ drawList {
   /* contain: strict; */
   overflow: hidden;
   padding: 8px;
-  background: var(--TrelloSurface);
+  background: var(--DrawSurface);
   border: none;
   border-radius: 8px;
   box-shadow:
-    0 1px 2px var(--TrelloShadow),
-    0 8px 24px var(--TrelloShadow);
+    0 1px 2px var(--DrawShadow),
+    0 8px 24px var(--DrawShadow);
 }
 
 drawListDragTarget {
-  background: color-mix(in srgb, var(--TrelloFocus) 18%, var(--TrelloSurface));
-  outline: 1px solid var(--TrelloFocus);
+  background: color-mix(in srgb, var(--DrawFocus) 18%, var(--DrawSurface));
+  outline: 1px solid var(--DrawFocus);
   outline-offset: -1px;
 }
 
@@ -608,11 +605,11 @@ drawCard {
   overflow: hidden;
   padding: 0;
   text-align: left;
-  color: var(--TrelloForegroundStrong);
-  background: var(--TrelloSurfaceAlt);
-  border: 1px solid var(--TrelloBorderSubtle);
+  color: var(--DrawForegroundStrong);
+  background: var(--DrawSurfaceAlt);
+  border: 1px solid var(--DrawBorderSubtle);
   border-radius: 6px;
-  box-shadow: 0 1px 2px var(--TrelloShadow);
+  box-shadow: 0 1px 2px var(--DrawShadow);
   transition:
     background 120ms ease,
     border-color 120ms ease,
@@ -621,20 +618,20 @@ drawCard {
 }
 
 drawCard:hover {
-  background: var(--TrelloHoverBackground);
-  border-color: var(--TrelloFocus);
+  background: var(--DrawHoverBackground);
+  border-color: var(--DrawFocus);
   box-shadow:
-    0 2px 5px var(--TrelloShadow),
-    0 0 0 1px var(--TrelloFocusSoft);
+    0 2px 5px var(--DrawShadow),
+    0 0 0 1px var(--DrawFocusSoft);
   transform: translateY(-1px);
 }
 
 drawCard:focus {
   outline: none;
-  border-color: var(--TrelloFocus);
+  border-color: var(--DrawFocus);
   box-shadow:
-    0 1px 2px var(--TrelloShadow),
-    0 0 0 1px var(--TrelloFocus);
+    0 1px 2px var(--DrawShadow),
+    0 0 0 1px var(--DrawFocus);
 }
 
 drawCard * {
@@ -659,8 +656,8 @@ drawCardCoverImage {
   aspect-ratio: 16 / 9;
   contain: content;
   object-fit: cover;
-  background: var(--TrelloSurfaceAlt);
-  border-bottom: 1px solid var(--TrelloBorderSubtle);
+  background: var(--DrawSurfaceAlt);
+  border-bottom: 1px solid var(--DrawBorderSubtle);
 }
 
 drawCardTitle {
@@ -675,7 +672,7 @@ drawCardMeta {
   contain: content;
   font-size: 12px;
   line-height: 1.3;
-  color: var(--TrelloForegroundMuted);
+  color: var(--DrawForegroundMuted);
 }
 
 drawAddListButton,
@@ -689,17 +686,17 @@ drawAddListButton {
   min-height: 40px;
   padding: 8px;
   text-align: left;
-  color: var(--TrelloForegroundStrong);
-  background: var(--TrelloSurface);
+  color: var(--DrawForegroundStrong);
+  background: var(--DrawSurface);
   border: none;
   border-radius: 8px;
   box-shadow:
-    0 1px 2px var(--TrelloShadow),
-    0 8px 24px var(--TrelloShadow);
+    0 1px 2px var(--DrawShadow),
+    0 8px 24px var(--DrawShadow);
 }
 
 drawAddListButton:hover {
-  background: var(--TrelloSurfaceAlt);
+  background: var(--DrawSurfaceAlt);
 }
 
 drawAddListInput {
@@ -707,9 +704,9 @@ drawAddListInput {
   width: 100%;
   min-height: 40px;
   padding: 8px;
-  color: var(--TrelloForegroundStrong);
-  background: var(--TrelloInputBackground);
-  border: 1px solid var(--TrelloFocus);
+  color: var(--DrawForegroundStrong);
+  background: var(--DrawInputBackground);
+  border: 1px solid var(--DrawFocus);
   border-radius: 8px;
 }
 
@@ -734,15 +731,15 @@ drawAddCardButton {
   contain: content;
   padding: 6px 8px;
   text-align: left;
-  color: var(--TrelloForegroundMuted);
+  color: var(--DrawForegroundMuted);
   background: transparent;
   border: 1px solid transparent;
   border-radius: 6px;
 }
 
 drawAddCardButton:hover {
-  color: var(--TrelloButtonForeground);
-  background: var(--TrelloButtonHoverBackground);
+  color: var(--DrawButtonForeground);
+  background: var(--DrawButtonHoverBackground);
 }
 
 drawAddCardForm {
@@ -764,15 +761,15 @@ drawAddCardCloseButton {
   min-height: 28px;
   contain: content;
   padding: 4px 8px;
-  color: var(--TrelloForegroundMuted);
+  color: var(--DrawForegroundMuted);
   background: transparent;
   border: 1px solid transparent;
   border-radius: 6px;
 }
 
 drawAddCardCloseButton:hover {
-  color: var(--TrelloForegroundStrong);
-  background: var(--TrelloButtonHoverBackground);
+  color: var(--DrawForegroundStrong);
+  background: var(--DrawButtonHoverBackground);
 }
 
 drawAddCardInput {
@@ -787,22 +784,22 @@ drawAddCardInput {
   line-height: 20px;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-  color: var(--TrelloInputForeground);
+  color: var(--DrawInputForeground);
   resize: none;
-  background: var(--TrelloInputBackground);
-  border: 1px solid var(--TrelloFocus);
+  background: var(--DrawInputBackground);
+  border: 1px solid var(--DrawFocus);
   border-radius: 6px;
 }
 
 drawAddCardInput:focus {
   outline: none;
-  box-shadow: 0 0 0 1px var(--TrelloFocus);
+  box-shadow: 0 0 0 1px var(--DrawFocus);
 }
 
 drawCardDetailPanel {
   box-sizing: border-box;
   display: flex;
-  flex: 0 0 var(--TrelloCardDetailWidth, 360px);
+  flex: 0 0 var(--DrawCardDetailWidth, 360px);
   flex-direction: column;
   gap: 12px;
   min-width: 200px;
@@ -810,8 +807,8 @@ drawCardDetailPanel {
   contain: strict;
   overflow-y: auto;
   padding: 14px;
-  background: var(--TrelloSurface);
-  border: 1px solid var(--TrelloBorder);
+  background: var(--DrawSurface);
+  border: 1px solid var(--DrawBorder);
   border-radius: 8px;
 }
 
@@ -834,7 +831,7 @@ drawCardDetailPanelPopup {
   height: min(720px, 100%);
   max-height: 100%;
   min-width: 0;
-  box-shadow: 0 16px 48px var(--TrelloShadow);
+  box-shadow: 0 16px 48px var(--DrawShadow);
 }
 
 drawCardDetailResizeSash {
@@ -844,7 +841,7 @@ drawCardDetailResizeSash {
 }
 
 drawCardDetailResizeSash:hover {
-  background: color-mix(in srgb, var(--TrelloFocus) 28%, transparent);
+  background: color-mix(in srgb, var(--DrawFocus) 28%, transparent);
 }
 
 drawCardAttachmentDropArea {
@@ -856,9 +853,9 @@ drawCardAttachmentDropArea {
   contain: strict;
   font-size: 16px;
   font-weight: 600;
-  color: var(--TrelloForegroundStrong);
-  background: color-mix(in srgb, var(--TrelloFocus) 8%, var(--TrelloSurface));
-  border: 2px dashed var(--TrelloFocus);
+  color: var(--DrawForegroundStrong);
+  background: color-mix(in srgb, var(--DrawFocus) 8%, var(--DrawSurface));
+  border: 2px dashed var(--DrawFocus);
   border-radius: 6px;
   pointer-events: none;
 }
@@ -907,7 +904,7 @@ drawCardDetailTitleInput {
   height: 100%;
   contain: content;
   overflow: hidden;
-  color: var(--TrelloForegroundStrong);
+  color: var(--DrawForegroundStrong);
   resize: none;
   background: transparent;
 }
@@ -918,15 +915,15 @@ drawCardDetailTitleMirror {
 }
 
 drawCardDetailTitleInput:hover {
-  background: var(--TrelloSurfaceAlt);
+  background: var(--DrawSurfaceAlt);
 }
 
 drawCardDetailTitleInput:focus,
 drawCardDetailTitleInputEditing {
-  background: var(--TrelloInputBackground);
-  border-color: var(--TrelloFocus);
+  background: var(--DrawInputBackground);
+  border-color: var(--DrawFocus);
   outline: none;
-  box-shadow: inset 0 0 0 1px var(--TrelloFocus);
+  box-shadow: inset 0 0 0 1px var(--DrawFocus);
 }
 
 drawCardDetailCloseButton {
@@ -941,15 +938,15 @@ drawCardDetailCloseButton {
   margin-left: auto;
   padding: 0;
   line-height: 1;
-  color: var(--TrelloForegroundMuted);
+  color: var(--DrawForegroundMuted);
   background: transparent;
   border-color: transparent;
 }
 
 drawCardDetailCloseButton:hover,
 drawCardDetailCloseButton:focus {
-  color: var(--TrelloForegroundStrong);
-  background: var(--TrelloHoverBackground);
+  color: var(--DrawForegroundStrong);
+  background: var(--DrawHoverBackground);
   outline: none;
 }
 
@@ -964,7 +961,7 @@ drawCardListLabel {
   contain: content;
   font-size: 12px;
   line-height: 1.3;
-  color: var(--TrelloForegroundMuted);
+  color: var(--DrawForegroundMuted);
 }
 
 drawCardListSelect {
@@ -993,7 +990,7 @@ drawCardDetailSectionTitle {
   font-size: 13px;
   font-weight: 600;
   line-height: 1.3;
-  color: var(--TrelloForegroundStrong);
+  color: var(--DrawForegroundStrong);
 }
 
 drawCardDescriptionEditButton {
@@ -1012,22 +1009,22 @@ drawCardDescriptionPreview {
   contain: content;
   padding: 8px;
   text-align: left;
-  color: var(--TrelloForegroundStrong);
+  color: var(--DrawForegroundStrong);
   cursor: pointer;
-  background: var(--TrelloInputBackground);
+  background: var(--DrawInputBackground);
   border: 1px solid transparent;
   border-radius: 6px;
 }
 
 drawCardDescriptionPreview:hover {
-  background: var(--TrelloSurfaceAlt);
-  border-color: var(--TrelloBorder);
+  background: var(--DrawSurfaceAlt);
+  border-color: var(--DrawBorder);
 }
 
 drawCardDescriptionPlaceholder {
   align-items: center;
   justify-content: center;
-  color: var(--TrelloForegroundMuted);
+  color: var(--DrawForegroundMuted);
 }
 
 drawCardDescriptionTextArea {
@@ -1047,13 +1044,13 @@ drawCardDetailCancelButton {
 }
 
 drawCardDetailCancelButton {
-  color: var(--TrelloForegroundStrong);
+  color: var(--DrawForegroundStrong);
   background: transparent;
   border-color: transparent;
 }
 
 drawCardDetailCancelButton:hover {
-  background: var(--TrelloHoverBackground);
+  background: var(--DrawHoverBackground);
 }
 
 drawMarkdownParagraph {
@@ -1104,13 +1101,13 @@ drawMarkdownCode {
   padding: 1px 4px;
   font-family: var(--EditorFontFamily, monospace);
   font-size: 0.92em;
-  color: var(--TrelloForegroundStrong);
-  background: var(--TrelloInputBackground);
+  color: var(--DrawForegroundStrong);
+  background: var(--DrawInputBackground);
   border-radius: 4px;
 }
 
 drawMarkdownLink {
-  color: var(--TrelloLinkForeground);
+  color: var(--DrawLinkForeground);
   text-decoration: none;
   overflow-wrap: anywhere;
 }
@@ -1205,8 +1202,8 @@ drawCardLabelPicker {
   gap: 8px;
   contain: content;
   padding: 8px;
-  background: var(--TrelloSurfaceAlt);
-  border: 1px solid var(--TrelloBorder);
+  background: var(--DrawSurfaceAlt);
+  border: 1px solid var(--DrawBorder);
   border-radius: 6px;
 }
 
@@ -1223,7 +1220,7 @@ drawCardLabelPickerTitle {
   font-size: 12px;
   font-weight: 600;
   line-height: 18px;
-  color: var(--TrelloForeground);
+  color: var(--DrawForeground);
 }
 
 drawCardLabelPickerCloseButton {
@@ -1294,7 +1291,7 @@ drawCardLabelCreateFields label {
   font-size: 12px;
   font-weight: 600;
   line-height: 18px;
-  color: var(--TrelloForeground);
+  color: var(--DrawForeground);
 }
 
 drawCardLabelColorGrid {
@@ -1318,8 +1315,8 @@ drawCardLabelColorChoice:hover {
 }
 
 drawCardLabelColorChoiceSelected {
-  border-color: var(--TrelloForeground);
-  box-shadow: inset 0 0 0 1px var(--TrelloSurfaceAlt);
+  border-color: var(--DrawForeground);
+  box-shadow: inset 0 0 0 1px var(--DrawSurfaceAlt);
 }
 
 drawCardLabelPickerList {
@@ -1342,7 +1339,7 @@ drawCardLabelChoice {
   font-size: 12px;
   font-weight: 500;
   line-height: 18px;
-  color: var(--TrelloForeground);
+  color: var(--DrawForeground);
   text-align: left;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1379,7 +1376,7 @@ drawCardLabelChoice:disabled {
 drawCardLabelPickerEmpty {
   contain: content;
   padding: 4px 0;
-  color: var(--TrelloForegroundMuted);
+  color: var(--DrawForegroundMuted);
   font-size: 12px;
   line-height: 1.4;
 }
@@ -1518,7 +1515,7 @@ drawCardLabelColorBlackLight {
 }
 
 drawCardLabelColorNeutral {
-  background: var(--TrelloButtonBackground);
+  background: var(--DrawButtonBackground);
 }
 
 drawCardComments {
@@ -1548,10 +1545,10 @@ drawCardCommentAvatar {
   font-size: 12px;
   font-weight: 700;
   line-height: 1;
-  color: var(--TrelloButtonForeground);
+  color: var(--DrawButtonForeground);
   text-transform: uppercase;
-  background: var(--TrelloButtonBackground);
-  border: 1px solid var(--TrelloBorder);
+  background: var(--DrawButtonBackground);
+  border: 1px solid var(--DrawBorder);
   border-radius: 50%;
   object-fit: cover;
 }
@@ -1579,7 +1576,7 @@ drawCardCommentAuthor {
   font-size: 12px;
   font-weight: 600;
   line-height: 1.4;
-  color: var(--TrelloForegroundStrong);
+  color: var(--DrawForegroundStrong);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -1589,7 +1586,7 @@ drawCardCommentDate {
   overflow: hidden;
   font-size: 11px;
   line-height: 1.4;
-  color: var(--TrelloForegroundMuted);
+  color: var(--DrawForegroundMuted);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -1600,12 +1597,12 @@ drawCardCommentText {
   padding: 8px;
   white-space: pre-wrap;
   line-height: 1.5;
-  color: var(--TrelloForegroundStrong);
+  color: var(--DrawForegroundStrong);
   overflow-wrap: anywhere;
-  background: var(--TrelloSurfaceAlt);
-  border: 1px solid var(--TrelloBorder);
+  background: var(--DrawSurfaceAlt);
+  border: 1px solid var(--DrawBorder);
   border-radius: 6px;
-  box-shadow: 0 1px 2px var(--TrelloShadow);
+  box-shadow: 0 1px 2px var(--DrawShadow);
 }
 
 drawCardCommentWriteButton {
@@ -1638,13 +1635,13 @@ drawCardCommentCancelButton {
 }
 
 drawCardCommentCancelButton {
-  color: var(--TrelloForegroundStrong);
+  color: var(--DrawForegroundStrong);
   background: transparent;
   border-color: transparent;
 }
 
 drawCardCommentCancelButton:hover {
-  background: var(--TrelloHoverBackground);
+  background: var(--DrawHoverBackground);
 }
 
 drawCardDetailImages {
@@ -1661,8 +1658,8 @@ drawCardDetailImage {
   max-height: 220px;
   contain: content;
   object-fit: contain;
-  background: var(--TrelloSurfaceAlt);
-  border: 1px solid var(--TrelloBorder);
+  background: var(--DrawSurfaceAlt);
+  border: 1px solid var(--DrawBorder);
   border-radius: 6px;
 }
 
@@ -1674,27 +1671,27 @@ drawCardDetailImageError {
   min-height: 104px;
   padding: 20px;
   contain: content;
-  color: var(--TrelloForegroundMuted);
+  color: var(--DrawForegroundMuted);
   text-align: center;
-  background: var(--TrelloSurfaceAlt);
-  border: 1px dashed var(--TrelloBorder);
+  background: var(--DrawSurfaceAlt);
+  border: 1px dashed var(--DrawBorder);
   border-radius: 6px;
 }
 
 drawCardDetailEmpty {
   contain: content;
-  color: var(--TrelloForegroundMuted);
+  color: var(--DrawForegroundMuted);
 }
 
 drawCardDetailLink {
   contain: content;
-  color: var(--TrelloLinkForeground);
+  color: var(--DrawLinkForeground);
 }
 
 drawError {
   contain: content;
   padding: 8px;
-  color: var(--TrelloErrorForeground);
-  background: var(--TrelloErrorBackground);
+  color: var(--DrawErrorForeground);
+  background: var(--DrawErrorBackground);
   border-radius: 6px;
 }

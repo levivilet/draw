@@ -1,36 +1,36 @@
 import { expect, test } from '@jest/globals'
-import type { TrelloClient } from '../src/parts/TrelloClient/TrelloClient.ts'
+import type { DrawClient } from '../src/parts/DrawClient/DrawClient.ts'
 import type {
-  TrelloBoard,
-  TrelloBoardDetail,
-  TrelloCard,
-  TrelloCardMove,
-  TrelloCredentials,
-} from '../src/parts/TrelloTypes/TrelloTypes.ts'
+  DrawBoard,
+  DrawBoardDetail,
+  DrawCard,
+  DrawCardMove,
+  DrawCredentials,
+} from '../src/parts/DrawTypes/DrawTypes.ts'
 import type {
-  TrelloViewActionContext,
-  TrelloViewState,
-} from '../src/parts/TrelloViewState/TrelloViewState.ts'
+  DrawViewActionContext,
+  DrawViewState,
+} from '../src/parts/DrawViewState/DrawViewState.ts'
 import { createInitialState } from '../src/parts/CreateInitialState/CreateInitialState.ts'
 import { moveCardToList } from '../src/parts/MoveCardToList/MoveCardToList.ts'
 
-const credentials: TrelloCredentials = {
+const credentials: DrawCredentials = {
   apiKey: 'api-key',
   token: 'token',
 }
 
-const card: TrelloCard = {
+const card: DrawCard = {
   id: 'card-1',
   name: 'Plan work',
 }
 
-const otherCard: TrelloCard = {
+const otherCard: DrawCard = {
   id: 'card-2',
   idList: 'list-2',
   name: 'Build work',
 }
 
-const initialBoardDetail: TrelloBoardDetail = {
+const initialBoardDetail: DrawBoardDetail = {
   board: {
     id: 'board-1',
     name: 'Roadmap',
@@ -50,23 +50,23 @@ const initialBoardDetail: TrelloBoardDetail = {
 }
 
 interface MoveCall {
-  readonly card: TrelloCard
-  readonly credentials: TrelloCredentials
-  readonly move: TrelloCardMove
+  readonly card: DrawCard
+  readonly credentials: DrawCredentials
+  readonly move: DrawCardMove
 }
 
 interface TestContext {
-  readonly context: TrelloViewActionContext
+  readonly context: DrawViewActionContext
   readonly getBoardDetailCallCount: () => number
   readonly getMoveCalls: () => readonly MoveCall[]
   readonly getRerenderCount: () => number
-  readonly state: TrelloViewState
+  readonly state: DrawViewState
 }
 
 interface TestContextOptions {
-  readonly getBoardDetail?: TrelloClient['getBoardDetail']
-  readonly moveCard?: TrelloClient['moveCard']
-  readonly state?: Readonly<Partial<TrelloViewState>>
+  readonly getBoardDetail?: DrawClient['getBoardDetail']
+  readonly moveCard?: DrawClient['moveCard']
+  readonly state?: Readonly<Partial<DrawViewState>>
 }
 
 const createContext = (
@@ -83,9 +83,9 @@ const createContext = (
   let rerenderCount = 0
   const client = {
     async getBoardDetail(
-      board: TrelloBoard,
-      currentCredentials: TrelloCredentials,
-    ): Promise<TrelloBoardDetail> {
+      board: DrawBoard,
+      currentCredentials: DrawCredentials,
+    ): Promise<DrawBoardDetail> {
       getBoardDetailCallCount++
       if (options.getBoardDetail) {
         return options.getBoardDetail(board, currentCredentials)
@@ -93,10 +93,10 @@ const createContext = (
       return state.boardDetail || initialBoardDetail
     },
     async moveCard(
-      sourceCard: TrelloCard,
-      move: TrelloCardMove,
-      currentCredentials: TrelloCredentials,
-    ): Promise<TrelloCard> {
+      sourceCard: DrawCard,
+      move: DrawCardMove,
+      currentCredentials: DrawCredentials,
+    ): Promise<DrawCard> {
       moveCalls.push({
         card: sourceCard,
         credentials: currentCredentials,
@@ -110,7 +110,7 @@ const createContext = (
         idList: move.idList,
       }
     },
-  } as unknown as TrelloClient
+  } as unknown as DrawClient
   return {
     context: {
       client,
@@ -118,7 +118,7 @@ const createContext = (
         rerenderCount++
       },
       state,
-    } as unknown as TrelloViewActionContext,
+    } as unknown as DrawViewActionContext,
     getBoardDetailCallCount(): number {
       return getBoardDetailCallCount
     },
@@ -167,7 +167,7 @@ test('moveCardToList rerenders without moving a card already in the target list'
 })
 
 test('moveCardToList applies an optimistic move and refreshes matching selected detail', async () => {
-  const move = Promise.withResolvers<TrelloCard>()
+  const move = Promise.withResolvers<DrawCard>()
   const testContext = createContext({
     moveCard: async () => move.promise,
     state: {
@@ -218,7 +218,7 @@ test('moveCardToList applies an optimistic move and refreshes matching selected 
 })
 
 test('moveCardToList replaces optimistic state when the refreshed board differs', async () => {
-  const freshBoardDetail: TrelloBoardDetail = {
+  const freshBoardDetail: DrawBoardDetail = {
     board: initialBoardDetail.board,
     lists: [
       {

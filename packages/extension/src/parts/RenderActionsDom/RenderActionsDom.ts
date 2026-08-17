@@ -3,10 +3,10 @@ import {
   type VirtualDomNode,
   VirtualDomElements,
 } from '@lvce-editor/virtual-dom-worker'
-import type { TrelloViewState } from '../TrelloViewState/TrelloViewState.ts'
+import type { DrawViewState } from '../DrawViewState/DrawViewState.ts'
 import * as DomEventListenerFunctions from '../DomEventListenerFunctions/DomEventListenerFunctions.ts'
 import * as MergeClassNames from '../MergeClassNames/MergeClassNames.ts'
-import * as TrelloStrings from '../TrelloStrings/TrelloStrings.ts'
+import * as DrawStrings from '../DrawStrings/DrawStrings.ts'
 
 interface ViewAction {
   readonly command: string
@@ -17,19 +17,19 @@ interface ViewAction {
 const actionBackToBoards: ViewAction = {
   command: 'trello.backToBoards',
   icon: 'ArrowLeft',
-  title: TrelloStrings.backToBoards(),
+  title: DrawStrings.backToBoards(),
 }
 
 const actionRefreshBoards: ViewAction = {
   command: 'trello.refreshBoards',
   icon: 'Refresh',
-  title: TrelloStrings.refreshBoards(),
+  title: DrawStrings.refreshBoards(),
 }
 
 const actionSignOut: ViewAction = {
   command: 'trello.logout',
   icon: 'Account',
-  title: TrelloStrings.signOut(),
+  title: DrawStrings.signOut(),
 }
 
 const renderAction = (action: ViewAction): readonly VirtualDomNode[] => {
@@ -54,23 +54,23 @@ const renderAction = (action: ViewAction): readonly VirtualDomNode[] => {
 }
 
 const renderBoardFilterAction = (
-  state: Readonly<TrelloViewState>,
+  state: Readonly<DrawViewState>,
 ): readonly VirtualDomNode[] => {
   const { boardFilterOpen, draftBoardFilter } = state
   return [
     {
       'aria-expanded': boardFilterOpen,
-      'aria-label': TrelloStrings.filterCards(),
+      'aria-label': DrawStrings.filterCards(),
       childCount: 1,
       className: draftBoardFilter
         ? MergeClassNames.mergeClassNames(
-            'IconButton',
-            'TrelloBoardFilterActionActive',
-          )
+          'IconButton',
+          'DrawBoardFilterActionActive',
+        )
         : 'IconButton',
       name: 'openBoardFilter',
       onClick: DomEventListenerFunctions.HandleClick,
-      title: TrelloStrings.filterCards(),
+      title: DrawStrings.filterCards(),
       type: VirtualDomElements.Button,
     },
     {
@@ -83,7 +83,7 @@ const renderBoardFilterAction = (
 }
 
 export const renderActionsDom = (
-  state: Readonly<TrelloViewState>,
+  state: Readonly<DrawViewState>,
 ): readonly VirtualDomNode[] => {
   const { boardDetail, credentials } = state
   if (!credentials) {
@@ -91,11 +91,11 @@ export const renderActionsDom = (
   }
   const actions = boardDetail
     ? [
-        renderAction(actionBackToBoards),
-        renderAction(actionRefreshBoards),
-        renderBoardFilterAction(state),
-        renderAction(actionSignOut),
-      ]
+      renderAction(actionBackToBoards),
+      renderAction(actionRefreshBoards),
+      renderBoardFilterAction(state),
+      renderAction(actionSignOut),
+    ]
     : [renderAction(actionRefreshBoards), renderAction(actionSignOut)]
   return [
     {

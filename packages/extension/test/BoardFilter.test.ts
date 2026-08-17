@@ -1,8 +1,8 @@
 import { expect, test } from '@jest/globals'
 import type {
-  TrelloViewActionContext,
-  TrelloViewState,
-} from '../src/parts/TrelloViewState/TrelloViewState.ts'
+  DrawViewActionContext,
+  DrawViewState,
+} from '../src/parts/DrawViewState/DrawViewState.ts'
 import {
   closeBoardFilter,
   openBoardFilter,
@@ -10,7 +10,7 @@ import {
 import { createInitialState } from '../src/parts/CreateInitialState/CreateInitialState.ts'
 
 const createContext = (): {
-  readonly context: TrelloViewActionContext
+  readonly context: DrawViewActionContext
   readonly getRerenderCount: () => number
 } => {
   const state = createInitialState()
@@ -21,7 +21,7 @@ const createContext = (): {
         rerenderCount++
       },
       state,
-    } as TrelloViewActionContext,
+    } as DrawViewActionContext,
     getRerenderCount(): number {
       return rerenderCount
     },
@@ -40,7 +40,7 @@ test('opens the board filter and requests focus', () => {
 
 test('closes the board filter without clearing its value', () => {
   const { context, getRerenderCount } = createContext()
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   state.boardFilterOpen = true
   state.draftBoardFilter = 'ready'
   state.focusedName = 'boardFilter'
@@ -55,7 +55,7 @@ test('closes the board filter without clearing its value', () => {
 
 test('closing the board filter preserves unrelated focus', () => {
   const { context } = createContext()
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   state.boardFilterOpen = true
   state.focusedName = 'other'
 

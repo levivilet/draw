@@ -1,5 +1,5 @@
-import type { TrelloViewState } from '../TrelloViewState/TrelloViewState.ts'
-import * as TrelloStrings from '../TrelloStrings/TrelloStrings.ts'
+import type { DrawViewState } from '../DrawViewState/DrawViewState.ts'
+import * as DrawStrings from '../DrawStrings/DrawStrings.ts'
 
 export const MenuIdBoard = 'trello.board'
 export const MenuIdCard = 'trello.card'
@@ -16,35 +16,35 @@ export interface MenuEntry {
 const menuEntryRefreshBoards: MenuEntry = {
   command: 'trello.refreshBoards',
   id: 'refreshBoards',
-  label: TrelloStrings.refreshBoards(),
+  label: DrawStrings.refreshBoards(),
 }
 
 const menuEntrySignOut: MenuEntry = {
   command: 'trello.logout',
   id: 'signOut',
-  label: TrelloStrings.signOut(),
+  label: DrawStrings.signOut(),
 }
 
 const menuEntryBackToBoards: MenuEntry = {
   command: 'trello.backToBoards',
   id: 'backToBoards',
-  label: TrelloStrings.backToBoards(),
+  label: DrawStrings.backToBoards(),
 }
 
 const menuEntrySaveCard: MenuEntry = {
   command: 'trello.saveCardDetail',
   id: 'saveCard',
-  label: TrelloStrings.saveCard(),
+  label: DrawStrings.saveCard(),
 }
 
 const menuEntryCloseCard: MenuEntry = {
   command: 'trello.closeCardDetail',
   id: 'closeCard',
-  label: TrelloStrings.closeCard(),
+  label: DrawStrings.closeCard(),
 }
 
 const getAddCardEntry = (
-  state: Readonly<TrelloViewState>,
+  state: Readonly<DrawViewState>,
 ): readonly MenuEntry[] => {
   if (!state.contextMenuListId) {
     return []
@@ -54,13 +54,13 @@ const getAddCardEntry = (
       args: [state.contextMenuListId],
       command: 'trello.startAddCard',
       id: 'addCard',
-      label: TrelloStrings.addCardMenu(),
+      label: DrawStrings.addCardMenu(),
     },
   ]
 }
 
 const getOpenCardEntry = (
-  state: Readonly<TrelloViewState>,
+  state: Readonly<DrawViewState>,
 ): readonly MenuEntry[] => {
   if (!state.contextMenuCardId) {
     return []
@@ -70,13 +70,13 @@ const getOpenCardEntry = (
       args: [state.contextMenuCardId],
       command: 'trello.openCard',
       id: 'openCard',
-      label: TrelloStrings.openCard(),
+      label: DrawStrings.openCard(),
     },
   ]
 }
 
 export const getMenuEntries = (
-  state: Readonly<TrelloViewState>,
+  state: Readonly<DrawViewState>,
   menuId: string,
 ): readonly MenuEntry[] => {
   switch (menuId) {

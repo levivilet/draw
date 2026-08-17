@@ -1,16 +1,16 @@
-import type { TrelloCredentials } from '../TrelloTypes/TrelloTypes.ts'
-import { getCredentialFingerprint } from '../TrelloApiCache/TrelloApiCache.ts'
+import type { DrawCredentials } from '../DrawTypes/DrawTypes.ts'
+import { getCredentialFingerprint } from '../DrawApiCache/DrawApiCache.ts'
 
-export interface TrelloImageCache {
+export interface DrawImageCache {
   readonly dispose: () => void
   readonly resolveImageUrl: (
     url: string,
-    credentials: TrelloCredentials,
+    credentials: DrawCredentials,
   ) => Promise<string>
 }
 
 export const trelloImageCacheName = 'builtindraw.images'
-export const testTrelloImageCacheName = 'test.builtindraw.images'
+export const testDrawImageCacheName = 'test.builtindraw.images'
 
 interface ImageRequestInit {
   readonly headers: Readonly<Record<string, string>>
@@ -22,7 +22,7 @@ const credentialFingerprintSearchParam = 'trelloCredential'
 const trelloDownloadPathPattern =
   /^\/1\/cards\/[^/]+\/attachments\/[^/]+\/download\//
 
-const isTrelloDownloadUrl = (
+const isDrawDownloadUrl = (
   url: Readonly<Pick<URL, 'hostname' | 'pathname'>>,
 ): boolean => {
   return (
@@ -33,10 +33,10 @@ const isTrelloDownloadUrl = (
 
 const createImageRequest = (
   sourceUrl: string,
-  credentials: TrelloCredentials,
+  credentials: DrawCredentials,
 ): readonly [string, ImageRequestInit | undefined] => {
   const url = new URL(sourceUrl)
-  if (!isTrelloDownloadUrl(url)) {
+  if (!isDrawDownloadUrl(url)) {
     return [sourceUrl, undefined]
   }
   url.protocol = 'https:'
@@ -54,7 +54,7 @@ const createImageRequest = (
 
 const createImageCacheUrl = async (
   sourceUrl: string,
-  credentials: TrelloCredentials,
+  credentials: DrawCredentials,
 ): Promise<string | undefined> => {
   const credentialFingerprint = await getCredentialFingerprint(credentials)
   if (!credentialFingerprint) {
@@ -99,11 +99,11 @@ const writeCachedResponse = async (
   }
 }
 
-export const createTrelloImageCache = (
+export const createDrawImageCache = (
   cacheStorage: Readonly<CacheStorage> | undefined = globalThis.caches,
   fetchImage: FetchImage = fetch,
   selectedCacheName = trelloImageCacheName,
-): TrelloImageCache => {
+): DrawImageCache => {
   const objectUrls = new Map<string, string>()
   const pendingObjectUrls = new Map<string, Promise<string>>()
 
@@ -124,7 +124,7 @@ export const createTrelloImageCache = (
     },
     async resolveImageUrl(
       url: string,
-      credentials: TrelloCredentials,
+      credentials: DrawCredentials,
     ): Promise<string> {
       const cacheUrl = await createImageCacheUrl(url, credentials)
       if (!cacheUrl) {

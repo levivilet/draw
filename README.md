@@ -1,6 +1,6 @@
 # builtindraw
 
-Trello extension for Lvce Editor.
+Draw extension for Lvce Editor.
 
 ## Development
 

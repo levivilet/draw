@@ -1,13 +1,13 @@
 import type {
-  TrelloViewActionContext,
-  TrelloViewState,
-} from '../TrelloViewState/TrelloViewState.ts'
+  DrawViewActionContext,
+  DrawViewState,
+} from '../DrawViewState/DrawViewState.ts'
 
 export const handleImageErrorEvent = (
-  context: Readonly<TrelloViewActionContext>,
+  context: Readonly<DrawViewActionContext>,
   attachmentId: string,
 ): void => {
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   if (
     !attachmentId ||
     state.failedCardAttachmentImageIds.includes(attachmentId)

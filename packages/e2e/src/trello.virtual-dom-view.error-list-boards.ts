@@ -2,7 +2,7 @@ import type { Test } from '@lvce-editor/test-with-playwright'
 import {
   connectWithCredentials,
   createBoards,
-  useMockDataAndShowTrello,
+  useMockDataAndShowDraw,
 } from './_trello.virtual-dom-view.shared.ts'
 
 export const name = 'trello.virtual-dom-view.error-list-boards'
@@ -10,7 +10,7 @@ export const skip = true
 
 export const test: Test = async ({ Command, expect, Locator }) => {
   const boards = createBoards(1)
-  await useMockDataAndShowTrello(Command, {
+  await useMockDataAndShowDraw(Command, {
     boards,
     listBoardsError: 'Cannot list boards',
   })

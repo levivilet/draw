@@ -1,33 +1,33 @@
-import type { TrelloCredentials } from '../TrelloTypes/TrelloTypes.ts'
+import type { DrawCredentials } from '../DrawTypes/DrawTypes.ts'
 
-export interface TrelloApiCache {
+export interface DrawApiCache {
   readonly delete: (
     requestUrl: string,
-    credentials: TrelloCredentials,
+    credentials: DrawCredentials,
   ) => Promise<void>
   readonly read: <T>(
     requestUrl: string,
-    credentials: TrelloCredentials,
+    credentials: DrawCredentials,
   ) => Promise<T | undefined>
   readonly write: <T>(
     requestUrl: string,
-    credentials: TrelloCredentials,
+    credentials: DrawCredentials,
     value: T,
   ) => Promise<void>
 }
 
-export interface MemoryTrelloApiCache extends TrelloApiCache {
+export interface MemoryDrawApiCache extends DrawApiCache {
   readonly keys: () => readonly string[]
 }
 
 export const trelloApiCacheName = 'builtindraw.api-responses'
-export const testTrelloApiCacheName = 'test.builtindraw.api-responses'
+export const testDrawApiCacheName = 'test.builtindraw.api-responses'
 export const credentialFingerprintSearchParam = 'credential'
 
 const textEncoder = new TextEncoder()
 
 export const getCredentialFingerprint = async (
-  credentials: TrelloCredentials,
+  credentials: DrawCredentials,
 ): Promise<string | undefined> => {
   const subtle = globalThis.crypto?.subtle
   if (!subtle) {
@@ -40,9 +40,9 @@ export const getCredentialFingerprint = async (
   }).join('')
 }
 
-export const createTrelloApiCacheRequestUrl = async (
+export const createDrawApiCacheRequestUrl = async (
   requestUrl: string,
-  credentials: TrelloCredentials,
+  credentials: DrawCredentials,
 ): Promise<string | undefined> => {
   const credentialFingerprint = await getCredentialFingerprint(credentials)
   if (!credentialFingerprint) {
@@ -56,19 +56,19 @@ export const createTrelloApiCacheRequestUrl = async (
   return url.href
 }
 
-export const createCacheStorageTrelloApiCache = (
+export const createCacheStorageDrawApiCache = (
   cacheStorage: Readonly<CacheStorage> | undefined = globalThis.caches,
   selectedCacheName = trelloApiCacheName,
-): TrelloApiCache | undefined => {
+): DrawApiCache | undefined => {
   if (!cacheStorage) {
     return undefined
   }
   return {
     async delete(
       requestUrl: string,
-      credentials: TrelloCredentials,
+      credentials: DrawCredentials,
     ): Promise<void> {
-      const cacheRequestUrl = await createTrelloApiCacheRequestUrl(
+      const cacheRequestUrl = await createDrawApiCacheRequestUrl(
         requestUrl,
         credentials,
       )
@@ -80,9 +80,9 @@ export const createCacheStorageTrelloApiCache = (
     },
     async read<T>(
       requestUrl: string,
-      credentials: TrelloCredentials,
+      credentials: DrawCredentials,
     ): Promise<T | undefined> {
-      const cacheRequestUrl = await createTrelloApiCacheRequestUrl(
+      const cacheRequestUrl = await createDrawApiCacheRequestUrl(
         requestUrl,
         credentials,
       )
@@ -98,10 +98,10 @@ export const createCacheStorageTrelloApiCache = (
     },
     async write<T>(
       requestUrl: string,
-      credentials: TrelloCredentials,
+      credentials: DrawCredentials,
       value: T,
     ): Promise<void> {
-      const cacheRequestUrl = await createTrelloApiCacheRequestUrl(
+      const cacheRequestUrl = await createDrawApiCacheRequestUrl(
         requestUrl,
         credentials,
       )
@@ -114,14 +114,14 @@ export const createCacheStorageTrelloApiCache = (
   }
 }
 
-export const createMemoryTrelloApiCache = (): MemoryTrelloApiCache => {
+export const createMemoryDrawApiCache = (): MemoryDrawApiCache => {
   const values = new Map<string, unknown>()
   return {
     async delete(
       requestUrl: string,
-      credentials: TrelloCredentials,
+      credentials: DrawCredentials,
     ): Promise<void> {
-      const cacheRequestUrl = await createTrelloApiCacheRequestUrl(
+      const cacheRequestUrl = await createDrawApiCacheRequestUrl(
         requestUrl,
         credentials,
       )
@@ -134,9 +134,9 @@ export const createMemoryTrelloApiCache = (): MemoryTrelloApiCache => {
     },
     async read<T>(
       requestUrl: string,
-      credentials: TrelloCredentials,
+      credentials: DrawCredentials,
     ): Promise<T | undefined> {
-      const cacheRequestUrl = await createTrelloApiCacheRequestUrl(
+      const cacheRequestUrl = await createDrawApiCacheRequestUrl(
         requestUrl,
         credentials,
       )
@@ -147,10 +147,10 @@ export const createMemoryTrelloApiCache = (): MemoryTrelloApiCache => {
     },
     async write<T>(
       requestUrl: string,
-      credentials: TrelloCredentials,
+      credentials: DrawCredentials,
       value: T,
     ): Promise<void> {
-      const cacheRequestUrl = await createTrelloApiCacheRequestUrl(
+      const cacheRequestUrl = await createDrawApiCacheRequestUrl(
         requestUrl,
         credentials,
       )

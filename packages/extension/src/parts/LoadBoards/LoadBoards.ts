@@ -1,17 +1,17 @@
 import type {
-  TrelloViewActionContext,
-  TrelloViewState,
-} from '../TrelloViewState/TrelloViewState.ts'
+  DrawViewActionContext,
+  DrawViewState,
+} from '../DrawViewState/DrawViewState.ts'
 import { isSameJson } from '../CacheFirstHelpers/CacheFirstHelpers.ts'
 import { clearBoardSpecificState } from '../ClearBoardSpecificState/ClearBoardSpecificState.ts'
 import { getErrorMessage } from '../GetErrorMessage/GetErrorMessage.ts'
 
 export const loadBoards = async (
-  context: TrelloViewActionContext,
+  context: DrawViewActionContext,
   rerender = true,
 ): Promise<void> => {
   const { client, requestRerender } = context
-  const state = context.state as TrelloViewState
+  const state = context.state as DrawViewState
   if (!state.credentials) {
     return
   }

@@ -1,22 +1,22 @@
-import type { TrelloApiCache } from '../TrelloApiCache/TrelloApiCache.ts'
-import type { FetchLike } from '../TrelloClientTypes/TrelloClientTypes.ts'
+import type { DrawApiCache } from '../DrawApiCache/DrawApiCache.ts'
+import type { FetchLike } from '../DrawClientTypes/DrawClientTypes.ts'
 import type {
-  TrelloBoard,
-  TrelloCredentials,
-  TrelloLabel,
-  TrelloLabelCreate,
-} from '../TrelloTypes/TrelloTypes.ts'
+  DrawBoard,
+  DrawCredentials,
+  DrawLabel,
+  DrawLabelCreate,
+} from '../DrawTypes/DrawTypes.ts'
 import { deleteCachedBoardLabels } from '../ListBoardLabels/ListBoardLabels.ts'
 import { requestJson } from '../RequestJson/RequestJson.ts'
 
 export const createLabel = async (
   fetchLike: FetchLike,
-  board: TrelloBoard,
-  create: TrelloLabelCreate,
-  credentials: TrelloCredentials,
-  cache?: TrelloApiCache,
-): Promise<TrelloLabel> => {
-  const label = await requestJson<TrelloLabel>(
+  board: DrawBoard,
+  create: DrawLabelCreate,
+  credentials: DrawCredentials,
+  cache?: DrawApiCache,
+): Promise<DrawLabel> => {
+  const label = await requestJson<DrawLabel>(
     fetchLike,
     '/labels',
     credentials,

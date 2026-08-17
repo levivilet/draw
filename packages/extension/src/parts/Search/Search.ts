@@ -1,14 +1,14 @@
 // cspell:ignore prefs
 
-import type { TrelloApiCache } from '../TrelloApiCache/TrelloApiCache.ts'
-import type { FetchLike } from '../TrelloClientTypes/TrelloClientTypes.ts'
+import type { DrawApiCache } from '../DrawApiCache/DrawApiCache.ts'
+import type { FetchLike } from '../DrawClientTypes/DrawClientTypes.ts'
 import type {
-  TrelloCredentials,
-  TrelloSearchResult,
-} from '../TrelloTypes/TrelloTypes.ts'
+  DrawCredentials,
+  DrawSearchResult,
+} from '../DrawTypes/DrawTypes.ts'
 import {
   normalizeSearchResponse,
-  type TrelloSearchResponse,
+  type DrawSearchResponse,
 } from '../NormalizeSearchResponse/NormalizeSearchResponse.ts'
 import { readCachedJson, requestJson } from '../RequestJson/RequestJson.ts'
 
@@ -24,11 +24,11 @@ const getSearchParams = (query: string): Readonly<Record<string, string>> => {
 }
 
 export const readCachedSearch = async (
-  cache: TrelloApiCache | undefined,
+  cache: DrawApiCache | undefined,
   query: string,
-  credentials: TrelloCredentials,
-): Promise<readonly TrelloSearchResult[] | undefined> => {
-  const response = await readCachedJson<TrelloSearchResponse>(
+  credentials: DrawCredentials,
+): Promise<readonly DrawSearchResult[] | undefined> => {
+  const response = await readCachedJson<DrawSearchResponse>(
     cache,
     '/search',
     credentials,
@@ -43,10 +43,10 @@ export const readCachedSearch = async (
 export const search = async (
   fetchLike: FetchLike,
   query: string,
-  credentials: TrelloCredentials,
-  cache?: TrelloApiCache,
-): Promise<readonly TrelloSearchResult[]> => {
-  const response = await requestJson<TrelloSearchResponse>(
+  credentials: DrawCredentials,
+  cache?: DrawApiCache,
+): Promise<readonly DrawSearchResult[]> => {
+  const response = await requestJson<DrawSearchResponse>(
     fetchLike,
     '/search',
     credentials,

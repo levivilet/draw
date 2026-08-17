@@ -3,8 +3,8 @@ import {
   VirtualDomElements,
   type VirtualDomNode,
 } from '@lvce-editor/virtual-dom-worker'
-import type { TrelloLabel } from '../TrelloTypes/TrelloTypes.ts'
-import type { TrelloViewState } from '../TrelloViewState/TrelloViewState.ts'
+import type { DrawLabel } from '../DrawTypes/DrawTypes.ts'
+import type { DrawViewState } from '../DrawViewState/DrawViewState.ts'
 import * as DomEventListenerFunctions from '../DomEventListenerFunctions/DomEventListenerFunctions.ts'
 import { hasCardLabel } from '../HasCardLabel/HasCardLabel.ts'
 import {
@@ -14,16 +14,16 @@ import {
 import * as MergeClassNames from '../MergeClassNames/MergeClassNames.ts'
 
 export const renderCardLabelChoice = (
-  state: Readonly<TrelloViewState>,
-  labels: readonly TrelloLabel[] | undefined,
-  label: Readonly<TrelloLabel>,
+  state: Readonly<DrawViewState>,
+  labels: readonly DrawLabel[] | undefined,
+  label: Readonly<DrawLabel>,
 ): readonly VirtualDomNode[] => {
   const { addingCardLabelId } = state
   const checked = hasCardLabel(labels, label.id)
   return [
     {
       childCount: 2,
-      className: 'TrelloCardLabelChoice',
+      className: 'DrawCardLabelChoice',
       disabled: Boolean(addingCardLabelId),
       name: `addCardLabel:${label.id}`,
       onClick: DomEventListenerFunctions.HandleClick,
@@ -32,7 +32,7 @@ export const renderCardLabelChoice = (
     {
       checked,
       childCount: 0,
-      className: 'TrelloCardLabelChoiceCheckbox',
+      className: 'DrawCardLabelChoiceCheckbox',
       inputType: 'checkbox',
       name: `cardLabelCheckbox:${label.id}`,
       tabIndex: -1,
@@ -41,7 +41,7 @@ export const renderCardLabelChoice = (
     {
       childCount: 1,
       className: MergeClassNames.mergeClassNames(
-        'TrelloCardLabelChoiceText',
+        'DrawCardLabelChoiceText',
         getLabelColorClassName(label.color),
       ),
       type: VirtualDomElements.Span,

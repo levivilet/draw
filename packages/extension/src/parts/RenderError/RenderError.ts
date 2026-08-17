@@ -6,7 +6,7 @@ import {
 
 const errorNode: VirtualDomNode = {
   childCount: 1,
-  className: 'TrelloError',
+  className: 'DrawError',
   type: VirtualDomElements.Div,
 }
 

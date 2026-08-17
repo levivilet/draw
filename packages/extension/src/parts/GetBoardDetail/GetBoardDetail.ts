@@ -1,18 +1,18 @@
-import type { TrelloApiCache } from '../TrelloApiCache/TrelloApiCache.ts'
-import type { FetchLike } from '../TrelloClientTypes/TrelloClientTypes.ts'
+import type { DrawApiCache } from '../DrawApiCache/DrawApiCache.ts'
+import type { FetchLike } from '../DrawClientTypes/DrawClientTypes.ts'
 import type {
-  TrelloBoard,
-  TrelloBoardDetail,
-  TrelloCredentials,
-  TrelloList,
-  TrelloCard,
-} from '../TrelloTypes/TrelloTypes.ts'
+  DrawBoard,
+  DrawBoardDetail,
+  DrawCredentials,
+  DrawList,
+  DrawCard,
+} from '../DrawTypes/DrawTypes.ts'
 import {
   deleteCachedJson,
   readCachedJson,
   requestJson,
   requestJsonBatch,
-  type TrelloBatchRequest,
+  type DrawBatchRequest,
 } from '../RequestJson/RequestJson.ts'
 
 const batchRequestLimit = 10
@@ -28,9 +28,9 @@ const cardsParams = {
 } as const
 
 export const deleteCachedBoardLists = async (
-  cache: TrelloApiCache | undefined,
+  cache: DrawApiCache | undefined,
   boardId: string,
-  credentials: TrelloCredentials,
+  credentials: DrawCredentials,
 ): Promise<void> => {
   await deleteCachedJson(
     cache,
@@ -41,9 +41,9 @@ export const deleteCachedBoardLists = async (
 }
 
 export const deleteCachedListCards = async (
-  cache: TrelloApiCache | undefined,
+  cache: DrawApiCache | undefined,
   listId: string,
-  credentials: TrelloCredentials,
+  credentials: DrawCredentials,
 ): Promise<void> => {
   await deleteCachedJson(
     cache,
@@ -54,11 +54,11 @@ export const deleteCachedListCards = async (
 }
 
 export const readCachedBoardDetail = async (
-  cache: TrelloApiCache | undefined,
-  board: TrelloBoard,
-  credentials: TrelloCredentials,
-): Promise<TrelloBoardDetail | undefined> => {
-  const lists = await readCachedJson<readonly Omit<TrelloList, 'cards'>[]>(
+  cache: DrawApiCache | undefined,
+  board: DrawBoard,
+  credentials: DrawCredentials,
+): Promise<DrawBoardDetail | undefined> => {
+  const lists = await readCachedJson<readonly Omit<DrawList, 'cards'>[]>(
     cache,
     `/boards/${board.id}/lists`,
     credentials,
@@ -69,7 +69,7 @@ export const readCachedBoardDetail = async (
   }
   const cardsByList = await Promise.all(
     lists.map((list) => {
-      return readCachedJson<readonly TrelloCard[]>(
+      return readCachedJson<readonly DrawCard[]>(
         cache,
         `/lists/${list.id}/cards`,
         credentials,
@@ -94,12 +94,12 @@ export const readCachedBoardDetail = async (
 
 export const getBoardDetail = async (
   fetchLike: FetchLike,
-  board: TrelloBoard,
-  credentials: TrelloCredentials,
-  cache?: TrelloApiCache,
+  board: DrawBoard,
+  credentials: DrawCredentials,
+  cache?: DrawApiCache,
   batchRequestsEnabled = false,
-): Promise<TrelloBoardDetail> => {
-  const lists = await requestJson<readonly Omit<TrelloList, 'cards'>[]>(
+): Promise<DrawBoardDetail> => {
+  const lists = await requestJson<readonly Omit<DrawList, 'cards'>[]>(
     fetchLike,
     `/boards/${board.id}/lists`,
     credentials,
@@ -110,17 +110,17 @@ export const getBoardDetail = async (
   const cardsByList = batchRequestsEnabled
     ? await getCardsBatched(fetchLike, lists, credentials, cache)
     : await Promise.all(
-        lists.map((list) => {
-          return requestJson<readonly TrelloCard[]>(
-            fetchLike,
-            `/lists/${list.id}/cards`,
-            credentials,
-            cardsParams,
-            undefined,
-            cache,
-          )
-        }),
-      )
+      lists.map((list) => {
+        return requestJson<readonly DrawCard[]>(
+          fetchLike,
+          `/lists/${list.id}/cards`,
+          credentials,
+          cardsParams,
+          undefined,
+          cache,
+        )
+      }),
+    )
   return {
     board,
     lists: lists.map((list, index) => {
@@ -135,23 +135,23 @@ export const getBoardDetail = async (
 
 const getCardsBatched = async (
   fetchLike: FetchLike,
-  lists: readonly Omit<TrelloList, 'cards'>[],
-  credentials: TrelloCredentials,
-  cache?: TrelloApiCache,
-): Promise<readonly (readonly TrelloCard[])[]> => {
-  const requests: TrelloBatchRequest[] = lists.map((list) => {
+  lists: readonly Omit<DrawList, 'cards'>[],
+  credentials: DrawCredentials,
+  cache?: DrawApiCache,
+): Promise<readonly (readonly DrawCard[])[]> => {
+  const requests: DrawBatchRequest[] = lists.map((list) => {
     return {
       params: cardsParams,
       path: `/lists/${list.id}/cards`,
     }
   })
-  const batches: TrelloBatchRequest[][] = []
+  const batches: DrawBatchRequest[][] = []
   for (let index = 0; index < requests.length; index += batchRequestLimit) {
     batches.push(requests.slice(index, index + batchRequestLimit))
   }
   const results = await Promise.all(
-    batches.map((batch: readonly TrelloBatchRequest[]) => {
-      return requestJsonBatch<readonly (readonly TrelloCard[])[]>(
+    batches.map((batch: readonly DrawBatchRequest[]) => {
+      return requestJsonBatch<readonly (readonly DrawCard[])[]>(
         fetchLike,
         batch,
         credentials,

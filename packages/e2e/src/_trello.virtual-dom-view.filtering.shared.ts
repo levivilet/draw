@@ -6,7 +6,7 @@ import {
   createList,
   createMockData,
   openBoard,
-  useMockDataAndShowTrello,
+  useMockDataAndShowDraw,
 } from './_trello.virtual-dom-view.shared.ts'
 
 export const showFilteringBoard = async ({
@@ -24,7 +24,7 @@ export const showFilteringBoard = async ({
         name: 'Implement filtering',
       },
       {
-        desc: 'Deploy the Trello extension to production',
+        desc: 'Deploy the Draw extension to production',
         id: 'card-description',
         name: 'Release extension',
       },
@@ -59,7 +59,7 @@ export const showFilteringBoard = async ({
       },
     ]),
   ]
-  await useMockDataAndShowTrello(
+  await useMockDataAndShowDraw(
     Command,
     createMockData(boards, {
       'board-1': createBoardDetail(boards[0], lists),

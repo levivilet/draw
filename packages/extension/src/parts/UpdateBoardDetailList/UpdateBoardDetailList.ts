@@ -1,11 +1,11 @@
-import type { TrelloList } from '../TrelloTypes/TrelloTypes.ts'
-import type { TrelloViewState } from '../TrelloViewState/TrelloViewState.ts'
+import type { DrawList } from '../DrawTypes/DrawTypes.ts'
+import type { DrawViewState } from '../DrawViewState/DrawViewState.ts'
 
 export const updateBoardDetailList = (
-  state: Readonly<TrelloViewState>,
-  list: Readonly<TrelloList>,
+  state: Readonly<DrawViewState>,
+  list: Readonly<DrawList>,
 ): void => {
-  const mutableState = state as TrelloViewState
+  const mutableState = state as DrawViewState
   if (!mutableState.boardDetail) {
     return
   }
