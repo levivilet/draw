@@ -10,6 +10,31 @@ import * as TabIndex from '../TabIndex/TabIndex.ts'
 const handleClear = 'handleClear'
 const handleDrawPointerDown = 'handleDrawPointerDown'
 
+const emptyMessageNode: VirtualDomNode = {
+  childCount: 1,
+  className: 'DrawEmptyMessage',
+  type: VirtualDomElements.P,
+}
+
+const drawViewNode: VirtualDomNode = {
+  childCount: 2,
+  className: 'DrawView',
+  type: VirtualDomElements.Div,
+}
+
+const drawToolbarNode: VirtualDomNode = {
+  childCount: 2,
+  className: 'DrawToolbar',
+  role: AriaRoles.ToolBar,
+  type: VirtualDomElements.Div,
+}
+
+const drawHintNode: VirtualDomNode = {
+  childCount: 1,
+  className: 'DrawHint',
+  type: VirtualDomElements.P,
+}
+
 const renderText = (text: string): VirtualDomNode => {
   return {
     childCount: 0,
@@ -99,14 +124,7 @@ const renderEmptyMessage = (empty: boolean): readonly VirtualDomNode[] => {
   if (!empty) {
     return []
   }
-  return [
-    {
-      childCount: 1,
-      className: 'DrawEmptyMessage',
-      type: VirtualDomElements.P,
-    },
-    renderText('Start drawing anywhere'),
-  ]
+  return [emptyMessageNode, renderText('Start drawing anywhere')]
 }
 
 export const renderDraw = (
@@ -120,22 +138,9 @@ export const renderDraw = (
     return nodes
   })
   return [
-    {
-      childCount: 2,
-      className: 'DrawView',
-      type: VirtualDomElements.Div,
-    },
-    {
-      childCount: 2,
-      className: 'DrawToolbar',
-      role: AriaRoles.ToolBar,
-      type: VirtualDomElements.Div,
-    },
-    {
-      childCount: 1,
-      className: 'DrawHint',
-      type: VirtualDomElements.P,
-    },
+    drawViewNode,
+    drawToolbarNode,
+    drawHintNode,
     renderText('Draw with your mouse or pointer'),
     {
       'aria-label': 'Clear drawing',

@@ -76,11 +76,12 @@ export const createInstance = (context?: ViewContext): DrawViewInstance => {
     clientY: unknown,
     offsets: readonly unknown[],
   ): void => {
+    const { strokes: currentStrokes } = state
     const strokes = appendPoint(
-      state.strokes,
+      currentStrokes,
       toLocalPoint(clientX, clientY, offsets),
     )
-    if (strokes === state.strokes) {
+    if (strokes === currentStrokes) {
       return
     }
     updateState({
@@ -100,7 +101,8 @@ export const createInstance = (context?: ViewContext): DrawViewInstance => {
       activeInstances.delete(instance)
     },
     getCss(): string {
-      return getDrawCss(state.strokes)
+      const { strokes } = state
+      return getDrawCss(strokes)
     },
     handleClear(): void {
       instance.clear()
@@ -114,10 +116,11 @@ export const createInstance = (context?: ViewContext): DrawViewInstance => {
       if (button !== 0) {
         return
       }
+      const { strokes } = state
       const point = toLocalPoint(clientX, clientY, offsets)
       updateState({
         drawing: true,
-        strokes: [...state.strokes, { points: [point] }],
+        strokes: [...strokes, { points: [point] }],
       })
     },
     handleDrawPointerMove(
@@ -125,7 +128,8 @@ export const createInstance = (context?: ViewContext): DrawViewInstance => {
       clientY: unknown,
       ...offsets: readonly unknown[]
     ): void {
-      if (!state.drawing) {
+      const { drawing } = state
+      if (!drawing) {
         return
       }
       addPoint(clientX, clientY, offsets)
@@ -135,7 +139,8 @@ export const createInstance = (context?: ViewContext): DrawViewInstance => {
       clientY: unknown,
       ...offsets: readonly unknown[]
     ): void {
-      if (!state.drawing) {
+      const { drawing } = state
+      if (!drawing) {
         return
       }
       addPoint(clientX, clientY, offsets)
@@ -150,7 +155,8 @@ export const createInstance = (context?: ViewContext): DrawViewInstance => {
       }
     },
     render(): readonly VirtualDomNode[] {
-      return renderDraw(state.strokes)
+      const { strokes } = state
+      return renderDraw(strokes)
     },
     renderActionsDom() {
       return [text('')]
