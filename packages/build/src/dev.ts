@@ -4,15 +4,24 @@ import path from 'node:path'
 import { root } from './root.ts'
 
 const extension = path.join(root, 'packages', 'extension')
-const entryPoint = path.join(extension, 'src', 'drawMain.ts')
-const outfile = path.join(extension, 'dist', 'drawMain.js')
+const entryPoints = {
+  drawExportWorkerMain: path.join(
+    root,
+    'packages',
+    'export-worker',
+    'src',
+    'drawExportWorkerMain.ts',
+  ),
+  drawMain: path.join(extension, 'src', 'drawMain.ts'),
+}
+const outdir = path.join(extension, 'dist')
 
 const context = await esbuild.context({
   bundle: true,
-  entryPoints: [entryPoint],
+  entryPoints,
   external: ['electron', 'node:*'],
   format: 'esm',
-  outfile,
+  outdir,
   platform: 'browser',
   sourcemap: true,
   target: 'esnext',

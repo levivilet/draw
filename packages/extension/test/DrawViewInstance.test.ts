@@ -1,9 +1,14 @@
 import type { ViewContext } from '@lvce-editor/api'
 import { expect, jest, test } from '@jest/globals'
+import type {
+  ExportDrawingOptions,
+  ExportFormat,
+} from '../src/parts/DrawExportWorker/DrawExportWorker.ts'
 import type { Shape } from '../src/parts/DrawState/DrawState.ts'
 import {
   clearActiveDrawViewInstance,
   createInstance,
+  createInstanceWithApi,
   moveShape,
   replaceShape,
   resizeShape,
@@ -184,12 +189,7 @@ test('shows a context menu for the drawing board', async () => {
     showContextMenu,
   })
 
-  await instance.handleEvent?.({
-    name: 'board',
-    type: 'contextmenu',
-    x: 10,
-    y: 20,
-  })
+  await instance.handleDrawContextMenu(10, 20, 640, 480)
 
   expect(showContextMenu).toHaveBeenCalledWith('draw.contextMenu', 10, 20)
   expect(instance.getMenuEntries('draw.contextMenu')).toEqual([
@@ -215,11 +215,26 @@ test('shows a context menu for the drawing board', async () => {
       label: 'Redo',
     },
     {
-      args: [1, 'handleViewCommand', 'handleNoop'],
+      command: '',
+      flags: 4,
+      id: 'draw.exportMenu',
+      label: 'Export As…',
+    },
+  ])
+  expect(instance.getMenuEntries('draw.exportMenu')).toEqual([
+    {
+      args: [1, 'handleViewCommand', 'handleExport', 'svg'],
       command: 'Viewlet.executeViewletCommand',
       flags: 6,
-      id: 'export',
-      label: 'Export As…',
+      id: 'exportSvg',
+      label: 'SVG',
+    },
+    {
+      args: [1, 'handleViewCommand', 'handleExport', 'jpg'],
+      command: 'Viewlet.executeViewletCommand',
+      flags: 6,
+      id: 'exportJpg',
+      label: 'JPG',
     },
   ])
   expect(instance.getMenuEntries('unknown')).toEqual([])
@@ -227,18 +242,49 @@ test('shows a context menu for the drawing board', async () => {
   instance.dispose?.()
 })
 
-test('uses zero coordinates when context menu coordinates are absent', async () => {
+test('uses safe context-menu coordinates and export dimensions', async () => {
   const { context } = createContext()
   const showContextMenu = jest.fn<
     (menuId: string, x: number, y: number) => Promise<void>
   >(async () => {})
-  const instance = createInstance({
-    ...context,
-    showContextMenu,
-  })
+  const blob = new Blob(['svg'], { type: 'image/svg+xml' })
+  const exportDrawing = jest.fn<
+    (options: Readonly<ExportDrawingOptions>) => Promise<Blob>
+  >(async () => blob)
+  const downloadDrawing = jest.fn<
+    (value: Blob, format: ExportFormat) => Promise<void>
+  >(async () => {})
+  const instance = createInstanceWithApi(
+    {
+      ...context,
+      showContextMenu,
+    },
+    { downloadDrawing, exportDrawing },
+  )
 
-  await instance.handleEvent?.({ name: 'board', type: 'contextmenu' })
+  instance.handleSelectTool('line')
+  instance.handleDrawPointerDown(0, 2, 3, undefined)
+  instance.handleDrawPointerUp(10, 20)
+  await instance.handleDrawContextMenu(undefined, NaN, 320.4, 199.6)
+  await instance.handleExport('svg')
 
   expect(showContextMenu).toHaveBeenCalledWith('draw.contextMenu', 0, 0)
+  expect(exportDrawing).toHaveBeenCalledWith({
+    format: 'svg',
+    height: 200,
+    shapes: [
+      {
+        end: { x: 10, y: 20 },
+        id: 0,
+        start: { x: 2, y: 3 },
+        type: 'line',
+      },
+    ],
+    width: 320,
+  })
+  expect(downloadDrawing).toHaveBeenCalledWith(blob, 'svg')
+  await expect(instance.handleExport('png')).rejects.toThrow(
+    'Unsupported drawing export format: png',
+  )
   instance.dispose?.()
 })

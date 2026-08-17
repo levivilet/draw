@@ -9,6 +9,7 @@ import {
   showCommandId,
   viewId,
 } from '../Constants/Constants.ts'
+import { dispose as disposeExportWorker } from '../DrawExportWorker/DrawExportWorker.ts'
 import { view } from '../DrawView/DrawView.ts'
 import { clearActiveDrawViewInstance } from '../DrawViewInstance/DrawViewInstance.ts'
 
@@ -36,4 +37,7 @@ export const activate = async (): Promise<void> => {
   })
 }
 
-export const deactivate = (): void => {}
+export const deactivate = async (): Promise<void> => {
+  state.activated = false
+  await disposeExportWorker()
+}

@@ -47,7 +47,7 @@ test('renders a bottom toolbar with cursor selected by default', () => {
   })
   expect(findByClass(dom, 'DrawBoard')).toMatchObject({
     name: 'board',
-    onContextMenu: 'handleContextMenu',
+    onContextMenu: 'handleDrawContextMenu',
     onPointerDown: 'handleDrawPointerDown',
   })
   expect(

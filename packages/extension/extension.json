@@ -23,6 +23,15 @@
       "label": "Draw: Clear Whiteboard"
     }
   ],
+  "rpc": [
+    {
+      "id": "builtindraw.export-worker",
+      "type": "web-worker",
+      "name": "Draw Export Worker",
+      "url": "dist/drawExportWorkerMain.js",
+      "contentSecurityPolicy": ["default-src 'none'", "script-src 'self'"]
+    }
+  ],
   "views": [
     {
       "css": "media/draw.css",

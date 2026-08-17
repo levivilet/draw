@@ -12,6 +12,31 @@ const media = path.join(extension, 'media')
 const require = createRequire(import.meta.url)
 const commonjs = require('@rollup/plugin-commonjs') as () => Plugin
 
+const bundleEntry = async (input: string, output: string): Promise<void> => {
+  const bundle = await rollup({
+    input,
+    external: ['electron', 'node:*'],
+    plugins: [
+      nodeResolve({
+        browser: true,
+      }),
+      commonjs(),
+      esbuild({
+        target: 'esnext',
+      }),
+    ],
+    treeshake: {
+      moduleSideEffects: false,
+    },
+  })
+
+  await bundle.write({
+    file: output,
+    format: 'esm',
+  })
+  await bundle.close()
+}
+
 fs.rmSync(join(root, 'dist'), { recursive: true, force: true })
 
 fs.mkdirSync(path.join(root, 'dist'))
@@ -31,29 +56,16 @@ fs.copyFileSync(
   join(root, 'dist', 'media', 'draw.svg'),
 )
 
-const bundle = await rollup({
-  input: join(extension, 'src', 'drawMain.ts'),
-  external: ['electron', 'node:*'],
-  plugins: [
-    nodeResolve({
-      browser: true,
-    }),
-    commonjs(),
-    esbuild({
-      target: 'esnext',
-    }),
-  ],
-  treeshake: {
-    moduleSideEffects: false,
-  },
-})
-
-await bundle.write({
-  file: join(root, 'dist', 'dist', 'drawMain.js'),
-  format: 'esm',
-})
-
-await bundle.close()
+await Promise.all([
+  bundleEntry(
+    join(extension, 'src', 'drawMain.ts'),
+    join(root, 'dist', 'dist', 'drawMain.js'),
+  ),
+  bundleEntry(
+    join(root, 'packages', 'export-worker', 'src', 'drawExportWorkerMain.ts'),
+    join(root, 'dist', 'dist', 'drawExportWorkerMain.js'),
+  ),
+])
 
 await packageExtension({
   highestCompression: true,

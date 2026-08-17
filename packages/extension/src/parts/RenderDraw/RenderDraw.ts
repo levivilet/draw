@@ -9,7 +9,7 @@ import type { DrawState, Shape, Tool } from '../DrawState/DrawState.ts'
 import * as TabIndex from '../TabIndex/TabIndex.ts'
 
 const handleClear = 'handleClear'
-const handleContextMenu = 'handleContextMenu'
+const handleDrawContextMenu = 'handleDrawContextMenu'
 const handleDrawPointerDown = 'handleDrawPointerDown'
 const handleSelectTool = 'handleSelectTool'
 const handleTextInput = 'handleTextInput'
@@ -169,7 +169,7 @@ const renderBoard = (state: Readonly<DrawState>): TreeNode => {
       'aria-label': 'Whiteboard drawing area',
       className: mergeClassNames('DrawBoard', `DrawBoardTool-${selectedTool}`),
       name: 'board',
-      onContextMenu: handleContextMenu,
+      onContextMenu: handleDrawContextMenu,
       onPointerDown: handleDrawPointerDown,
       role: AriaRoles.Group,
       tabIndex: TabIndex.Focusable,

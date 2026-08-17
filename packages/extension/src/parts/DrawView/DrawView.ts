@@ -29,6 +29,17 @@ export const view: View<DrawViewInstance> = {
       params: ['handleClear'],
     },
     {
+      name: 'handleDrawContextMenu',
+      params: [
+        'handleDrawContextMenu',
+        'event.clientX',
+        'event.clientY',
+        'event.currentTarget.clientWidth',
+        'event.currentTarget.clientHeight',
+      ],
+      preventDefault: true,
+    },
+    {
       name: 'handleDrawPointerDown',
       params: [
         'handleDrawPointerDown',

@@ -8,10 +8,29 @@ test('registers the whiteboard view and pointer tracking', () => {
     preferredLocation: 'preview',
     title: 'Draw',
   })
-  expect(view.eventListeners?.[1]).toMatchObject({
+  expect(
+    view.eventListeners?.find(
+      (listener) => listener.name === 'handleDrawPointerDown',
+    ),
+  ).toMatchObject({
     name: 'handleDrawPointerDown',
     preventDefault: true,
     trackPointerEvents: ['handleDrawPointerMove', 'handleDrawPointerUp'],
+  })
+  expect(
+    view.eventListeners?.find(
+      (listener) => listener.name === 'handleDrawContextMenu',
+    ),
+  ).toEqual({
+    name: 'handleDrawContextMenu',
+    params: [
+      'handleDrawContextMenu',
+      'event.clientX',
+      'event.clientY',
+      'event.currentTarget.clientWidth',
+      'event.currentTarget.clientHeight',
+    ],
+    preventDefault: true,
   })
   expect(view.eventListeners?.slice(-2)).toEqual([
     {
