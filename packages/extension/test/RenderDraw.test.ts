@@ -17,6 +17,8 @@ test('renders an empty whiteboard with a disabled clear button', () => {
   })
   expect(dom[6]).toMatchObject({
     className: 'DrawBoard',
+    name: 'board',
+    onContextMenu: 'handleContextMenu',
     onPointerDown: 'handleDrawPointerDown',
   })
   expect(dom[9]).toMatchObject({ text: 'Start drawing anywhere' })

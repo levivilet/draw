@@ -1,17 +1,21 @@
 import type {
+  MenuEntry,
   ViewContext,
   ViewEvent,
   VirtualDomViewInstance,
 } from '@lvce-editor/api'
 import { type VirtualDomNode, text } from '@lvce-editor/virtual-dom-worker'
 import type { DrawState, Point, Stroke } from '../DrawState/DrawState.ts'
+import { contextMenuId } from '../Constants/Constants.ts'
 import { getDrawCss } from '../GetDrawCss/GetDrawCss.ts'
+import { getMenuEntries } from '../GetMenuEntries/GetMenuEntries.ts'
 import { toLocalPoint } from '../Point/Point.ts'
 import { renderDraw } from '../RenderDraw/RenderDraw.ts'
 
 export interface DrawViewInstance extends VirtualDomViewInstance {
   readonly clear: () => void
   readonly getCss: () => string
+  readonly getMenuEntries: (menuId: string) => readonly MenuEntry[]
   readonly handleClear: () => void
   readonly handleDrawPointerDown: (
     button: unknown,
@@ -29,6 +33,7 @@ export interface DrawViewInstance extends VirtualDomViewInstance {
     clientY: unknown,
     ...offsets: readonly unknown[]
   ) => void
+  readonly handleNoop: () => void
   readonly render: () => readonly VirtualDomNode[]
 }
 
@@ -105,6 +110,9 @@ export const createInstance = (context?: ViewContext): DrawViewInstance => {
       const { strokes } = state
       return getDrawCss(strokes)
     },
+    getMenuEntries(menuId: string): readonly MenuEntry[] {
+      return getMenuEntries(menuId, context?.uid ?? 0)
+    },
     handleClear(): void {
       instance.clear()
     },
@@ -150,11 +158,18 @@ export const createInstance = (context?: ViewContext): DrawViewInstance => {
         drawing: false,
       })
     },
-    handleEvent(event: Readonly<ViewEvent>): void {
+    async handleEvent(event: Readonly<ViewEvent>): Promise<void> {
+      if (event.type === 'contextmenu' && event.name === 'board') {
+        const x = typeof event.x === 'number' ? event.x : 0
+        const y = typeof event.y === 'number' ? event.y : 0
+        await context?.showContextMenu(contextMenuId, x, y)
+        return
+      }
       if (event.type === 'click' && event.name === 'clear') {
         instance.clear()
       }
     },
+    handleNoop(): void {},
     render(): readonly VirtualDomNode[] {
       const { strokes } = state
       return renderDraw(strokes)
