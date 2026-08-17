@@ -5,8 +5,9 @@ import type {
 } from '@lvce-editor/api'
 import { type VirtualDomNode, text } from '@lvce-editor/virtual-dom-worker'
 import type { DrawState, Point, Stroke } from '../DrawState/DrawState.ts'
+import { getDrawCss } from '../GetDrawCss/GetDrawCss.ts'
 import { toLocalPoint } from '../Point/Point.ts'
-import { getDrawCss, renderDraw } from '../RenderDraw/RenderDraw.ts'
+import { renderDraw } from '../RenderDraw/RenderDraw.ts'
 
 export interface DrawViewInstance extends VirtualDomViewInstance {
   readonly clear: () => void

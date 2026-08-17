@@ -3,11 +3,9 @@ import {
   mergeClassNames,
   VirtualDomElements,
 } from '@lvce-editor/virtual-dom-worker'
-import {
-  getDrawCss,
-  renderDraw,
-  renderStroke,
-} from '../src/parts/RenderDraw/RenderDraw.ts'
+import { getDrawCss } from '../src/parts/GetDrawCss/GetDrawCss.ts'
+import { renderDraw } from '../src/parts/RenderDraw/RenderDraw.ts'
+import { renderStroke } from '../src/parts/RenderStroke/RenderStroke.ts'
 
 test('renders an empty whiteboard with a disabled clear button', () => {
   const dom = renderDraw([])
