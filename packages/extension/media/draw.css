@@ -1,0 +1,109 @@
+.DrawView {
+  --DrawBorder: var(--ContrastBorder, var(--PanelBorder, #d0d0d0));
+  --DrawButtonBackground: var(--ButtonBackground, #0e639c);
+  --DrawButtonForeground: var(--ButtonForeground, #ffffff);
+  --DrawButtonHoverBackground: var(--ButtonHoverBackground, #1177bb);
+  --DrawForeground: var(--WorkbenchForeground, #333333);
+
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  color: var(--DrawForeground);
+  background: var(--MainBackground, var(--EditorBackground, #f3f3f3));
+}
+
+.DrawToolbar {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 48px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--DrawBorder);
+}
+
+.DrawHint,
+.DrawEmptyMessage {
+  margin: 0;
+}
+
+.DrawHint {
+  overflow: hidden;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.DrawClearButton {
+  flex: 0 0 auto;
+  min-height: 28px;
+  padding: 4px 12px;
+  color: var(--DrawButtonForeground);
+  font: inherit;
+  background: var(--DrawButtonBackground);
+  border: 0;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.DrawClearButton:hover:not(:disabled) {
+  background: var(--DrawButtonHoverBackground);
+}
+
+.DrawClearButton:focus-visible,
+.DrawBoard:focus-visible {
+  outline: 1px solid var(--FocusBorder, #007fd4);
+  outline-offset: -1px;
+}
+
+.DrawClearButton:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.DrawBoard {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  touch-action: none;
+  cursor: crosshair;
+  background: #ffffff;
+}
+
+.DrawCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.DrawStroke {
+  position: absolute;
+  height: 3px;
+  background: #202020;
+  border-radius: 999px;
+  pointer-events: none;
+  transform-origin: 0 50%;
+}
+
+.DrawStrokePoint {
+  width: 3px;
+  transform: translate(-50%, -50%);
+}
+
+.DrawEmptyMessage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: #707070;
+  font-size: 14px;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  user-select: none;
+}

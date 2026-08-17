@@ -1,0 +1,37 @@
+{
+  "id": "builtindraw",
+  "name": "Draw",
+  "workerName": "Draw Worker",
+  "description": "A basic whiteboard for drawing with a mouse or pointer.",
+  "repository": "https://github.com/levivilet/draw",
+  "browser": "dist/drawMain.js",
+  "isolated": true,
+  "contentSecurityPolicy": ["default-src 'none'", "script-src 'self'"],
+  "categories": ["Other"],
+  "activation": [
+    "onView:draw.views.whiteboard",
+    "onCommand:draw.clear",
+    "onCommand:draw.show"
+  ],
+  "commands": [
+    {
+      "id": "draw.show",
+      "label": "Draw: Show Whiteboard"
+    },
+    {
+      "id": "draw.clear",
+      "label": "Draw: Clear Whiteboard"
+    }
+  ],
+  "views": [
+    {
+      "css": "media/draw.css",
+      "displayName": "Draw",
+      "id": "draw.views.whiteboard",
+      "title": "Draw",
+      "icon": "media/draw.svg",
+      "kind": "virtualDom",
+      "preferredLocation": "secondaryPreview"
+    }
+  ]
+}
