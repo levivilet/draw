@@ -6,11 +6,7 @@
   "repository": "https://github.com/levivilet/trello",
   "browser": "dist/trelloMain.js",
   "isolated": true,
-  "contentSecurityPolicy": [
-    "default-src 'none'",
-    "connect-src https://apidraw.com https://trello.com",
-    "script-src 'self'"
-  ],
+  "contentSecurityPolicy": ["default-src 'none'", "script-src 'self'"],
   "categories": ["Other"],
   "configuration": {
     "trello.searchEnabled": {
