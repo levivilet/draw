@@ -3,7 +3,8 @@ import type { Test } from '@lvce-editor/test-with-playwright'
 export const name = 'draw.basic'
 
 export const test: Test = async ({ Command, expect, Locator }) => {
-  await Command.execute('Layout.toggleSideBarView', 'draw.views.whiteboard')
+  const showResult = await Command.executeExtensionCommand('draw.show')
+  console.log('draw show result', showResult)
   const board = Locator('.DrawBoard')
   const clearButton = Locator('.DrawClearButton')
   await expect(board).toBeVisible()
@@ -32,7 +33,7 @@ export const test: Test = async ({ Command, expect, Locator }) => {
 
   const stroke = Locator('.DrawStroke')
   await expect(stroke).toHaveCount(1)
-  await Command.execute('draw.clear')
+  await Command.executeExtensionCommand('draw.clear')
   await expect(stroke).toHaveCount(0)
   await Command.execute('PointerCapture.unmock')
 }

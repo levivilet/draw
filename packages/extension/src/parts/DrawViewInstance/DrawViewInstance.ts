@@ -3,7 +3,7 @@ import type {
   ViewEvent,
   VirtualDomViewInstance,
 } from '@lvce-editor/api'
-import type { VirtualDomNode } from '@lvce-editor/virtual-dom-worker'
+import { type VirtualDomNode, text } from '@lvce-editor/virtual-dom-worker'
 import type { DrawState, Point, Stroke } from '../DrawState/DrawState.ts'
 import { toLocalPoint } from '../Point/Point.ts'
 import { renderDraw } from '../RenderDraw/RenderDraw.ts'
@@ -148,6 +148,11 @@ export const createInstance = (context?: ViewContext): DrawViewInstance => {
     render(): readonly VirtualDomNode[] {
       return renderDraw(state.strokes)
     },
+    renderActionsDom() {
+      return [
+        text('')
+      ]
+    }
   }
 
   activeInstances.add(instance)
