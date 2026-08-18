@@ -28,6 +28,7 @@ export const renderShape = (
     return tree(VirtualDomElements.Input, {
       ...properties,
       'aria-label': DrawStrings.text(),
+      name: 'text',
       onInput: handleTextInput,
       placeholder: DrawStrings.typeText(),
       value: shape.text,
