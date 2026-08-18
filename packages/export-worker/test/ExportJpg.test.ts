@@ -18,6 +18,8 @@ const createFixture = (
   const context = {
     arc: jest.fn(),
     beginPath: jest.fn(),
+    closePath: jest.fn(),
+    ellipse: jest.fn(),
     fill: jest.fn(),
     fillRect: jest.fn(),
     fillText: jest.fn(),
@@ -61,6 +63,18 @@ test('draws a white background and every supported shape', async () => {
       type: 'rectangle' as const,
     },
     {
+      end: { x: 70, y: 60 },
+      id: 5,
+      start: { x: 40, y: 20 },
+      type: 'circle' as const,
+    },
+    {
+      end: { x: 100, y: 60 },
+      id: 6,
+      start: { x: 80, y: 20 },
+      type: 'triangle' as const,
+    },
+    {
       id: 2,
       point: { x: 12, y: 24 },
       text: 'Hello',
@@ -87,6 +101,19 @@ test('draws a white background and every supported shape', async () => {
   expect(context.arc).toHaveBeenCalledWith(8, 9, 1.5, 0, Math.PI * 2)
   expect(context.fill).toHaveBeenCalledTimes(1)
   expect(context.strokeRect).toHaveBeenCalledWith(11, 21, 28, 38)
+  expect(context.ellipse).toHaveBeenCalledWith(
+    55,
+    40,
+    14,
+    19,
+    0,
+    0,
+    Math.PI * 2,
+  )
+  expect(context.moveTo).toHaveBeenCalledWith(90, 21)
+  expect(context.lineTo).toHaveBeenCalledWith(99, 59)
+  expect(context.lineTo).toHaveBeenCalledWith(81, 59)
+  expect(context.closePath).toHaveBeenCalledTimes(1)
   expect(context.fillText).toHaveBeenCalledTimes(1)
   expect(context.fillText).toHaveBeenCalledWith('Hello', 16, 24)
   expect(convertToBlob).toHaveBeenCalledWith({

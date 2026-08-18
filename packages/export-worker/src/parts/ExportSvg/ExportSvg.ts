@@ -1,8 +1,10 @@
 import type {
+  CircleShape,
   ExportDimensions,
   ExportDrawingOptions,
   RectangleShape,
   Shape,
+  TriangleShape,
 } from '../Types/Types.ts'
 
 const background = '#ffffff'
@@ -32,7 +34,7 @@ const escapeXml = (value: string): string => {
 }
 
 const getRectangleGeometry = (
-  shape: Readonly<RectangleShape>,
+  shape: Readonly<CircleShape | RectangleShape | TriangleShape>,
 ): {
   readonly height: number
   readonly width: number
@@ -51,6 +53,10 @@ const getRectangleGeometry = (
 
 const renderShape = (shape: Readonly<Shape>): string => {
   switch (shape.type) {
+    case 'circle': {
+      const { height, width, x, y } = getRectangleGeometry(shape)
+      return `<ellipse cx="${x + width / 2}" cy="${y + height / 2}" rx="${width / 2}" ry="${height / 2}" fill="none" stroke="${foreground}" stroke-width="2"/>`
+    }
     case 'line': {
       if (shape.start.x === shape.end.x && shape.start.y === shape.end.y) {
         return `<circle cx="${shape.start.x}" cy="${shape.start.y}" r="1.5" fill="${foreground}"/>`
@@ -66,6 +72,10 @@ const renderShape = (shape: Readonly<Shape>): string => {
         return ''
       }
       return `<text x="${shape.point.x + 4}" y="${shape.point.y}" fill="${foreground}" font-family="sans-serif" font-size="18" dominant-baseline="middle" xml:space="preserve">${escapeXml(shape.text)}</text>`
+    case 'triangle': {
+      const { height, width, x, y } = getRectangleGeometry(shape)
+      return `<polygon points="${x + width / 2},${y} ${x + width},${y + height} ${x},${y + height}" fill="none" stroke="${foreground}" stroke-width="2" stroke-linejoin="round"/>`
+    }
   }
 }
 

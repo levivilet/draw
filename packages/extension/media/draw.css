@@ -36,7 +36,9 @@
 }
 
 .DrawBoardTool-line,
-.DrawBoardTool-rectangle {
+.DrawBoardTool-rectangle,
+.DrawBoardTool-circle,
+.DrawBoardTool-triangle {
   cursor: crosshair;
 }
 
@@ -81,6 +83,38 @@
 .DrawRectangle.DrawShapeSelected {
   border-color: var(--DrawAccent);
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--DrawAccent) 25%, transparent);
+}
+
+.DrawCircle {
+  min-width: 2px;
+  min-height: 2px;
+  background: transparent;
+  border: 2px solid #202020;
+  border-radius: 50%;
+}
+
+.DrawCircle.DrawShapeSelected {
+  border-color: var(--DrawAccent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--DrawAccent) 25%, transparent);
+}
+
+.DrawTriangle {
+  min-width: 4px;
+  min-height: 4px;
+  background: #202020;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.DrawTriangle::after {
+  position: absolute;
+  inset: 3px;
+  background: #ffffff;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  content: '';
+}
+
+.DrawTriangle.DrawShapeSelected {
+  background: var(--DrawAccent);
 }
 
 .DrawText {
@@ -132,7 +166,30 @@ input.DrawText {
   backdrop-filter: blur(10px);
 }
 
+.DrawShapeTool {
+  position: relative;
+  display: grid;
+}
+
+.DrawShapePicker {
+  position: absolute;
+  bottom: calc(100% + 11px);
+  left: 50%;
+  display: flex;
+  gap: 4px;
+  padding: 5px;
+  background: var(--DrawControlBackground);
+  border: 1px solid var(--DrawBorder);
+  border-radius: 10px;
+  box-shadow:
+    0 1px 3px rgb(0 0 0 / 12%),
+    0 5px 18px rgb(0 0 0 / 10%);
+  backdrop-filter: blur(10px);
+  transform: translateX(-50%);
+}
+
 .DrawToolButton,
+.DrawShapeOptionButton,
 .DrawClearButton {
   display: grid;
   place-items: center;
@@ -148,6 +205,7 @@ input.DrawText {
 }
 
 .DrawToolButton:hover,
+.DrawShapeOptionButton:hover,
 .DrawClearButton:hover:not(:disabled) {
   background: color-mix(in srgb, var(--DrawControlForeground) 9%, transparent);
 }
@@ -169,6 +227,7 @@ input.DrawText {
 }
 
 .DrawToolButton:focus-visible,
+.DrawShapeOptionButton:focus-visible,
 .DrawClearButton:focus-visible {
   outline: 2px solid var(--FocusBorder, #007fd4);
   outline-offset: 1px;
