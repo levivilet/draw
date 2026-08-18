@@ -16,14 +16,17 @@ import {
   type ExportDrawingOptions,
   type ExportFormat,
 } from '../DrawExportWorker/DrawExportWorker.ts'
+import { getContext } from '../GetContext/GetContext.ts'
 import { getDrawCss } from '../GetDrawCss/GetDrawCss.ts'
 import { getMenuEntries } from '../GetMenuEntries/GetMenuEntries.ts'
 import { toLocalPoint } from '../Point/Point.ts'
 import { renderDraw } from '../RenderDraw/RenderDraw.ts'
+import { renderFocus } from '../RenderFocus/RenderFocus.ts'
 import { serializeDrawing } from '../SerializeDrawing/SerializeDrawing.ts'
 
 export interface DrawViewInstance extends VirtualDomViewInstance {
   readonly clear: () => void
+  readonly getContext: () => Readonly<Record<string, boolean>>
   readonly getCss: () => string
   readonly getMenuEntries: (menuId: string) => readonly MenuEntry[]
   readonly handleClear: () => void
@@ -61,6 +64,10 @@ export interface DrawViewInstance extends VirtualDomViewInstance {
   readonly handleSelectTool: (tool: unknown) => void
   readonly handleTextInput: (shapeId: unknown, value: unknown) => void
   readonly render: () => readonly VirtualDomNode[]
+  readonly renderFocus: (
+    oldContext: Readonly<Record<string, boolean>>,
+    newContext: Readonly<Record<string, boolean>>,
+  ) => string
 }
 
 interface DrawViewApi {
@@ -80,7 +87,14 @@ const defaultApi: DrawViewApi = {
 
 const activeInstances = new Set<DrawViewInstance>()
 
-const tools: readonly Tool[] = ['cursor', 'line', 'rectangle', 'text']
+const tools: readonly Tool[] = [
+  'circle',
+  'cursor',
+  'line',
+  'rectangle',
+  'text',
+  'triangle',
+]
 const exportFormats: readonly ExportFormat[] = ['jpg', 'svg']
 
 const isTool = (value: unknown): value is Tool => {
@@ -132,8 +146,10 @@ const moveShape = (
   deltaY: number,
 ): Shape => {
   switch (shape.type) {
+    case 'circle':
     case 'line':
     case 'rectangle':
+    case 'triangle':
       return {
         ...shape,
         end: movePoint(shape.end, deltaX, deltaY),
@@ -240,6 +256,9 @@ export const createInstanceWithApi = (
     },
     dispose(): void {
       activeInstances.delete(instance)
+    },
+    getContext(): Readonly<Record<string, boolean>> {
+      return getContext(state)
     },
     getCss(): string {
       const { shapes } = state
@@ -421,6 +440,7 @@ export const createInstanceWithApi = (
     renderActionsDom(): readonly VirtualDomNode[] {
       return [text('')]
     },
+    renderFocus,
   }
 
   activeInstances.add(instance)

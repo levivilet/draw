@@ -35,7 +35,7 @@ const getShape = (
     .find((node) => node.className?.split(' ').includes(className))
 }
 
-test('creates lines and rectangles with primary pointer drags', () => {
+test('creates lines and bounded shapes with primary pointer drags', () => {
   const { context } = createContext()
   const instance = createInstance(context)
 
@@ -57,21 +57,35 @@ test('creates lines and rectangles with primary pointer drags', () => {
   expect(instance.getCss()).toContain(
     '.DrawShape1{left:60px;top:70px;width:40px;height:30px}',
   )
+
+  instance.handleSelectTool('circle')
+  instance.handleDrawPointerDown(0, 20, 30, undefined)
+  instance.handleDrawPointerUp(70, 90)
+  expect(getShape(instance, 'DrawCircle')).toBeDefined()
+
+  instance.handleSelectTool('triangle')
+  instance.handleDrawPointerDown(0, 80, 90, undefined)
+  instance.handleDrawPointerUp(30, 40)
+  expect(getShape(instance, 'DrawTriangle')).toBeDefined()
   instance.dispose?.()
 })
 
 test('places and edits text', () => {
   const { context, requestRerender } = createContext()
   const instance = createInstance(context)
+  const oldContext = instance.getContext()
 
   instance.handleSelectTool('text')
   instance.handleDrawPointerDown(0, 40, 50, undefined)
   instance.handleTextInput('0', 'Hello whiteboard')
 
   expect(getShape(instance, 'DrawText')).toMatchObject({
-    autofocus: true,
     value: 'Hello whiteboard',
   })
+  const newContext = instance.getContext()
+  expect(newContext).toEqual({ 'draw.textInputFocus': true })
+  expect(instance.renderFocus(oldContext, newContext)).toBe('.DrawText')
+  expect(instance.renderFocus(newContext, newContext)).toBe('')
   expect(instance.getCss()).toBe('.DrawShape0{left:40px;top:50px}')
 
   instance.handleDrawPointerDown(0, 40, 50, '0')
@@ -81,6 +95,7 @@ test('places and edits text', () => {
   expect(requestRerender).toHaveBeenCalledTimes(4)
 
   instance.handleSelectTool('cursor')
+  expect(instance.getContext()).toEqual({})
   expect(
     instance.render().some((node) => node.text === 'Hello whiteboard'),
   ).toBe(true)
@@ -196,6 +211,18 @@ test('shape helpers cover each shape kind', () => {
     start: { x: 2, y: 3 },
     type: 'rectangle',
   }
+  const circle: Shape = {
+    end: { x: 6, y: 7 },
+    id: 3,
+    start: { x: 4, y: 5 },
+    type: 'circle',
+  }
+  const triangle: Shape = {
+    end: { x: 8, y: 9 },
+    id: 4,
+    start: { x: 6, y: 7 },
+    type: 'triangle',
+  }
   const label: Shape = {
     id: 2,
     point: { x: 5, y: 6 },
@@ -210,6 +237,14 @@ test('shape helpers cover each shape kind', () => {
   expect(moveShape(rectangle, 2, 3)).toMatchObject({
     end: { x: 6, y: 8 },
     start: { x: 4, y: 6 },
+  })
+  expect(moveShape(circle, 2, 3)).toMatchObject({
+    end: { x: 8, y: 10 },
+    start: { x: 6, y: 8 },
+  })
+  expect(moveShape(triangle, 2, 3)).toMatchObject({
+    end: { x: 10, y: 12 },
+    start: { x: 8, y: 10 },
   })
   expect(moveShape(label, 2, 3)).toMatchObject({ point: { x: 7, y: 9 } })
   expect(resizeShape(line, { x: 9, y: 10 })).toMatchObject({

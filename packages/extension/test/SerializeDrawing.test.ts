@@ -26,6 +26,18 @@ const shapes: readonly Shape[] = [
     text: 'Review this',
     type: 'text',
   },
+  {
+    end: { x: 160, y: 180 },
+    id: 10,
+    start: { x: 120, y: 130 },
+    type: 'circle',
+  },
+  {
+    end: { x: 190, y: 210 },
+    id: 11,
+    start: { x: 220, y: 250 },
+    type: 'triangle',
+  },
 ]
 
 test('creates a versioned drawing with tldraw-v1-style shape records', () => {
@@ -35,6 +47,26 @@ test('creates a versioned drawing with tldraw-v1-style shape records', () => {
       id: 'page:1',
       name: 'Page 1',
       shapes: {
+        'shape:10': {
+          childIndex: 3,
+          id: 'shape:10',
+          name: 'Circle',
+          parentId: 'page:1',
+          point: [120, 130],
+          rotation: 0,
+          size: [40, 50],
+          type: 'circle',
+        },
+        'shape:11': {
+          childIndex: 4,
+          id: 'shape:11',
+          name: 'Triangle',
+          parentId: 'page:1',
+          point: [190, 210],
+          rotation: 0,
+          size: [30, 40],
+          type: 'triangle',
+        },
         'shape:4': {
           childIndex: 0,
           handles: {

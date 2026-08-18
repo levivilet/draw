@@ -19,6 +19,23 @@ const renderShape = (
   shape: Readonly<Shape>,
 ): void => {
   switch (shape.type) {
+    case 'circle': {
+      const geometry = getRectangleGeometry(shape)
+      context.beginPath()
+      context.ellipse(
+        geometry.x + geometry.width / 2,
+        geometry.y + geometry.height / 2,
+        geometry.width / 2,
+        geometry.height / 2,
+        0,
+        0,
+        Math.PI * 2,
+      )
+      context.lineWidth = 2
+      context.strokeStyle = '#202020'
+      context.stroke()
+      return
+    }
     case 'line':
       context.beginPath()
       if (shape.start.x === shape.end.x && shape.start.y === shape.end.y) {
@@ -47,6 +64,21 @@ const renderShape = (
         geometry.width,
         geometry.height,
       )
+      return
+    }
+    case 'triangle': {
+      const geometry = getRectangleGeometry(shape)
+      context.beginPath()
+      // Each triangle is an independent drawing shape, not a reusable path.
+      // eslint-disable-next-line unicorn/prefer-path2d
+      context.moveTo(geometry.x + geometry.width / 2, geometry.y)
+      context.lineTo(geometry.x + geometry.width, geometry.y + geometry.height)
+      context.lineTo(geometry.x, geometry.y + geometry.height)
+      context.closePath()
+      context.lineJoin = 'round'
+      context.lineWidth = 2
+      context.strokeStyle = '#202020'
+      context.stroke()
       return
     }
     case 'text':

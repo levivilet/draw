@@ -21,9 +21,9 @@ interface FileLineShape extends FileShapeBase {
   readonly type: 'line'
 }
 
-interface FileRectangleShape extends FileShapeBase {
+interface FileBoxShape extends FileShapeBase {
   readonly size: readonly [number, number]
-  readonly type: 'rectangle'
+  readonly type: 'circle' | 'rectangle' | 'triangle'
 }
 
 interface FileShapeHandle {
@@ -37,7 +37,7 @@ interface FileTextShape extends FileShapeBase {
   readonly type: 'text'
 }
 
-export type FileShape = FileLineShape | FileRectangleShape | FileTextShape
+export type FileShape = FileBoxShape | FileLineShape | FileTextShape
 
 export interface DrawingFile {
   readonly format: typeof documentFormat
@@ -59,6 +59,19 @@ const toFileShape = (shape: Readonly<Shape>, childIndex: number): FileShape => {
     parentId: pageId,
     rotation: 0,
   }
+  if (shape.type !== 'line' && shape.type !== 'text') {
+    const x = Math.min(shape.start.x, shape.end.x)
+    const y = Math.min(shape.start.y, shape.end.y)
+    return {
+      ...base,
+      point: [x, y],
+      size: [
+        Math.abs(shape.end.x - shape.start.x),
+        Math.abs(shape.end.y - shape.start.y),
+      ],
+      type: shape.type,
+    }
+  }
   switch (shape.type) {
     case 'line': {
       const x = Math.min(shape.start.x, shape.end.x)
@@ -78,19 +91,6 @@ const toFileShape = (shape: Readonly<Shape>, childIndex: number): FileShape => {
           },
         },
         point: [x, y],
-        type: shape.type,
-      }
-    }
-    case 'rectangle': {
-      const x = Math.min(shape.start.x, shape.end.x)
-      const y = Math.min(shape.start.y, shape.end.y)
-      return {
-        ...base,
-        point: [x, y],
-        size: [
-          Math.abs(shape.end.x - shape.start.x),
-          Math.abs(shape.end.y - shape.start.y),
-        ],
         type: shape.type,
       }
     }

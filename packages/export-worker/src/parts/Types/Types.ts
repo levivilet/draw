@@ -3,18 +3,26 @@ export interface Point {
   readonly y: number
 }
 
-export interface LineShape {
+interface BoundedShape {
   readonly end: Point
   readonly id: number
   readonly start: Point
+}
+
+export interface CircleShape extends BoundedShape {
+  readonly type: 'circle'
+}
+
+export interface LineShape extends BoundedShape {
   readonly type: 'line'
 }
 
-export interface RectangleShape {
-  readonly end: Point
-  readonly id: number
-  readonly start: Point
+export interface RectangleShape extends BoundedShape {
   readonly type: 'rectangle'
+}
+
+export interface TriangleShape extends BoundedShape {
+  readonly type: 'triangle'
 }
 
 export interface TextShape {
@@ -24,7 +32,12 @@ export interface TextShape {
   readonly type: 'text'
 }
 
-export type Shape = LineShape | RectangleShape | TextShape
+export type Shape =
+  | CircleShape
+  | LineShape
+  | RectangleShape
+  | TextShape
+  | TriangleShape
 
 export type ExportFormat = 'jpg' | 'svg'
 

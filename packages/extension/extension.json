@@ -2,7 +2,7 @@
   "id": "builtindraw",
   "name": "Draw",
   "workerName": "Draw Worker",
-  "description": "A whiteboard for creating lines, rectangles, and text.",
+  "description": "A whiteboard for creating lines, shapes, and text.",
   "repository": "https://github.com/levivilet/draw",
   "browser": "dist/drawMain.js",
   "isolated": true,

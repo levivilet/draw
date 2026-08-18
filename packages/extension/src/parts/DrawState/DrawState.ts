@@ -7,16 +7,25 @@ interface ShapeBase {
   readonly id: number
 }
 
-export interface LineShape extends ShapeBase {
+interface BoundedShape extends ShapeBase {
   readonly end: Point
   readonly start: Point
+}
+
+export interface CircleShape extends BoundedShape {
+  readonly type: 'circle'
+}
+
+export interface LineShape extends BoundedShape {
   readonly type: 'line'
 }
 
-export interface RectangleShape extends ShapeBase {
-  readonly end: Point
-  readonly start: Point
+export interface RectangleShape extends BoundedShape {
   readonly type: 'rectangle'
+}
+
+export interface TriangleShape extends BoundedShape {
+  readonly type: 'triangle'
 }
 
 export interface TextShape extends ShapeBase {
@@ -25,9 +34,20 @@ export interface TextShape extends ShapeBase {
   readonly type: 'text'
 }
 
-export type Shape = LineShape | RectangleShape | TextShape
+export type Shape =
+  | CircleShape
+  | LineShape
+  | RectangleShape
+  | TextShape
+  | TriangleShape
 
-export type Tool = 'cursor' | 'line' | 'rectangle' | 'text'
+export type Tool =
+  | 'circle'
+  | 'cursor'
+  | 'line'
+  | 'rectangle'
+  | 'text'
+  | 'triangle'
 
 export interface DrawState {
   readonly drawing: boolean

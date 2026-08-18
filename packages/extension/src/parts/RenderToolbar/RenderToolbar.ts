@@ -8,24 +8,14 @@ import { tree, type TreeNode } from '../Tree/Tree.ts'
 const handleClear = 'handleClear'
 const handleSave = 'handleSave'
 
-const toolDetails: readonly {
+interface ToolDetails {
   readonly ariaLabel: string
   readonly icon: string
   readonly label: string
   readonly tool: Tool
-}[] = [
-  {
-    ariaLabel: DrawStrings.selectTool(),
-    icon: '↖',
-    label: DrawStrings.select(),
-    tool: 'cursor',
-  },
-  {
-    ariaLabel: DrawStrings.lineTool(),
-    icon: '╱',
-    label: DrawStrings.line(),
-    tool: 'line',
-  },
+}
+
+const shapeToolDetails: readonly ToolDetails[] = [
   {
     ariaLabel: DrawStrings.rectangleTool(),
     icon: '□',
@@ -33,12 +23,70 @@ const toolDetails: readonly {
     tool: 'rectangle',
   },
   {
-    ariaLabel: DrawStrings.textTool(),
-    icon: 'T',
-    label: DrawStrings.text(),
-    tool: 'text',
+    ariaLabel: DrawStrings.circleTool(),
+    icon: '○',
+    label: DrawStrings.circle(),
+    tool: 'circle',
+  },
+  {
+    ariaLabel: DrawStrings.triangleTool(),
+    icon: '△',
+    label: DrawStrings.triangle(),
+    tool: 'triangle',
   },
 ]
+
+const isShapeTool = (tool: Tool): boolean => {
+  return shapeToolDetails.some((details) => details.tool === tool)
+}
+
+const renderShapeTool = (selectedTool: Tool): TreeNode => {
+  const pickerVisible = isShapeTool(selectedTool)
+  const activeShape = pickerVisible
+    ? shapeToolDetails.find((details) => details.tool === selectedTool)!
+    : shapeToolDetails[0]
+  const button = renderToolButton(
+    selectedTool,
+    activeShape.tool,
+    activeShape.ariaLabel,
+    activeShape.label,
+    activeShape.icon,
+  )
+  const picker = pickerVisible
+    ? [
+        tree(
+          VirtualDomElements.Div,
+          {
+            'aria-label': DrawStrings.shapeTools(),
+            className: 'DrawShapePicker',
+            role: AriaRoles.ToolBar,
+          },
+          shapeToolDetails.map(
+            ({ ariaLabel, icon, label, tool }): TreeNode =>
+              renderToolButton(
+                selectedTool,
+                tool,
+                ariaLabel,
+                label,
+                icon,
+                'DrawShapeOptionButton',
+              ),
+          ),
+        ),
+      ]
+    : []
+  return tree(VirtualDomElements.Div, { className: 'DrawShapeTool' }, [
+    {
+      ...button,
+      node: {
+        ...button.node,
+        'aria-expanded': pickerVisible,
+        'aria-haspopup': true,
+      },
+    },
+    ...picker,
+  ])
+}
 
 export const renderToolbar = (selectedTool: Tool, empty: boolean): TreeNode => {
   const toolbar = tree(
@@ -48,9 +96,30 @@ export const renderToolbar = (selectedTool: Tool, empty: boolean): TreeNode => {
       className: 'DrawToolbar',
       role: AriaRoles.ToolBar,
     },
-    toolDetails.map(({ ariaLabel, icon, label, tool }) =>
-      renderToolButton(selectedTool, tool, ariaLabel, label, icon),
-    ),
+    [
+      renderToolButton(
+        selectedTool,
+        'cursor',
+        DrawStrings.selectTool(),
+        DrawStrings.select(),
+        '↖',
+      ),
+      renderToolButton(
+        selectedTool,
+        'line',
+        DrawStrings.lineTool(),
+        DrawStrings.line(),
+        '╱',
+      ),
+      renderShapeTool(selectedTool),
+      renderToolButton(
+        selectedTool,
+        'text',
+        DrawStrings.textTool(),
+        DrawStrings.text(),
+        'T',
+      ),
+    ],
   )
   const clearButton = tree(
     VirtualDomElements.Button,

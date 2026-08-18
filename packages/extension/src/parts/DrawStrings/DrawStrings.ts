@@ -9,6 +9,14 @@ export const clearDrawing = (): string => {
   return I18nString.i18nString(UiStrings.ClearDrawing)
 }
 
+export const circle = (): string => {
+  return I18nString.i18nString(UiStrings.Circle)
+}
+
+export const circleTool = (): string => {
+  return I18nString.i18nString(UiStrings.CircleTool)
+}
+
 export const draw = (): string => {
   return I18nString.i18nString(UiStrings.Draw)
 }
@@ -65,6 +73,10 @@ export const selectTool = (): string => {
   return I18nString.i18nString(UiStrings.SelectTool)
 }
 
+export const shapeTools = (): string => {
+  return I18nString.i18nString(UiStrings.ShapeTools)
+}
+
 export const svg = (): string => {
   return I18nString.i18nString(UiStrings.Svg)
 }
@@ -79,6 +91,14 @@ export const textTool = (): string => {
 
 export const typeText = (): string => {
   return I18nString.i18nString(UiStrings.TypeText)
+}
+
+export const triangle = (): string => {
+  return I18nString.i18nString(UiStrings.Triangle)
+}
+
+export const triangleTool = (): string => {
+  return I18nString.i18nString(UiStrings.TriangleTool)
 }
 
 export const undo = (): string => {
