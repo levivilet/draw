@@ -199,6 +199,7 @@ input.DrawText {
 }
 
 .DrawToolButton,
+.DrawSaveButton,
 .DrawShapeOptionButton,
 .DrawClearButton {
   display: flex;
@@ -217,6 +218,7 @@ input.DrawText {
 }
 
 .DrawToolButton:hover,
+.DrawSaveButton:hover,
 .DrawShapeOptionButton:hover,
 .DrawClearButton:hover:not(:disabled) {
   background: color-mix(in srgb, var(--DrawControlForeground) 9%, transparent);
@@ -228,6 +230,7 @@ input.DrawText {
   background: var(--DrawAccent);
 }
 
+.DrawSaveButton,
 .DrawClearButton {
   flex: 0 0 auto;
   background: var(--DrawControlBackground);
@@ -239,6 +242,7 @@ input.DrawText {
 }
 
 .DrawToolButton:focus-visible,
+.DrawSaveButton:focus-visible,
 .DrawShapeOptionButton:focus-visible,
 .DrawClearButton:focus-visible {
   outline: 2px solid var(--FocusBorder, #007fd4);

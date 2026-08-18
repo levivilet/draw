@@ -47,6 +47,10 @@ test('renders a bottom toolbar with cursor selected by default', () => {
     disabled: true,
     onClick: 'handleClear',
   })
+  expect(findByClass(dom, 'DrawSaveButton')).toMatchObject({
+    'aria-label': 'Save drawing',
+    onClick: 'handleSave',
+  })
   expect(findByClass(dom, 'DrawBoard')).toMatchObject({
     name: 'board',
     onContextMenu: 'handleDrawContextMenu',

@@ -45,6 +45,12 @@ test('registers the whiteboard view and pointer tracking', () => {
       'event.target.tagName',
     ],
   })
+  expect(
+    view.eventListeners?.find((listener) => listener.name === 'handleSave'),
+  ).toEqual({
+    name: 'handleSave',
+    params: ['handleSave'],
+  })
   expect(view.eventListeners?.slice(-2)).toEqual([
     {
       name: 'handleSelectTool',

@@ -53,6 +53,14 @@ export const rectangleTool = (): string => {
   return I18nString.i18nString(UiStrings.RectangleTool)
 }
 
+export const saveAs = (): string => {
+  return I18nString.i18nString(UiStrings.SaveAs)
+}
+
+export const saveDrawing = (): string => {
+  return I18nString.i18nString(UiStrings.SaveDrawing)
+}
+
 export const redo = (): string => {
   return I18nString.i18nString(UiStrings.Redo)
 }

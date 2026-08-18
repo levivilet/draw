@@ -24,6 +24,7 @@ const createDependencies = (): Dependencies => ({
 })
 
 test.each([
+  ['draw' as const, 'drawing.draw'],
   ['svg' as const, 'drawing.svg'],
   ['jpg' as const, 'drawing.jpg'],
 ])('downloads %s with the expected filename', async (format, fileName) => {
