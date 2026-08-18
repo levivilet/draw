@@ -11,6 +11,7 @@ const handleSelectTool = 'handleSelectTool'
 export const renderToolButton = (
   selectedTool: Tool,
   tool: Tool,
+  ariaLabel: string,
   label: string,
   icon: string,
 ): TreeNode => {
@@ -18,7 +19,7 @@ export const renderToolButton = (
   return tree(
     VirtualDomElements.Button,
     {
-      'aria-label': `${label} tool`,
+      'aria-label': ariaLabel,
       'aria-pressed': selected,
       className: mergeClassNames(
         'DrawToolButton',

@@ -4,6 +4,7 @@ import {
   VirtualDomElements,
 } from '@lvce-editor/virtual-dom-worker'
 import type { DrawState } from '../DrawState/DrawState.ts'
+import * as DrawStrings from '../DrawStrings/DrawStrings.ts'
 import { renderShape } from '../RenderShape/RenderShape.ts'
 import * as TabIndex from '../TabIndex/TabIndex.ts'
 import { textNode } from '../TextNode/TextNode.ts'
@@ -21,14 +22,14 @@ export const renderBoard = (state: Readonly<DrawState>): TreeNode => {
     shapes.length === 0
       ? [
           tree(VirtualDomElements.P, { className: 'DrawEmptyMessage' }, [
-            textNode('Choose a tool and start creating'),
+            textNode(DrawStrings.chooseAToolAndStartCreating()),
           ]),
         ]
       : []
   return tree(
     VirtualDomElements.Div,
     {
-      'aria-label': 'Whiteboard drawing area',
+      'aria-label': DrawStrings.whiteboardDrawingArea(),
       className: mergeClassNames('DrawBoard', `DrawBoardTool-${selectedTool}`),
       name: 'board',
       onContextMenu: handleDrawContextMenu,

@@ -1,5 +1,6 @@
 import { VirtualDomElements } from '@lvce-editor/virtual-dom-worker'
 import type { Shape, Tool } from '../DrawState/DrawState.ts'
+import * as DrawStrings from '../DrawStrings/DrawStrings.ts'
 import { getShapeClassName } from '../GetShapeClassName/GetShapeClassName.ts'
 import { textNode } from '../TextNode/TextNode.ts'
 import { tree, type TreeNode } from '../Tree/Tree.ts'
@@ -21,10 +22,10 @@ export const renderShape = (
   if (selectedShapeId === shape.id && selectedTool === 'text') {
     return tree(VirtualDomElements.Input, {
       ...properties,
-      'aria-label': 'Text',
+      'aria-label': DrawStrings.text(),
       autofocus: true,
       onInput: handleTextInput,
-      placeholder: 'Type text…',
+      placeholder: DrawStrings.typeText(),
       value: shape.text,
     })
   }

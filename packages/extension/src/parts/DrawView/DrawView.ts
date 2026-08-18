@@ -1,5 +1,6 @@
 import type { View } from '@lvce-editor/api'
 import { viewId } from '../Constants/Constants.ts'
+import * as DrawStrings from '../DrawStrings/DrawStrings.ts'
 import {
   createInstance,
   type DrawViewInstance,
@@ -22,7 +23,7 @@ const offsetParameters = [
 
 export const view: View<DrawViewInstance> = {
   create: createInstance,
-  displayName: 'Draw',
+  displayName: DrawStrings.draw(),
   eventListeners: [
     {
       name: 'handleClear',
@@ -89,5 +90,5 @@ export const view: View<DrawViewInstance> = {
   id: viewId,
   kind: 'virtualDom',
   preferredLocation: 'preview',
-  title: 'Draw',
+  title: DrawStrings.draw(),
 }
