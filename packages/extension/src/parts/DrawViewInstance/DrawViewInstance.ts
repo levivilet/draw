@@ -165,10 +165,7 @@ const moveShape = (
   }
 }
 
-const getUniformEnd = (
-  start: Readonly<Point>,
-  end: Readonly<Point>,
-): Point => {
+const getUniformEnd = (start: Readonly<Point>, end: Readonly<Point>): Point => {
   const deltaX = end.x - start.x
   const deltaY = end.y - start.y
   const size = Math.max(Math.abs(deltaX), Math.abs(deltaY))
