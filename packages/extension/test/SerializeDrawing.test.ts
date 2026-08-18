@@ -38,6 +38,12 @@ const shapes: readonly Shape[] = [
     start: { x: 220, y: 250 },
     type: 'triangle',
   },
+  {
+    end: { x: 280, y: 290 },
+    id: 12,
+    start: { x: 260, y: 270 },
+    type: 'arrow',
+  },
 ]
 
 test('creates a versioned drawing with tldraw-v1-style shape records', () => {
@@ -66,6 +72,19 @@ test('creates a versioned drawing with tldraw-v1-style shape records', () => {
           rotation: 0,
           size: [30, 40],
           type: 'triangle',
+        },
+        'shape:12': {
+          childIndex: 5,
+          handles: {
+            end: { id: 'end', index: 1, point: [20, 20] },
+            start: { id: 'start', index: 0, point: [0, 0] },
+          },
+          id: 'shape:12',
+          name: 'Arrow',
+          parentId: 'page:1',
+          point: [260, 270],
+          rotation: 0,
+          type: 'arrow',
         },
         'shape:4': {
           childIndex: 0,

@@ -12,6 +12,10 @@ interface BoundedShape extends ShapeBase {
   readonly start: Point
 }
 
+export interface ArrowShape extends BoundedShape {
+  readonly type: 'arrow'
+}
+
 export interface CircleShape extends BoundedShape {
   readonly type: 'circle'
 }
@@ -35,6 +39,7 @@ export interface TextShape extends ShapeBase {
 }
 
 export type Shape =
+  | ArrowShape
   | CircleShape
   | LineShape
   | RectangleShape
@@ -42,6 +47,7 @@ export type Shape =
   | TriangleShape
 
 export type Tool =
+  | 'arrow'
   | 'circle'
   | 'cursor'
   | 'line'

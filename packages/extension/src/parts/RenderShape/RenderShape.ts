@@ -16,6 +16,12 @@ export const renderShape = (
     className: getShapeClassName(shape, selectedShapeId),
     'data-shapeId': String(shape.id),
   }
+  if (shape.type === 'arrow') {
+    return tree(VirtualDomElements.Div, properties, [
+      tree(VirtualDomElements.Div, { className: 'DrawArrowStroke' }),
+      tree(VirtualDomElements.Div, { className: 'DrawArrowHead' }),
+    ])
+  }
   if (shape.type === 'line') {
     return tree(VirtualDomElements.Div, properties, [
       tree(VirtualDomElements.Div, { className: 'DrawLineStroke' }),

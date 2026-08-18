@@ -1,3 +1,5 @@
+export const Arrow = 'Arrow'
+export const ArrowTool = 'Arrow tool'
 export const ChooseAToolAndStartCreating = 'Choose a tool and start creating'
 export const ClearDrawing = 'Clear drawing'
 export const Circle = 'Circle'

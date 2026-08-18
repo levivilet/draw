@@ -18,7 +18,7 @@ interface FileLineShape extends FileShapeBase {
     readonly end: FileShapeHandle
     readonly start: FileShapeHandle
   }
-  readonly type: 'line'
+  readonly type: 'arrow' | 'line'
 }
 
 interface FileBoxShape extends FileShapeBase {
@@ -59,7 +59,11 @@ const toFileShape = (shape: Readonly<Shape>, childIndex: number): FileShape => {
     parentId: pageId,
     rotation: 0,
   }
-  if (shape.type !== 'line' && shape.type !== 'text') {
+  if (
+    shape.type !== 'arrow' &&
+    shape.type !== 'line' &&
+    shape.type !== 'text'
+  ) {
     const x = Math.min(shape.start.x, shape.end.x)
     const y = Math.min(shape.start.y, shape.end.y)
     return {
@@ -73,6 +77,7 @@ const toFileShape = (shape: Readonly<Shape>, childIndex: number): FileShape => {
     }
   }
   switch (shape.type) {
+    case 'arrow':
     case 'line': {
       const x = Math.min(shape.start.x, shape.end.x)
       const y = Math.min(shape.start.y, shape.end.y)

@@ -2,6 +2,8 @@ import { expect, test } from '@jest/globals'
 import * as DrawStrings from '../src/parts/DrawStrings/DrawStrings.ts'
 
 test.each([
+  [DrawStrings.arrow, 'Arrow'],
+  [DrawStrings.arrowTool, 'Arrow tool'],
   [DrawStrings.chooseAToolAndStartCreating, 'Choose a tool and start creating'],
   [DrawStrings.clearDrawing, 'Clear drawing'],
   [DrawStrings.circle, 'Circle'],

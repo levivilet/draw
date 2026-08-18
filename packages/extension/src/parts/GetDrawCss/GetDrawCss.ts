@@ -1,4 +1,5 @@
 import type {
+  ArrowShape,
   CircleShape,
   LineShape,
   RectangleShape,
@@ -11,7 +12,11 @@ const getClassName = (id: number): string => {
   return `DrawShape${id}`
 }
 
-const getLineCss = ({ end, id, start }: Readonly<LineShape>): string => {
+const getLineCss = ({
+  end,
+  id,
+  start,
+}: Readonly<ArrowShape | LineShape>): string => {
   const deltaX = end.x - start.x
   const deltaY = end.y - start.y
   const length = Math.hypot(deltaX, deltaY)
@@ -47,6 +52,8 @@ export const getDrawCss = (shapes: readonly Readonly<Shape>[]): string => {
   return shapes
     .map((shape) => {
       switch (shape.type) {
+        case 'arrow':
+          return getLineCss(shape)
         case 'circle':
           return getCircleCss(shape)
         case 'line':

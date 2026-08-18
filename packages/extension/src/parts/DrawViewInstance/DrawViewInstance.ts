@@ -88,6 +88,7 @@ const defaultApi: DrawViewApi = {
 const activeInstances = new Set<DrawViewInstance>()
 
 const tools: readonly Tool[] = [
+  'arrow',
   'circle',
   'cursor',
   'line',
@@ -146,6 +147,7 @@ const moveShape = (
   deltaY: number,
 ): Shape => {
   switch (shape.type) {
+    case 'arrow':
     case 'circle':
     case 'line':
     case 'rectangle':

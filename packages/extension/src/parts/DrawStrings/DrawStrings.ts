@@ -1,6 +1,14 @@
 import * as I18nString from '../I18NString/I18NString.ts'
 import * as UiStrings from '../UiStrings/UiStrings.ts'
 
+export const arrow = (): string => {
+  return I18nString.i18nString(UiStrings.Arrow)
+}
+
+export const arrowTool = (): string => {
+  return I18nString.i18nString(UiStrings.ArrowTool)
+}
+
 export const chooseAToolAndStartCreating = (): string => {
   return I18nString.i18nString(UiStrings.ChooseAToolAndStartCreating)
 }

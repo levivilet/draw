@@ -35,7 +35,7 @@ const getShape = (
     .find((node) => node.className?.split(' ').includes(className))
 }
 
-test('creates lines and bounded shapes with primary pointer drags', () => {
+test('creates lines, arrows, and bounded shapes with primary pointer drags', () => {
   const { context } = createContext()
   const instance = createInstance(context)
 
@@ -49,13 +49,21 @@ test('creates lines and bounded shapes with primary pointer drags', () => {
     '.DrawShape0{left:100px;top:60px;width:28.284271247461902px;',
   )
 
+  instance.handleSelectTool('arrow')
+  instance.handleDrawPointerDown(0, 30, 40, undefined)
+  instance.handleDrawPointerUp(80, 40)
+  expect(getShape(instance, 'DrawArrow')).toBeDefined()
+  expect(instance.getCss()).toContain(
+    '.DrawShape1{left:30px;top:40px;width:50px;transform:translateY(-50%) rotate(0rad)}',
+  )
+
   instance.handleSelectTool('rectangle')
   instance.handleDrawPointerDown(0, 100, 100, undefined)
   instance.handleDrawPointerUp(60, 70)
 
   expect(getShape(instance, 'DrawRectangle')).toBeDefined()
   expect(instance.getCss()).toContain(
-    '.DrawShape1{left:60px;top:70px;width:40px;height:30px}',
+    '.DrawShape2{left:60px;top:70px;width:40px;height:30px}',
   )
 
   instance.handleSelectTool('circle')
@@ -221,6 +229,12 @@ test('shape helpers cover each shape kind', () => {
     start: { x: 1, y: 2 },
     type: 'line',
   }
+  const arrow: Shape = {
+    end: { x: 7, y: 8 },
+    id: 5,
+    start: { x: 5, y: 6 },
+    type: 'arrow',
+  }
   const rectangle: Shape = {
     end: { x: 4, y: 5 },
     id: 1,
@@ -249,6 +263,10 @@ test('shape helpers cover each shape kind', () => {
   expect(moveShape(line, 2, 3)).toMatchObject({
     end: { x: 5, y: 7 },
     start: { x: 3, y: 5 },
+  })
+  expect(moveShape(arrow, 2, 3)).toMatchObject({
+    end: { x: 9, y: 11 },
+    start: { x: 7, y: 9 },
   })
   expect(moveShape(rectangle, 2, 3)).toMatchObject({
     end: { x: 6, y: 8 },

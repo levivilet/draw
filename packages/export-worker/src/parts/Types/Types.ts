@@ -9,6 +9,10 @@ interface BoundedShape {
   readonly start: Point
 }
 
+export interface ArrowShape extends BoundedShape {
+  readonly type: 'arrow'
+}
+
 export interface CircleShape extends BoundedShape {
   readonly type: 'circle'
 }
@@ -33,6 +37,7 @@ export interface TextShape {
 }
 
 export type Shape =
+  | ArrowShape
   | CircleShape
   | LineShape
   | RectangleShape
