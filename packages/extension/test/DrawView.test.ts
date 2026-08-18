@@ -19,6 +19,16 @@ test('registers the whiteboard view and pointer tracking', () => {
   })
   expect(
     view.eventListeners?.find(
+      (listener) => listener.name === 'handleDrawPointerMove',
+    )?.params,
+  ).toContain('event.ctrlKey')
+  expect(
+    view.eventListeners?.find(
+      (listener) => listener.name === 'handleDrawPointerUp',
+    )?.params,
+  ).toContain('event.ctrlKey')
+  expect(
+    view.eventListeners?.find(
       (listener) => listener.name === 'handleDrawContextMenu',
     ),
   ).toEqual({
