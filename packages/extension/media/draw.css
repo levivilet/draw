@@ -54,19 +54,19 @@
 }
 
 .DrawLine {
-  height: 3px;
-  background: #202020;
-  border-radius: 999px;
+  height: 15px;
   transform-origin: 0 50%;
 }
 
-.DrawLine::after {
+.DrawLineStroke {
   position: absolute;
-  inset: -6px 0;
-  content: '';
+  inset: 6px 0;
+  background: #202020;
+  border-radius: 999px;
+  pointer-events: none;
 }
 
-.DrawLine.DrawShapeSelected {
+.DrawLine.DrawShapeSelected .DrawLineStroke {
   background: var(--DrawAccent);
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--DrawAccent) 25%, transparent);
 }
