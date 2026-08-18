@@ -74,6 +74,10 @@ export const view: View<DrawViewInstance> = {
       preventDefault: true,
     },
     {
+      name: 'handleSave',
+      params: ['handleSave'],
+    },
+    {
       name: 'handleSelectTool',
       params: ['handleSelectTool', 'event.currentTarget.name'],
     },

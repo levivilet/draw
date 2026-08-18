@@ -25,6 +25,13 @@ const createContextMenuEntries = (uid: number): readonly MenuEntry[] => [
     label: DrawStrings.redo(),
   },
   {
+    args: [uid, 'handleViewCommand', 'handleSave'],
+    command: 'Viewlet.executeViewletCommand',
+    flags: 6,
+    id: 'saveDrawing',
+    label: DrawStrings.saveAs(),
+  },
+  {
     command: '',
     flags: 4,
     id: exportMenuId,

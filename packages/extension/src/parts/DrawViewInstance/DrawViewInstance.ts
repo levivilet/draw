@@ -7,7 +7,10 @@ import type {
 import { type VirtualDomNode, text } from '@lvce-editor/virtual-dom-worker'
 import type { DrawState, Point, Shape, Tool } from '../DrawState/DrawState.ts'
 import { contextMenuId } from '../Constants/Constants.ts'
-import { downloadDrawing } from '../DownloadDrawing/DownloadDrawing.ts'
+import {
+  downloadDrawing,
+  type DownloadFormat,
+} from '../DownloadDrawing/DownloadDrawing.ts'
 import {
   exportDrawing,
   type ExportDrawingOptions,
@@ -17,6 +20,7 @@ import { getDrawCss } from '../GetDrawCss/GetDrawCss.ts'
 import { getMenuEntries } from '../GetMenuEntries/GetMenuEntries.ts'
 import { toLocalPoint } from '../Point/Point.ts'
 import { renderDraw } from '../RenderDraw/RenderDraw.ts'
+import { serializeDrawing } from '../SerializeDrawing/SerializeDrawing.ts'
 
 export interface DrawViewInstance extends VirtualDomViewInstance {
   readonly clear: () => void
@@ -48,13 +52,17 @@ export interface DrawViewInstance extends VirtualDomViewInstance {
   ) => void
   readonly handleExport: (format: unknown) => Promise<void>
   readonly handleNoop: () => void
+  readonly handleSave: () => Promise<void>
   readonly handleSelectTool: (tool: unknown) => void
   readonly handleTextInput: (shapeId: unknown, value: unknown) => void
   readonly render: () => readonly VirtualDomNode[]
 }
 
 interface DrawViewApi {
-  readonly downloadDrawing: (blob: Blob, format: ExportFormat) => Promise<void>
+  readonly downloadDrawing: (
+    blob: Blob,
+    format: DownloadFormat,
+  ) => Promise<void>
   readonly exportDrawing: (
     options: Readonly<ExportDrawingOptions>,
   ) => Promise<Blob>
@@ -347,6 +355,13 @@ export const createInstanceWithApi = (
       await api.downloadDrawing(blob, format)
     },
     handleNoop(): void {},
+    async handleSave(): Promise<void> {
+      const { shapes } = state
+      const blob = new Blob([serializeDrawing(shapes)], {
+        type: 'application/json',
+      })
+      await api.downloadDrawing(blob, 'draw')
+    },
     handleSelectTool(tool: unknown): void {
       const { selectedTool } = state
       if (!isTool(tool) || tool === selectedTool) {

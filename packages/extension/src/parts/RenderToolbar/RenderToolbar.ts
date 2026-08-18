@@ -6,6 +6,7 @@ import { textNode } from '../TextNode/TextNode.ts'
 import { tree, type TreeNode } from '../Tree/Tree.ts'
 
 const handleClear = 'handleClear'
+const handleSave = 'handleSave'
 
 const toolDetails: readonly {
   readonly ariaLabel: string
@@ -62,8 +63,19 @@ export const renderToolbar = (selectedTool: Tool, empty: boolean): TreeNode => {
     },
     [textNode('⌫')],
   )
+  const saveButton = tree(
+    VirtualDomElements.Button,
+    {
+      'aria-label': DrawStrings.saveDrawing(),
+      className: 'DrawSaveButton',
+      onClick: handleSave,
+      title: DrawStrings.saveDrawing(),
+    },
+    [textNode('⇩')],
+  )
   return tree(VirtualDomElements.Div, { className: 'DrawControls' }, [
     toolbar,
+    saveButton,
     clearButton,
   ])
 }

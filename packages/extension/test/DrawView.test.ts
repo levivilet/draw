@@ -32,7 +32,11 @@ test('registers the whiteboard view and pointer tracking', () => {
     ],
     preventDefault: true,
   })
-  expect(view.eventListeners?.slice(-2)).toEqual([
+  expect(view.eventListeners?.slice(-3)).toEqual([
+    {
+      name: 'handleSave',
+      params: ['handleSave'],
+    },
     {
       name: 'handleSelectTool',
       params: ['handleSelectTool', 'event.currentTarget.name'],

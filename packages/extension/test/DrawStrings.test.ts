@@ -14,6 +14,8 @@ test.each([
   [DrawStrings.rectangle, 'Rectangle'],
   [DrawStrings.rectangleTool, 'Rectangle tool'],
   [DrawStrings.redo, 'Redo'],
+  [DrawStrings.saveAs, 'Save As…'],
+  [DrawStrings.saveDrawing, 'Save drawing'],
   [DrawStrings.select, 'Select'],
   [DrawStrings.selectTool, 'Select tool'],
   [DrawStrings.svg, 'SVG'],

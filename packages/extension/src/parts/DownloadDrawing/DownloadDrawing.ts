@@ -1,6 +1,8 @@
 import { executeCommand } from '@lvce-editor/api'
 import type { ExportFormat } from '../DrawExportWorker/DrawExportWorker.ts'
 
+export type DownloadFormat = ExportFormat | 'draw'
+
 interface DownloadDrawingDependencies {
   readonly createObjectUrl: (blob: Blob) => string
   readonly executeCommand: (
@@ -11,7 +13,8 @@ interface DownloadDrawingDependencies {
   readonly waitForDownload: () => Promise<void>
 }
 
-const fileNames: Readonly<Record<ExportFormat, string>> = {
+const fileNames: Readonly<Record<DownloadFormat, string>> = {
+  draw: 'drawing.draw',
   jpg: 'drawing.jpg',
   svg: 'drawing.svg',
 }
@@ -33,7 +36,7 @@ const defaultDependencies: DownloadDrawingDependencies = {
 
 export const downloadDrawingWithDependencies = async (
   blob: Blob,
-  format: ExportFormat,
+  format: DownloadFormat,
   dependencies: Readonly<DownloadDrawingDependencies>,
 ): Promise<void> => {
   const url = dependencies.createObjectUrl(blob)
@@ -51,7 +54,7 @@ export const downloadDrawingWithDependencies = async (
 
 export const downloadDrawing = (
   blob: Blob,
-  format: ExportFormat,
+  format: DownloadFormat,
 ): Promise<void> => {
   return downloadDrawingWithDependencies(blob, format, defaultDependencies)
 }

@@ -1,9 +1,7 @@
 import type { ViewContext } from '@lvce-editor/api'
 import { expect, jest, test } from '@jest/globals'
-import type {
-  ExportDrawingOptions,
-  ExportFormat,
-} from '../src/parts/DrawExportWorker/DrawExportWorker.ts'
+import type { DownloadFormat } from '../src/parts/DownloadDrawing/DownloadDrawing.ts'
+import type { ExportDrawingOptions } from '../src/parts/DrawExportWorker/DrawExportWorker.ts'
 import type { Shape } from '../src/parts/DrawState/DrawState.ts'
 import {
   clearActiveDrawViewInstance,
@@ -215,6 +213,13 @@ test('shows a context menu for the drawing board', async () => {
       label: 'Redo',
     },
     {
+      args: [1, 'handleViewCommand', 'handleSave'],
+      command: 'Viewlet.executeViewletCommand',
+      flags: 6,
+      id: 'saveDrawing',
+      label: 'Save As…',
+    },
+    {
       command: '',
       flags: 4,
       id: 'draw.exportMenu',
@@ -252,7 +257,7 @@ test('uses safe context-menu coordinates and export dimensions', async () => {
     (options: Readonly<ExportDrawingOptions>) => Promise<Blob>
   >(async () => blob)
   const downloadDrawing = jest.fn<
-    (value: Blob, format: ExportFormat) => Promise<void>
+    (value: Blob, format: DownloadFormat) => Promise<void>
   >(async () => {})
   const instance = createInstanceWithApi(
     {
@@ -286,5 +291,31 @@ test('uses safe context-menu coordinates and export dimensions', async () => {
   await expect(instance.handleExport('png')).rejects.toThrow(
     'Unsupported drawing export format: png',
   )
+  instance.dispose?.()
+})
+
+test('saves the current shapes as a json draw file', async () => {
+  const downloadDrawing = jest.fn<
+    (value: Blob, format: DownloadFormat) => Promise<void>
+  >(async () => {})
+  const exportDrawing = jest.fn<
+    (options: Readonly<ExportDrawingOptions>) => Promise<Blob>
+  >(async () => new Blob())
+  const instance = createInstanceWithApi(createContext().context, {
+    downloadDrawing,
+    exportDrawing,
+  })
+
+  instance.handleSelectTool('text')
+  instance.handleDrawPointerDown(0, 40, 50, undefined)
+  instance.handleTextInput('0', 'Saved text')
+  await instance.handleSave()
+
+  expect(downloadDrawing).toHaveBeenCalledTimes(1)
+  const [blob, format] = downloadDrawing.mock.calls[0]
+  expect(format).toBe('draw')
+  expect(blob.type).toBe('application/json')
+  await expect(blob.text()).resolves.toContain('"text": "Saved text"')
+  expect(exportDrawing).not.toHaveBeenCalled()
   instance.dispose?.()
 })
