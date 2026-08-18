@@ -21,6 +21,10 @@ export const draw = (): string => {
   return I18nString.i18nString(UiStrings.Draw)
 }
 
+export const duplicate = (): string => {
+  return I18nString.i18nString(UiStrings.Duplicate)
+}
+
 export const drawingTools = (): string => {
   return I18nString.i18nString(UiStrings.DrawingTools)
 }

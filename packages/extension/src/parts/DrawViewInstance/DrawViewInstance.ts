@@ -26,6 +26,7 @@ import { serializeDrawing } from '../SerializeDrawing/SerializeDrawing.ts'
 
 export interface DrawViewInstance extends VirtualDomViewInstance {
   readonly clear: () => void
+  readonly duplicateSelectedShape: () => void
   readonly getContext: () => Readonly<Record<string, boolean>>
   readonly getCss: () => string
   readonly getMenuEntries: (menuId: string) => readonly MenuEntry[]
@@ -58,6 +59,7 @@ export interface DrawViewInstance extends VirtualDomViewInstance {
     clientY: unknown,
     ...offsets: readonly unknown[]
   ) => void
+  readonly handleDuplicate: () => void
   readonly handleExport: (format: unknown) => Promise<void>
   readonly handleNoop: () => void
   readonly handleSave: () => Promise<void>
@@ -86,6 +88,21 @@ const defaultApi: DrawViewApi = {
 }
 
 const activeInstances = new Set<DrawViewInstance>()
+
+const duplicateOffset = 16
+
+const setActiveInstance = (instance: DrawViewInstance): void => {
+  activeInstances.delete(instance)
+  activeInstances.add(instance)
+}
+
+const getActiveInstance = (): DrawViewInstance | undefined => {
+  let activeInstance: DrawViewInstance | undefined
+  for (const instance of activeInstances) {
+    activeInstance = instance
+  }
+  return activeInstance
+}
 
 const tools: readonly Tool[] = [
   'circle',
@@ -163,6 +180,13 @@ const moveShape = (
   }
 }
 
+const duplicateShape = (shape: Readonly<Shape>, id: number): Shape => {
+  return {
+    ...moveShape(shape, duplicateOffset, duplicateOffset),
+    id,
+  }
+}
+
 const resizeShape = (shape: Readonly<Shape>, end: Readonly<Point>): Shape => {
   if (shape.type === 'text') {
     return shape
@@ -174,6 +198,10 @@ export const clearActiveDrawViewInstance = (): void => {
   for (const instance of activeInstances) {
     instance.clear()
   }
+}
+
+export const duplicateSelectedShapeInActiveDrawViewInstance = (): void => {
+  getActiveInstance()?.duplicateSelectedShape()
 }
 
 export const createInstanceWithApi = (
@@ -257,6 +285,26 @@ export const createInstanceWithApi = (
     dispose(): void {
       activeInstances.delete(instance)
     },
+    duplicateSelectedShape(): void {
+      const { nextShapeId, selectedShapeId, selectedTool, shapes } = state
+      if (selectedTool !== 'cursor' || selectedShapeId === undefined) {
+        return
+      }
+      const selectedShape = shapes.find((shape) => shape.id === selectedShapeId)
+      if (!selectedShape) {
+        return
+      }
+      const duplicate = duplicateShape(selectedShape, nextShapeId)
+      updateState({
+        ...state,
+        drawing: false,
+        nextShapeId: nextShapeId + 1,
+        originalShape: undefined,
+        pointerStart: undefined,
+        selectedShapeId: duplicate.id,
+        shapes: [...shapes, duplicate],
+      })
+    },
     getContext(): Readonly<Record<string, boolean>> {
       return getContext(state)
     },
@@ -276,6 +324,7 @@ export const createInstanceWithApi = (
       width: unknown,
       height: unknown,
     ): Promise<void> {
+      setActiveInstance(instance)
       exportWidth = toExportDimension(width)
       exportHeight = toExportDimension(height)
       await context?.showContextMenu(
@@ -317,6 +366,7 @@ export const createInstanceWithApi = (
       if (button !== 0) {
         return
       }
+      setActiveInstance(instance)
       pointerOffsets = offsets
       const point = toLocalPoint(clientX, clientY, offsets)
       const shapeId = parseShapeId(shapeIdValue)
@@ -383,6 +433,9 @@ export const createInstanceWithApi = (
         return
       }
       updatePointer(clientX, clientY, false)
+    },
+    handleDuplicate(): void {
+      instance.duplicateSelectedShape()
     },
     async handleEvent(event: Readonly<ViewEvent>): Promise<void> {
       if (event.type === 'click' && event.name === 'clear') {
@@ -452,4 +505,4 @@ export const createInstance = (context?: ViewContext): DrawViewInstance => {
   return createInstanceWithApi(context, defaultApi)
 }
 
-export { moveShape, replaceShape, resizeShape }
+export { duplicateShape, moveShape, replaceShape, resizeShape }

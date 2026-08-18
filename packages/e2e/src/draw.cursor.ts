@@ -46,7 +46,13 @@ export const test: Test = async ({ Command, expect, KeyBoard, Locator }) => {
   await expect(shape).toHaveClass(
     'DrawShape DrawRectangle DrawShape0 DrawShapeSelected',
   )
+  await KeyBoard.press('Control+d')
+  await expect(shape).toHaveCount(2)
+  const duplicate = Locator('.DrawShape1')
+  await expect(duplicate).toHaveClass(
+    'DrawShape DrawRectangle DrawShape1 DrawShapeSelected',
+  )
   await KeyBoard.press('Delete')
-  await expect(shape).toHaveCount(0)
+  await expect(shape).toHaveCount(1)
   await Command.execute('PointerCapture.unmock')
 }

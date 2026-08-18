@@ -7,6 +7,7 @@ test.each([
   [DrawStrings.circle, 'Circle'],
   [DrawStrings.circleTool, 'Circle tool'],
   [DrawStrings.draw, 'Draw'],
+  [DrawStrings.duplicate, 'Duplicate'],
   [DrawStrings.drawingTools, 'Drawing tools'],
   [DrawStrings.exportAs, 'Export As…'],
   [DrawStrings.jpg, 'JPG'],

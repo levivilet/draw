@@ -4,6 +4,13 @@ import * as DrawStrings from '../DrawStrings/DrawStrings.ts'
 
 const createContextMenuEntries = (uid: number): readonly MenuEntry[] => [
   {
+    args: [uid, 'handleViewCommand', 'handleDuplicate'],
+    command: 'Viewlet.executeViewletCommand',
+    flags: 6,
+    id: 'duplicate',
+    label: DrawStrings.duplicate(),
+  },
+  {
     args: [uid, 'handleViewCommand', 'handleNoop'],
     command: 'Viewlet.executeViewletCommand',
     flags: 6,
