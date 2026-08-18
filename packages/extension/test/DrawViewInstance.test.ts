@@ -109,6 +109,48 @@ test('cursor selects, moves, and deselects shapes', () => {
   instance.dispose?.()
 })
 
+test('delete removes the selected shape', () => {
+  const { context, requestRerender } = createContext()
+  const instance = createInstance(context)
+  instance.handleSelectTool('rectangle')
+  instance.handleDrawPointerDown(0, 20, 30, undefined)
+  instance.handleDrawPointerUp(80, 90)
+  instance.handleDrawPointerDown(0, 100, 110, undefined)
+  instance.handleDrawPointerUp(160, 170)
+  instance.handleSelectTool('cursor')
+  instance.handleDrawPointerDown(0, 120, 130, '1')
+
+  instance.handleDrawKeyDown(false, 'Delete', 'DIV')
+
+  expect(getShape(instance, 'DrawShape1')).toBeUndefined()
+  expect(getShape(instance, 'DrawShape0')).toBeDefined()
+  expect(getShape(instance, 'DrawShapeSelected')).toBeUndefined()
+  expect(instance.getCss()).not.toContain('.DrawShape1')
+  expect(requestRerender).toHaveBeenCalledTimes(8)
+  instance.dispose?.()
+})
+
+test('delete is ignored when handled, editing text, or no shape is selected', () => {
+  const { context, requestRerender } = createContext()
+  const instance = createInstance(context)
+  instance.handleSelectTool('text')
+  instance.handleDrawPointerDown(0, 40, 50, undefined)
+
+  instance.handleDrawKeyDown(false, 'Delete', 'INPUT')
+  instance.handleDrawKeyDown(false, 'Backspace', 'DIV')
+  instance.handleDrawKeyDown(true, 'Delete', 'DIV')
+
+  expect(getShape(instance, 'DrawText')).toBeDefined()
+  expect(requestRerender).toHaveBeenCalledTimes(2)
+
+  instance.handleSelectTool('cursor')
+  instance.handleDrawPointerDown(0, 5, 5, undefined)
+  instance.handleDrawKeyDown(false, 'Delete', 'DIV')
+  expect(getShape(instance, 'DrawText')).toBeDefined()
+  expect(requestRerender).toHaveBeenCalledTimes(4)
+  instance.dispose?.()
+})
+
 test('ignores invalid tools, non-primary, and inactive pointer events', () => {
   const { context, requestRerender } = createContext()
   const instance = createInstance(context)
