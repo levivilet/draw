@@ -5,7 +5,7 @@ export const name = 'draw.cursor'
 // TODO enable when the test worker can query secondary preview extension views.
 export const skip = true
 
-export const test: Test = async ({ Command, expect, Locator }) => {
+export const test: Test = async ({ Command, expect, KeyBoard, Locator }) => {
   await Command.executeExtensionCommand('draw.show')
   const cursor = Locator('.DrawToolButton[name="cursor"]')
   await expect(cursor).toHaveAttribute('aria-pressed', 'true')
@@ -46,5 +46,7 @@ export const test: Test = async ({ Command, expect, Locator }) => {
   await expect(shape).toHaveClass(
     'DrawShape DrawRectangle DrawShape0 DrawShapeSelected',
   )
+  await KeyBoard.press('Delete')
+  await expect(shape).toHaveCount(0)
   await Command.execute('PointerCapture.unmock')
 }
