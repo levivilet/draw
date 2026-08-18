@@ -28,7 +28,6 @@ export const renderShape = (
     return tree(VirtualDomElements.Input, {
       ...properties,
       'aria-label': DrawStrings.text(),
-      autofocus: true,
       name: 'text',
       onInput: handleTextInput,
       placeholder: DrawStrings.typeText(),

@@ -75,15 +75,19 @@ test('creates lines and bounded shapes with primary pointer drags', () => {
 test('places and edits text', () => {
   const { context, requestRerender } = createContext()
   const instance = createInstance(context)
+  const oldContext = instance.getContext()
 
   instance.handleSelectTool('text')
   instance.handleDrawPointerDown(0, 40, 50, undefined)
   instance.handleTextInput('0', 'Hello whiteboard')
 
   expect(getShape(instance, 'DrawText')).toMatchObject({
-    autofocus: true,
     value: 'Hello whiteboard',
   })
+  const newContext = instance.getContext()
+  expect(newContext).toEqual({ 'draw.textInputFocus': true })
+  expect(instance.renderFocus(oldContext, newContext)).toBe('.DrawText')
+  expect(instance.renderFocus(newContext, newContext)).toBe('')
   expect(instance.getCss()).toBe('.DrawShape0{left:40px;top:50px}')
 
   instance.handleDrawPointerDown(0, 40, 50, '0')
@@ -93,6 +97,7 @@ test('places and edits text', () => {
   expect(requestRerender).toHaveBeenCalledTimes(4)
 
   instance.handleSelectTool('cursor')
+  expect(instance.getContext()).toEqual({})
   expect(
     instance.render().some((node) => node.text === 'Hello whiteboard'),
   ).toBe(true)

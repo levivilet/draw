@@ -13,13 +13,16 @@ import {
   type ExportDrawingOptions,
   type ExportFormat,
 } from '../DrawExportWorker/DrawExportWorker.ts'
+import { getContext } from '../GetContext/GetContext.ts'
 import { getDrawCss } from '../GetDrawCss/GetDrawCss.ts'
 import { getMenuEntries } from '../GetMenuEntries/GetMenuEntries.ts'
 import { toLocalPoint } from '../Point/Point.ts'
 import { renderDraw } from '../RenderDraw/RenderDraw.ts'
+import { renderFocus } from '../RenderFocus/RenderFocus.ts'
 
 export interface DrawViewInstance extends VirtualDomViewInstance {
   readonly clear: () => void
+  readonly getContext: () => Readonly<Record<string, boolean>>
   readonly getCss: () => string
   readonly getMenuEntries: (menuId: string) => readonly MenuEntry[]
   readonly handleClear: () => void
@@ -56,6 +59,10 @@ export interface DrawViewInstance extends VirtualDomViewInstance {
   readonly handleSelectTool: (tool: unknown) => void
   readonly handleTextInput: (shapeId: unknown, value: unknown) => void
   readonly render: () => readonly VirtualDomNode[]
+  readonly renderFocus: (
+    oldContext: Readonly<Record<string, boolean>>,
+    newContext: Readonly<Record<string, boolean>>,
+  ) => string
 }
 
 interface DrawViewApi {
@@ -242,6 +249,9 @@ export const createInstanceWithApi = (
     dispose(): void {
       activeInstances.delete(instance)
     },
+    getContext(): Readonly<Record<string, boolean>> {
+      return getContext(state)
+    },
     getCss(): string {
       const { shapes } = state
       return getDrawCss(shapes)
@@ -415,6 +425,7 @@ export const createInstanceWithApi = (
     renderActionsDom(): readonly VirtualDomNode[] {
       return [text('')]
     },
+    renderFocus,
   }
 
   activeInstances.add(instance)
