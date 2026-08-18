@@ -128,7 +128,7 @@ const renderShape = (
 ): TreeNode => {
   const properties = {
     className: getShapeClassName(shape, selectedShapeId),
-    'data-shape-id': String(shape.id),
+    'data-shapeId': String(shape.id),
   }
   if (shape.type !== 'text') {
     return tree(VirtualDomElements.Div, properties)

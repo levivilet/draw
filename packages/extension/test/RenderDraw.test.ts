@@ -55,7 +55,7 @@ test('renders a bottom toolbar with cursor selected by default', () => {
   ).toBe(true)
 })
 
-test('renders line and rectangle shapes with selection state', () => {
+test('renders line and rectangle shapes with renderer-compatible dataset properties', () => {
   const shapes: readonly Shape[] = [
     {
       end: { x: 8, y: 9 },
@@ -73,7 +73,7 @@ test('renders line and rectangle shapes with selection state', () => {
   const dom = renderDraw(createState(shapes, 'rectangle', 5))
 
   expect(findByClass(dom, 'DrawLine')).toMatchObject({
-    'data-shape-id': '4',
+    'data-shapeId': '4',
   })
   expect(findByClass(dom, 'DrawRectangle')?.className).toContain(
     'DrawShapeSelected',
