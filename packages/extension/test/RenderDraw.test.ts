@@ -108,6 +108,7 @@ test('renders selected text as an editor and committed text as a shape', () => {
 
   expect(findByClass(editing, 'DrawText')).toMatchObject({
     autofocus: true,
+    name: 'text',
     onInput: 'handleTextInput',
     placeholder: 'Type text…',
     value: 'A note',
