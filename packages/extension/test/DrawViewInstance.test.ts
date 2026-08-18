@@ -7,6 +7,8 @@ import {
   clearActiveDrawViewInstance,
   createInstance,
   createInstanceWithApi,
+  duplicateSelectedShapeInActiveDrawViewInstance,
+  duplicateShape,
   moveShape,
   replaceShape,
   resizeShape,
@@ -95,7 +97,7 @@ test('places and edits text', () => {
   expect(requestRerender).toHaveBeenCalledTimes(4)
 
   instance.handleSelectTool('cursor')
-  expect(instance.getContext()).toEqual({})
+  expect(instance.getContext()).toEqual({ 'draw.selectedShape': true })
   expect(
     instance.render().some((node) => node.text === 'Hello whiteboard'),
   ).toBe(true)
@@ -165,6 +167,61 @@ test('cursor selection does not move a shape when pointer-up offsets include the
   expect(instance.getCss()).toBe(
     '.DrawShape0{left:20px;top:30px;width:60px;height:60px}',
   )
+  instance.dispose?.()
+})
+
+test('duplicates the selected shape and selects the duplicate', () => {
+  const { context, requestRerender } = createContext()
+  const instance = createInstance(context)
+  instance.handleSelectTool('rectangle')
+  instance.handleDrawPointerDown(0, 20, 30, undefined)
+  instance.handleDrawPointerUp(80, 90)
+  instance.handleSelectTool('cursor')
+  instance.handleDrawPointerDown(0, 40, 50, '0')
+
+  duplicateSelectedShapeInActiveDrawViewInstance()
+
+  expect(getShape(instance, 'DrawShape1')).toMatchObject({
+    className: expect.stringContaining('DrawShapeSelected'),
+  })
+  expect(instance.getCss()).toBe(
+    '.DrawShape0{left:20px;top:30px;width:60px;height:60px}.DrawShape1{left:36px;top:46px;width:60px;height:60px}',
+  )
+  expect(instance.getContext()).toEqual({ 'draw.selectedShape': true })
+  expect(requestRerender).toHaveBeenCalledTimes(6)
+  instance.dispose?.()
+})
+
+test('duplicate command targets the most recently active draw view', () => {
+  const first = createInstance(createContext().context)
+  const second = createInstance(createContext().context)
+  for (const instance of [first, second]) {
+    instance.handleSelectTool('line')
+    instance.handleDrawPointerDown(0, 1, 2, undefined)
+    instance.handleDrawPointerUp(3, 4)
+    instance.handleSelectTool('cursor')
+  }
+  first.handleDrawPointerDown(0, 2, 3, '0')
+
+  duplicateSelectedShapeInActiveDrawViewInstance()
+
+  expect(getShape(first, 'DrawShape1')).toBeDefined()
+  expect(getShape(second, 'DrawShape1')).toBeUndefined()
+  first.dispose?.()
+  second.dispose?.()
+})
+
+test('duplicate is ignored outside the cursor tool or without a selection', () => {
+  const { context, requestRerender } = createContext()
+  const instance = createInstance(context)
+  instance.duplicateSelectedShape()
+  instance.handleSelectTool('text')
+  instance.handleDrawPointerDown(0, 10, 20, undefined)
+
+  instance.handleDuplicate()
+
+  expect(instance.getCss()).toBe('.DrawShape0{left:10px;top:20px}')
+  expect(requestRerender).toHaveBeenCalledTimes(2)
   instance.dispose?.()
 })
 
@@ -293,6 +350,18 @@ test('shape helpers cover each shape kind', () => {
     start: { x: 8, y: 10 },
   })
   expect(moveShape(label, 2, 3)).toMatchObject({ point: { x: 7, y: 9 } })
+  expect(duplicateShape(line, 5)).toEqual({
+    end: { x: 19, y: 20 },
+    id: 5,
+    start: { x: 17, y: 18 },
+    type: 'line',
+  })
+  expect(duplicateShape(label, 6)).toEqual({
+    id: 6,
+    point: { x: 21, y: 22 },
+    text: 'Hello',
+    type: 'text',
+  })
   expect(resizeShape(line, { x: 9, y: 10 })).toMatchObject({
     end: { x: 9, y: 10 },
   })
@@ -314,6 +383,13 @@ test('shows a context menu for the drawing board', async () => {
 
   expect(showContextMenu).toHaveBeenCalledWith('draw.contextMenu', 10, 20)
   expect(instance.getMenuEntries('draw.contextMenu')).toEqual([
+    {
+      args: [1, 'handleViewCommand', 'handleDuplicate'],
+      command: 'Viewlet.executeViewletCommand',
+      flags: 6,
+      id: 'duplicate',
+      label: 'Duplicate',
+    },
     {
       args: [1, 'handleViewCommand', 'handleNoop'],
       command: 'Viewlet.executeViewletCommand',
