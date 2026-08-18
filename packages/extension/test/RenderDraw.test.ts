@@ -73,7 +73,11 @@ test('renders line and rectangle shapes with renderer-compatible dataset propert
   const dom = renderDraw(createState(shapes, 'rectangle', 5))
 
   expect(findByClass(dom, 'DrawLine')).toMatchObject({
+    childCount: 1,
     'data-shapeId': '4',
+  })
+  expect(findByClass(dom, 'DrawLineStroke')).toMatchObject({
+    childCount: 0,
   })
   expect(findByClass(dom, 'DrawRectangle')?.className).toContain(
     'DrawShapeSelected',
