@@ -18,6 +18,7 @@ export const test: Test = async ({ Command, expect, Locator }) => {
     pointerId: 1,
   } as any)
   const input = Locator('input.DrawText')
+  await expect(input).toBeFocused()
   await input.type('Hello whiteboard')
   await expect(input).toHaveValue('Hello whiteboard')
 }

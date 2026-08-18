@@ -107,11 +107,11 @@ test('renders selected text as an editor and committed text as a shape', () => {
   )
 
   expect(findByClass(editing, 'DrawText')).toMatchObject({
-    autofocus: true,
     onInput: 'handleTextInput',
     placeholder: 'Type text…',
     value: 'A note',
   })
+  expect(findByClass(editing, 'DrawText')).not.toHaveProperty('autofocus')
   expect(committed.some((node) => node.text === 'A note')).toBe(true)
   expect(emptyText.some((node) => node.text === '')).toBe(false)
   expect(getDrawCss([shape])).toBe('.DrawShape2{left:20px;top:30px}')
