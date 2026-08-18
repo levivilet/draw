@@ -6,6 +6,7 @@ import {
   VirtualDomElements,
 } from '@lvce-editor/virtual-dom-worker'
 import type { DrawState, Shape, Tool } from '../DrawState/DrawState.ts'
+import * as DrawStrings from '../DrawStrings/DrawStrings.ts'
 import * as TabIndex from '../TabIndex/TabIndex.ts'
 
 const handleClear = 'handleClear'
@@ -46,19 +47,41 @@ const flatten = (node: TreeNode): readonly VirtualDomNode[] => {
 }
 
 const toolDetails: readonly {
+  readonly ariaLabel: string
   readonly icon: string
   readonly label: string
   readonly tool: Tool
 }[] = [
-  { icon: '↖', label: 'Select', tool: 'cursor' },
-  { icon: '╱', label: 'Line', tool: 'line' },
-  { icon: '□', label: 'Rectangle', tool: 'rectangle' },
-  { icon: 'T', label: 'Text', tool: 'text' },
+  {
+    ariaLabel: DrawStrings.selectTool(),
+    icon: '↖',
+    label: DrawStrings.select(),
+    tool: 'cursor',
+  },
+  {
+    ariaLabel: DrawStrings.lineTool(),
+    icon: '╱',
+    label: DrawStrings.line(),
+    tool: 'line',
+  },
+  {
+    ariaLabel: DrawStrings.rectangleTool(),
+    icon: '□',
+    label: DrawStrings.rectangle(),
+    tool: 'rectangle',
+  },
+  {
+    ariaLabel: DrawStrings.textTool(),
+    icon: 'T',
+    label: DrawStrings.text(),
+    tool: 'text',
+  },
 ]
 
 const renderToolButton = (
   selectedTool: Tool,
   tool: Tool,
+  ariaLabel: string,
   label: string,
   icon: string,
 ): TreeNode => {
@@ -66,7 +89,7 @@ const renderToolButton = (
   return tree(
     VirtualDomElements.Button,
     {
-      'aria-label': `${label} tool`,
+      'aria-label': ariaLabel,
       'aria-pressed': selected,
       className: mergeClassNames(
         'DrawToolButton',
@@ -84,22 +107,22 @@ const renderToolbar = (selectedTool: Tool, empty: boolean): TreeNode => {
   const toolbar = tree(
     VirtualDomElements.Div,
     {
-      'aria-label': 'Drawing tools',
+      'aria-label': DrawStrings.drawingTools(),
       className: 'DrawToolbar',
       role: AriaRoles.ToolBar,
     },
-    toolDetails.map(({ icon, label, tool }) =>
-      renderToolButton(selectedTool, tool, label, icon),
+    toolDetails.map(({ ariaLabel, icon, label, tool }) =>
+      renderToolButton(selectedTool, tool, ariaLabel, label, icon),
     ),
   )
   const clearButton = tree(
     VirtualDomElements.Button,
     {
-      'aria-label': 'Clear drawing',
+      'aria-label': DrawStrings.clearDrawing(),
       className: 'DrawClearButton',
       disabled: empty,
       onClick: handleClear,
-      title: 'Clear drawing',
+      title: DrawStrings.clearDrawing(),
     },
     [textNode('⌫')],
   )
@@ -136,10 +159,10 @@ const renderShape = (
   if (selectedShapeId === shape.id && selectedTool === 'text') {
     return tree(VirtualDomElements.Input, {
       ...properties,
-      'aria-label': 'Text',
+      'aria-label': DrawStrings.text(),
       autofocus: true,
       onInput: handleTextInput,
-      placeholder: 'Type text…',
+      placeholder: DrawStrings.typeText(),
       value: shape.text,
     })
   }
@@ -159,14 +182,14 @@ const renderBoard = (state: Readonly<DrawState>): TreeNode => {
     shapes.length === 0
       ? [
           tree(VirtualDomElements.P, { className: 'DrawEmptyMessage' }, [
-            textNode('Choose a tool and start creating'),
+            textNode(DrawStrings.chooseAToolAndStartCreating()),
           ]),
         ]
       : []
   return tree(
     VirtualDomElements.Div,
     {
-      'aria-label': 'Whiteboard drawing area',
+      'aria-label': DrawStrings.whiteboardDrawingArea(),
       className: mergeClassNames('DrawBoard', `DrawBoardTool-${selectedTool}`),
       name: 'board',
       onContextMenu: handleDrawContextMenu,
