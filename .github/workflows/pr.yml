@@ -53,4 +53,4 @@ jobs:
       - name: Build static site
         run: node scripts/build-static.ts
         env:
-          PATH_PREFIX: auto
+          PATH_PREFIX: /draw

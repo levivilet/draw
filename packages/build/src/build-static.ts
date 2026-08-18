@@ -31,6 +31,7 @@ const assertDrawExtensionEntry = (
 }
 
 const assertStaticDrawExtension = async (commitHash: string): Promise<void> => {
+  const indexHtmlPath = path.join(root, 'dist', 'index.html')
   const commitDir = path.join(root, 'dist', commitHash)
   const extensionDir = path.join(commitDir, 'extensions', extensionId)
   const extensionJsonPath = path.join(extensionDir, 'extension.json')
@@ -42,6 +43,13 @@ const assertStaticDrawExtension = async (commitHash: string): Promise<void> => {
   )
 
   await assertFileExists(extensionJsonPath)
+
+  const indexHtml = await readFile(indexHtmlPath, 'utf8')
+  if (indexHtml.includes('/undefined/')) {
+    throw new Error(
+      `Expected ${indexHtmlPath} to contain valid static asset URLs`,
+    )
+  }
 
   const extensionJson =
     await readJson<Record<string, unknown>>(extensionJsonPath)
