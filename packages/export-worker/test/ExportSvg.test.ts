@@ -65,7 +65,7 @@ test('exports lines, shapes, and escaped text without selection UI', () => {
   )
   expect(svg).toContain('<circle cx="50" cy="40" r="1.5" fill="#202020"/>')
   expect(svg).toContain(
-    '<rect x="11" y="21" width="28" height="38" fill="none" stroke="#202020" stroke-width="2"/>',
+    '<rect x="11" y="21" width="28" height="38" rx="8" ry="8" fill="none" stroke="#202020" stroke-width="2"/>',
   )
   expect(svg).toContain(
     '<ellipse cx="55" cy="40" rx="14" ry="19" fill="none" stroke="#202020" stroke-width="2"/>',
