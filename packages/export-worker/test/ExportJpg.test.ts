@@ -25,8 +25,8 @@ const createFixture = (
     fillText: jest.fn(),
     lineTo: jest.fn(),
     moveTo: jest.fn(),
+    roundRect: jest.fn(),
     stroke: jest.fn(),
-    strokeRect: jest.fn(),
   } as unknown as OffscreenCanvasRenderingContext2D
   const convertToBlob = jest.fn<
     (options?: Readonly<ImageEncodeOptions>) => Promise<Blob>
@@ -110,7 +110,7 @@ test('draws a white background and every supported shape', async () => {
   expect(context.lineTo).toHaveBeenCalledWith(10.607695154586736, 34)
   expect(context.arc).toHaveBeenCalledWith(8, 9, 1.5, 0, Math.PI * 2)
   expect(context.fill).toHaveBeenCalledTimes(1)
-  expect(context.strokeRect).toHaveBeenCalledWith(11, 21, 28, 38)
+  expect(context.roundRect).toHaveBeenCalledWith(11, 21, 28, 38, 8)
   expect(context.ellipse).toHaveBeenCalledWith(
     55,
     40,

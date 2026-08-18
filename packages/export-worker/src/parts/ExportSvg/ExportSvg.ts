@@ -12,6 +12,7 @@ const background = '#ffffff'
 const foreground = '#202020'
 const arrowHeadAngle = Math.PI / 6
 const arrowHeadLength = 12
+const rectangleCornerRadius = 8
 
 export interface ArrowHeadPoints {
   readonly left: { readonly x: number; readonly y: number }
@@ -96,7 +97,7 @@ const renderShape = (shape: Readonly<Shape>): string => {
     }
     case 'rectangle': {
       const { height, width, x, y } = getRectangleGeometry(shape)
-      return `<rect x="${x}" y="${y}" width="${width}" height="${height}" fill="none" stroke="${foreground}" stroke-width="2"/>`
+      return `<rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${rectangleCornerRadius}" ry="${rectangleCornerRadius}" fill="none" stroke="${foreground}" stroke-width="2"/>`
     }
     case 'text':
       if (!shape.text) {
@@ -126,4 +127,4 @@ export const exportSvg = (
   })
 }
 
-export { getRectangleGeometry, normalizeDimensions }
+export { getRectangleGeometry, normalizeDimensions, rectangleCornerRadius }
