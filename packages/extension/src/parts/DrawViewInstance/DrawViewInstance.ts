@@ -33,6 +33,11 @@ export interface DrawViewInstance extends VirtualDomViewInstance {
     width: unknown,
     height: unknown,
   ) => Promise<void>
+  readonly handleDrawKeyDown: (
+    defaultPrevented: unknown,
+    key: unknown,
+    targetTagName: unknown,
+  ) => void
   readonly handleDrawPointerDown: (
     button: unknown,
     clientX: unknown,
@@ -259,6 +264,29 @@ export const createInstanceWithApi = (
         toFiniteNumber(clientX),
         toFiniteNumber(clientY),
       )
+    },
+    handleDrawKeyDown(
+      defaultPrevented: unknown,
+      key: unknown,
+      targetTagName: unknown,
+    ): void {
+      const { selectedShapeId, shapes } = state
+      if (
+        defaultPrevented === true ||
+        key !== 'Delete' ||
+        targetTagName === 'INPUT' ||
+        selectedShapeId === undefined
+      ) {
+        return
+      }
+      updateState({
+        ...state,
+        drawing: false,
+        originalShape: undefined,
+        pointerStart: undefined,
+        selectedShapeId: undefined,
+        shapes: shapes.filter((shape) => shape.id !== selectedShapeId),
+      })
     },
     handleDrawPointerDown(
       button: unknown,

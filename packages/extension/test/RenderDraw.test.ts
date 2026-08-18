@@ -29,6 +29,7 @@ const findByClass = (
 
 test('renders a bottom toolbar with cursor selected by default', () => {
   const dom = renderDraw(createState())
+  const root = findByClass(dom, 'DrawView')
   const cursor = dom.find((node) => node.name === 'cursor')
   const line = dom.find((node) => node.name === 'line')
 
@@ -54,6 +55,7 @@ test('renders a bottom toolbar with cursor selected by default', () => {
     onContextMenu: 'handleDrawContextMenu',
     onPointerDown: 'handleDrawPointerDown',
   })
+  expect(root).toMatchObject({ onKeyDown: 'handleDrawKeyDown' })
   expect(
     dom.some((node) => node.text === 'Choose a tool and start creating'),
   ).toBe(true)
@@ -77,7 +79,11 @@ test('renders line and rectangle shapes with renderer-compatible dataset propert
   const dom = renderDraw(createState(shapes, 'rectangle', 5))
 
   expect(findByClass(dom, 'DrawLine')).toMatchObject({
+    childCount: 1,
     'data-shapeId': '4',
+  })
+  expect(findByClass(dom, 'DrawLineStroke')).toMatchObject({
+    childCount: 0,
   })
   expect(findByClass(dom, 'DrawRectangle')?.className).toContain(
     'DrawShapeSelected',
@@ -106,6 +112,7 @@ test('renders selected text as an editor and committed text as a shape', () => {
 
   expect(findByClass(editing, 'DrawText')).toMatchObject({
     autofocus: true,
+    name: 'text',
     onInput: 'handleTextInput',
     placeholder: 'Type text…',
     value: 'A note',

@@ -41,6 +41,15 @@ export const view: View<DrawViewInstance> = {
       preventDefault: true,
     },
     {
+      name: 'handleDrawKeyDown',
+      params: [
+        'handleDrawKeyDown',
+        'event.defaultPrevented',
+        'event.key',
+        'event.target.tagName',
+      ],
+    },
+    {
       name: 'handleDrawPointerDown',
       params: [
         'handleDrawPointerDown',
