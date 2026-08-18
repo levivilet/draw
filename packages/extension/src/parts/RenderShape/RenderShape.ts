@@ -16,7 +16,12 @@ export const renderShape = (
     className: getShapeClassName(shape, selectedShapeId),
     'data-shapeId': String(shape.id),
   }
-  if (shape.type !== 'text') {
+  if (shape.type === 'line') {
+    return tree(VirtualDomElements.Div, properties, [
+      tree(VirtualDomElements.Div, { className: 'DrawLineStroke' }),
+    ])
+  }
+  if (shape.type === 'rectangle') {
     return tree(VirtualDomElements.Div, properties)
   }
   if (selectedShapeId === shape.id && selectedTool === 'text') {

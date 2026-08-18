@@ -8,13 +8,16 @@ import { renderBoard } from '../RenderBoard/RenderBoard.ts'
 import { renderToolbar } from '../RenderToolbar/RenderToolbar.ts'
 import { tree } from '../Tree/Tree.ts'
 
+const handleDrawKeyDown = 'handleDrawKeyDown'
+
 export const renderDraw = (
   state: Readonly<DrawState>,
 ): readonly VirtualDomNode[] => {
   const { selectedTool, shapes } = state
-  const root = tree(VirtualDomElements.Div, { className: 'DrawView' }, [
-    renderBoard(state),
-    renderToolbar(selectedTool, shapes.length === 0),
-  ])
+  const root = tree(
+    VirtualDomElements.Div,
+    { className: 'DrawView', onKeyDown: handleDrawKeyDown },
+    [renderBoard(state), renderToolbar(selectedTool, shapes.length === 0)],
+  )
   return flatten(root)
 }

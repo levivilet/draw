@@ -32,6 +32,19 @@ test('registers the whiteboard view and pointer tracking', () => {
     ],
     preventDefault: true,
   })
+  expect(
+    view.eventListeners?.find(
+      (listener) => listener.name === 'handleDrawKeyDown',
+    ),
+  ).toEqual({
+    name: 'handleDrawKeyDown',
+    params: [
+      'handleDrawKeyDown',
+      'event.defaultPrevented',
+      'event.key',
+      'event.target.tagName',
+    ],
+  })
   expect(view.eventListeners?.slice(-2)).toEqual([
     {
       name: 'handleSelectTool',
