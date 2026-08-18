@@ -41,8 +41,8 @@ test('creates lines and bounded shapes with primary pointer drags', () => {
 
   instance.handleSelectTool('line')
   instance.handleDrawPointerDown(0, 110, 80, undefined, 10, 20)
-  instance.handleDrawPointerMove(120, 90, 10, 20)
-  instance.handleDrawPointerUp(130, 100, 10, 20)
+  instance.handleDrawPointerMove(120, 90, false, 10, 20)
+  instance.handleDrawPointerUp(130, 100, false, 10, 20)
 
   expect(getShape(instance, 'DrawLine')).toBeDefined()
   expect(instance.getCss()).toContain(
@@ -99,6 +99,36 @@ test('places and edits text', () => {
   expect(
     instance.render().some((node) => node.text === 'Hello whiteboard'),
   ).toBe(true)
+  instance.dispose?.()
+})
+
+test('control constrains bounded shapes to uniform dimensions', () => {
+  const instance = createInstance(createContext().context)
+
+  instance.handleSelectTool('rectangle')
+  instance.handleDrawPointerDown(0, 100, 100, undefined)
+  instance.handleDrawPointerMove(140, 120, true)
+  expect(instance.getCss()).toContain(
+    '.DrawShape0{left:100px;top:100px;width:40px;height:40px}',
+  )
+  instance.handleDrawPointerUp(130, 80, true)
+  expect(instance.getCss()).toContain(
+    '.DrawShape0{left:100px;top:70px;width:30px;height:30px}',
+  )
+
+  instance.handleSelectTool('circle')
+  instance.handleDrawPointerDown(0, 100, 100, undefined)
+  instance.handleDrawPointerUp(60, 70, true)
+  expect(instance.getCss()).toContain(
+    '.DrawShape1{left:60px;top:60px;width:40px;height:40px}',
+  )
+
+  instance.handleSelectTool('triangle')
+  instance.handleDrawPointerDown(0, 100, 100, undefined)
+  instance.handleDrawPointerUp(120, 160, true)
+  expect(instance.getCss()).toContain(
+    '.DrawShape2{left:100px;top:100px;width:60px;height:60px}',
+  )
   instance.dispose?.()
 })
 

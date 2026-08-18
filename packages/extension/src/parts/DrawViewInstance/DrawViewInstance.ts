@@ -51,11 +51,13 @@ export interface DrawViewInstance extends VirtualDomViewInstance {
   readonly handleDrawPointerMove: (
     clientX: unknown,
     clientY: unknown,
+    ctrlKey?: unknown,
     ...offsets: readonly unknown[]
   ) => void
   readonly handleDrawPointerUp: (
     clientX: unknown,
     clientY: unknown,
+    ctrlKey?: unknown,
     ...offsets: readonly unknown[]
   ) => void
   readonly handleExport: (format: unknown) => Promise<void>
@@ -163,11 +165,30 @@ const moveShape = (
   }
 }
 
-const resizeShape = (shape: Readonly<Shape>, end: Readonly<Point>): Shape => {
+const getUniformEnd = (
+  start: Readonly<Point>,
+  end: Readonly<Point>,
+): Point => {
+  const deltaX = end.x - start.x
+  const deltaY = end.y - start.y
+  const size = Math.max(Math.abs(deltaX), Math.abs(deltaY))
+  return {
+    x: start.x + (deltaX < 0 ? -size : size),
+    y: start.y + (deltaY < 0 ? -size : size),
+  }
+}
+
+const resizeShape = (
+  shape: Readonly<Shape>,
+  end: Readonly<Point>,
+  uniform = false,
+): Shape => {
   if (shape.type === 'text') {
     return shape
   }
-  return { ...shape, end }
+  const nextEnd =
+    uniform && shape.type !== 'line' ? getUniformEnd(shape.start, end) : end
+  return { ...shape, end: nextEnd }
 }
 
 export const clearActiveDrawViewInstance = (): void => {
@@ -201,6 +222,7 @@ export const createInstanceWithApi = (
   const updatePointer = (
     clientX: unknown,
     clientY: unknown,
+    ctrlKey: unknown,
     drawing: boolean,
   ): boolean => {
     const {
@@ -225,7 +247,7 @@ export const createInstanceWithApi = (
     } else {
       const selectedShape = shapes.find((shape) => shape.id === selectedShapeId)
       if (selectedShape) {
-        replacement = resizeShape(selectedShape, point)
+        replacement = resizeShape(selectedShape, point, ctrlKey === true)
       }
     }
     if (!replacement) {
@@ -369,20 +391,22 @@ export const createInstanceWithApi = (
     handleDrawPointerMove(
       clientX: unknown,
       clientY: unknown,
+      ctrlKey: unknown = false,
       ..._offsets: readonly unknown[]
     ): void {
-      updatePointer(clientX, clientY, true)
+      updatePointer(clientX, clientY, ctrlKey, true)
     },
     handleDrawPointerUp(
       clientX: unknown,
       clientY: unknown,
+      ctrlKey: unknown = false,
       ..._offsets: readonly unknown[]
     ): void {
       const { drawing } = state
       if (!drawing) {
         return
       }
-      updatePointer(clientX, clientY, false)
+      updatePointer(clientX, clientY, ctrlKey, false)
     },
     async handleEvent(event: Readonly<ViewEvent>): Promise<void> {
       if (event.type === 'click' && event.name === 'clear') {
