@@ -2,6 +2,7 @@ import type { ExportDrawingOptions, Shape } from '../Types/Types.ts'
 import {
   getRectangleGeometry,
   normalizeDimensions,
+  rectangleCornerRadius,
 } from '../ExportSvg/ExportSvg.ts'
 
 type CreateCanvas = (width: number, height: number) => OffscreenCanvas
@@ -56,14 +57,17 @@ const renderShape = (
       return
     case 'rectangle': {
       const geometry = getRectangleGeometry(shape)
-      context.lineWidth = 2
-      context.strokeStyle = '#202020'
-      context.strokeRect(
+      context.beginPath()
+      context.roundRect(
         geometry.x,
         geometry.y,
         geometry.width,
         geometry.height,
+        rectangleCornerRadius,
       )
+      context.lineWidth = 2
+      context.strokeStyle = '#202020'
+      context.stroke()
       return
     }
     case 'triangle': {

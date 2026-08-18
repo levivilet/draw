@@ -84,6 +84,7 @@
   contain: strict;
   background: transparent;
   border: 2px solid #202020;
+  border-radius: 8px;
 }
 
 .DrawRectangle.DrawShapeSelected {
