@@ -109,6 +109,22 @@ test('cursor selects, moves, and deselects shapes', () => {
   instance.dispose?.()
 })
 
+test('cursor selection does not move a shape when pointer-up offsets include the shape', () => {
+  const instance = createInstance(createContext().context)
+  instance.handleSelectTool('rectangle')
+  instance.handleDrawPointerDown(0, 120, 130, undefined, 100, 100)
+  instance.handleDrawPointerUp(180, 190, 100, 100)
+  instance.handleSelectTool('cursor')
+
+  instance.handleDrawPointerDown(0, 140, 150, '0', 100, 100)
+  instance.handleDrawPointerUp(140, 150, 20, 30, 100, 100)
+
+  expect(instance.getCss()).toBe(
+    '.DrawShape0{left:20px;top:30px;width:60px;height:60px}',
+  )
+  instance.dispose?.()
+})
+
 test('delete removes the selected shape', () => {
   const { context, requestRerender } = createContext()
   const instance = createInstance(context)

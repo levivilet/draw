@@ -167,6 +167,7 @@ export const createInstanceWithApi = (
   }
   let exportWidth = 1
   let exportHeight = 1
+  let pointerOffsets: readonly unknown[] = []
 
   const updateState = (nextState: DrawState): void => {
     state = nextState
@@ -176,7 +177,6 @@ export const createInstanceWithApi = (
   const updatePointer = (
     clientX: unknown,
     clientY: unknown,
-    offsets: readonly unknown[],
     drawing: boolean,
   ): boolean => {
     const {
@@ -190,7 +190,7 @@ export const createInstanceWithApi = (
     if (!wasDrawing || selectedShapeId === undefined) {
       return false
     }
-    const point = toLocalPoint(clientX, clientY, offsets)
+    const point = toLocalPoint(clientX, clientY, pointerOffsets)
     let replacement: Shape | undefined
     if (selectedTool === 'cursor' && originalShape && pointerStart) {
       replacement = moveShape(
@@ -290,6 +290,7 @@ export const createInstanceWithApi = (
       if (button !== 0) {
         return
       }
+      pointerOffsets = offsets
       const point = toLocalPoint(clientX, clientY, offsets)
       const shapeId = parseShapeId(shapeIdValue)
       const { nextShapeId, selectedTool, shapes } = state
@@ -341,20 +342,20 @@ export const createInstanceWithApi = (
     handleDrawPointerMove(
       clientX: unknown,
       clientY: unknown,
-      ...offsets: readonly unknown[]
+      ..._offsets: readonly unknown[]
     ): void {
-      updatePointer(clientX, clientY, offsets, true)
+      updatePointer(clientX, clientY, true)
     },
     handleDrawPointerUp(
       clientX: unknown,
       clientY: unknown,
-      ...offsets: readonly unknown[]
+      ..._offsets: readonly unknown[]
     ): void {
       const { drawing } = state
       if (!drawing) {
         return
       }
-      updatePointer(clientX, clientY, offsets, false)
+      updatePointer(clientX, clientY, false)
     },
     async handleEvent(event: Readonly<ViewEvent>): Promise<void> {
       if (event.type === 'click' && event.name === 'clear') {
