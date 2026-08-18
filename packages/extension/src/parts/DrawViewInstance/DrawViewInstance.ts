@@ -72,7 +72,14 @@ const defaultApi: DrawViewApi = {
 
 const activeInstances = new Set<DrawViewInstance>()
 
-const tools: readonly Tool[] = ['cursor', 'line', 'rectangle', 'text']
+const tools: readonly Tool[] = [
+  'circle',
+  'cursor',
+  'line',
+  'rectangle',
+  'text',
+  'triangle',
+]
 const exportFormats: readonly ExportFormat[] = ['jpg', 'svg']
 
 const isTool = (value: unknown): value is Tool => {
@@ -124,8 +131,10 @@ const moveShape = (
   deltaY: number,
 ): Shape => {
   switch (shape.type) {
+    case 'circle':
     case 'line':
     case 'rectangle':
+    case 'triangle':
       return {
         ...shape,
         end: movePoint(shape.end, deltaX, deltaY),

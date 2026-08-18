@@ -14,6 +14,7 @@ export const renderToolButton = (
   ariaLabel: string,
   label: string,
   icon: string,
+  className = 'DrawToolButton',
 ): TreeNode => {
   const selected = selectedTool === tool
   return tree(
@@ -22,7 +23,7 @@ export const renderToolButton = (
       'aria-label': ariaLabel,
       'aria-pressed': selected,
       className: mergeClassNames(
-        'DrawToolButton',
+        className,
         selected ? 'DrawToolButtonSelected' : '',
       ),
       name: tool,

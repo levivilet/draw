@@ -10,7 +10,7 @@ test('exports an empty white drawing at rounded dimensions', async () => {
   )
 })
 
-test('exports lines, rectangles, and escaped text without selection UI', () => {
+test('exports lines, shapes, and escaped text without selection UI', () => {
   const svg = createSvg({
     height: 80,
     shapes: [
@@ -31,6 +31,18 @@ test('exports lines, rectangles, and escaped text without selection UI', () => {
         id: 1,
         start: { x: 40, y: 60 },
         type: 'rectangle',
+      },
+      {
+        end: { x: 70, y: 60 },
+        id: 5,
+        start: { x: 40, y: 20 },
+        type: 'circle',
+      },
+      {
+        end: { x: 110, y: 60 },
+        id: 6,
+        start: { x: 80, y: 20 },
+        type: 'triangle',
       },
       {
         id: 2,
@@ -54,6 +66,12 @@ test('exports lines, rectangles, and escaped text without selection UI', () => {
   expect(svg).toContain('<circle cx="50" cy="40" r="1.5" fill="#202020"/>')
   expect(svg).toContain(
     '<rect x="11" y="21" width="28" height="38" fill="none" stroke="#202020" stroke-width="2"/>',
+  )
+  expect(svg).toContain(
+    '<ellipse cx="55" cy="40" rx="14" ry="19" fill="none" stroke="#202020" stroke-width="2"/>',
+  )
+  expect(svg).toContain(
+    '<polygon points="95,21 109,59 81,59" fill="none" stroke="#202020" stroke-width="2" stroke-linejoin="round"/>',
   )
   expect(svg).toContain(
     '<text x="16" y="24" fill="#202020" font-family="sans-serif" font-size="18" dominant-baseline="middle" xml:space="preserve">A &amp; &lt;B&gt;</text>',
