@@ -1,5 +1,6 @@
 import type { ExportDrawingOptions, Shape } from '../Types/Types.ts'
 import {
+  getArrowHeadPoints,
   getRectangleGeometry,
   normalizeDimensions,
   rectangleCornerRadius,
@@ -20,6 +21,23 @@ const renderShape = (
   shape: Readonly<Shape>,
 ): void => {
   switch (shape.type) {
+    case 'arrow': {
+      const { left, right } = getArrowHeadPoints(shape)
+      // Each arrow is an independent drawing shape, not a reusable path.
+      context.beginPath()
+      context.lineCap = 'round'
+      context.lineJoin = 'round'
+      context.lineWidth = 3
+      context.strokeStyle = '#202020'
+      // eslint-disable-next-line unicorn/prefer-path2d
+      context.moveTo(shape.start.x, shape.start.y)
+      context.lineTo(shape.end.x, shape.end.y)
+      context.moveTo(left.x, left.y)
+      context.lineTo(shape.end.x, shape.end.y)
+      context.lineTo(right.x, right.y)
+      context.stroke()
+      return
+    }
     case 'circle': {
       const geometry = getRectangleGeometry(shape)
       context.beginPath()

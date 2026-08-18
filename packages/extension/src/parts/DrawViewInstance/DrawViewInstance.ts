@@ -107,6 +107,7 @@ const getActiveInstance = (): DrawViewInstance | undefined => {
 }
 
 const tools: readonly Tool[] = [
+  'arrow',
   'circle',
   'cursor',
   'line',
@@ -165,6 +166,7 @@ const moveShape = (
   deltaY: number,
 ): Shape => {
   switch (shape.type) {
+    case 'arrow':
     case 'circle':
     case 'line':
     case 'rectangle':
@@ -208,7 +210,9 @@ const resizeShape = (
     return shape
   }
   const nextEnd =
-    uniform && shape.type !== 'line' ? getUniformEnd(shape.start, end) : end
+    uniform && shape.type !== 'arrow' && shape.type !== 'line'
+      ? getUniformEnd(shape.start, end)
+      : end
   return { ...shape, end: nextEnd }
 }
 

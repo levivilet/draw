@@ -32,6 +32,7 @@ test('renders a bottom toolbar with cursor selected by default', () => {
   const root = findByClass(dom, 'DrawView')
   const cursor = dom.find((node) => node.name === 'cursor')
   const line = dom.find((node) => node.name === 'line')
+  const arrow = dom.find((node) => node.name === 'arrow')
 
   expect(findByClass(dom, 'DrawToolbar')).toMatchObject({
     'aria-label': 'Drawing tools',
@@ -42,6 +43,11 @@ test('renders a bottom toolbar with cursor selected by default', () => {
     onClick: 'handleSelectTool',
   })
   expect(line).toMatchObject({ 'aria-pressed': false })
+  expect(arrow).toMatchObject({
+    'aria-label': 'Arrow tool',
+    'aria-pressed': false,
+    title: 'Arrow',
+  })
   expect(findByClass(dom, 'DrawShapePicker')).toBeUndefined()
   expect(findByClass(dom, 'DrawClearButton')).toMatchObject({
     disabled: true,
@@ -118,8 +124,14 @@ test('renders bounded shapes with renderer-compatible dataset properties', () =>
       start: { x: 20, y: 30 },
       type: 'triangle',
     },
+    {
+      end: { x: 90, y: 70 },
+      id: 8,
+      start: { x: 60, y: 70 },
+      type: 'arrow',
+    },
   ]
-  const dom = renderDraw(createState(shapes, 'triangle', 7))
+  const dom = renderDraw(createState(shapes, 'arrow', 8))
 
   expect(findByClass(dom, 'DrawLine')).toMatchObject({
     childCount: 1,
@@ -128,14 +140,20 @@ test('renders bounded shapes with renderer-compatible dataset properties', () =>
   expect(findByClass(dom, 'DrawLineStroke')).toMatchObject({
     childCount: 0,
   })
-  expect(findByClass(dom, 'DrawTriangle')?.className).toContain(
+  expect(findByClass(dom, 'DrawArrow')).toMatchObject({
+    childCount: 2,
+    'data-shapeId': '8',
+  })
+  expect(findByClass(dom, 'DrawArrow')?.className).toContain(
     'DrawShapeSelected',
   )
+  expect(findByClass(dom, 'DrawArrowStroke')).toBeDefined()
+  expect(findByClass(dom, 'DrawArrowHead')).toBeDefined()
   expect(findByClass(dom, 'DrawCircle')).toBeDefined()
   expect(
     dom.find(
       (node) =>
-        node.name === 'triangle' &&
+        node.name === 'arrow' &&
         node.className?.split(' ').includes('DrawToolButton'),
     ),
   ).toMatchObject({
@@ -143,7 +161,7 @@ test('renders bounded shapes with renderer-compatible dataset properties', () =>
   })
   expect(findByClass(dom, 'DrawClearButton')).toMatchObject({ disabled: false })
   expect(getDrawCss(shapes)).toBe(
-    '.DrawShape4{left:4px;top:5px;width:5.656854249492381px;transform:translateY(-50%) rotate(0.7853981633974483rad)}.DrawShape5{left:2px;top:3px;width:10px;height:10px}.DrawShape6{left:10px;top:20px;width:20px;height:20px}.DrawShape7{left:20px;top:30px;width:30px;height:30px}',
+    '.DrawShape4{left:4px;top:5px;width:5.656854249492381px;transform:translateY(-50%) rotate(0.7853981633974483rad)}.DrawShape5{left:2px;top:3px;width:10px;height:10px}.DrawShape6{left:10px;top:20px;width:20px;height:20px}.DrawShape7{left:20px;top:30px;width:30px;height:30px}.DrawShape8{left:60px;top:70px;width:30px;transform:translateY(-50%) rotate(0rad)}',
   )
 })
 

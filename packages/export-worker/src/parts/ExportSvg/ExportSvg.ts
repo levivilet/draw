@@ -1,4 +1,5 @@
 import type {
+  ArrowShape,
   CircleShape,
   ExportDimensions,
   ExportDrawingOptions,
@@ -9,7 +10,33 @@ import type {
 
 const background = '#ffffff'
 const foreground = '#202020'
+const arrowHeadAngle = Math.PI / 6
+const arrowHeadLength = 12
 const rectangleCornerRadius = 8
+
+export interface ArrowHeadPoints {
+  readonly left: { readonly x: number; readonly y: number }
+  readonly right: { readonly x: number; readonly y: number }
+}
+
+export const getArrowHeadPoints = (
+  shape: Readonly<ArrowShape>,
+): ArrowHeadPoints => {
+  const angle = Math.atan2(
+    shape.end.y - shape.start.y,
+    shape.end.x - shape.start.x,
+  )
+  return {
+    left: {
+      x: shape.end.x - arrowHeadLength * Math.cos(angle - arrowHeadAngle),
+      y: shape.end.y - arrowHeadLength * Math.sin(angle - arrowHeadAngle),
+    },
+    right: {
+      x: shape.end.x - arrowHeadLength * Math.cos(angle + arrowHeadAngle),
+      y: shape.end.y - arrowHeadLength * Math.sin(angle + arrowHeadAngle),
+    },
+  }
+}
 
 const normalizeDimensions = (
   width: number,
@@ -54,6 +81,10 @@ const getRectangleGeometry = (
 
 const renderShape = (shape: Readonly<Shape>): string => {
   switch (shape.type) {
+    case 'arrow': {
+      const { left, right } = getArrowHeadPoints(shape)
+      return `<path d="M ${shape.start.x} ${shape.start.y} L ${shape.end.x} ${shape.end.y} M ${left.x} ${left.y} L ${shape.end.x} ${shape.end.y} L ${right.x} ${right.y}" fill="none" stroke="${foreground}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`
+    }
     case 'circle': {
       const { height, width, x, y } = getRectangleGeometry(shape)
       return `<ellipse cx="${x + width / 2}" cy="${y + height / 2}" rx="${width / 2}" ry="${height / 2}" fill="none" stroke="${foreground}" stroke-width="2"/>`

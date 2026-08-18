@@ -114,6 +114,13 @@ export const renderToolbar = (selectedTool: Tool, empty: boolean): TreeNode => {
       renderShapeTool(selectedTool),
       renderToolButton(
         selectedTool,
+        'arrow',
+        DrawStrings.arrowTool(),
+        DrawStrings.arrow(),
+        '↗',
+      ),
+      renderToolButton(
+        selectedTool,
         'text',
         DrawStrings.textTool(),
         DrawStrings.text(),

@@ -51,6 +51,12 @@ test('draws a white background and every supported shape', async () => {
       type: 'line' as const,
     },
     {
+      end: { x: 21, y: 40 },
+      id: 7,
+      start: { x: 1, y: 40 },
+      type: 'arrow' as const,
+    },
+    {
       end: { x: 8, y: 9 },
       id: 4,
       start: { x: 8, y: 9 },
@@ -98,6 +104,10 @@ test('draws a white background and every supported shape', async () => {
   expect(context.fillRect).toHaveBeenCalledWith(0, 0, 101, 50)
   expect(context.moveTo).toHaveBeenCalledWith(1, 2)
   expect(context.lineTo).toHaveBeenCalledWith(20, 30)
+  expect(context.moveTo).toHaveBeenCalledWith(1, 40)
+  expect(context.lineTo).toHaveBeenCalledWith(21, 40)
+  expect(context.moveTo).toHaveBeenCalledWith(10.607695154586736, 46)
+  expect(context.lineTo).toHaveBeenCalledWith(10.607695154586736, 34)
   expect(context.arc).toHaveBeenCalledWith(8, 9, 1.5, 0, Math.PI * 2)
   expect(context.fill).toHaveBeenCalledTimes(1)
   expect(context.roundRect).toHaveBeenCalledWith(11, 21, 28, 38, 8)

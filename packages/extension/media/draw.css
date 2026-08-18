@@ -37,6 +37,7 @@
   outline-offset: -1px;
 }
 
+.DrawBoardTool-arrow,
 .DrawBoardTool-line,
 .DrawBoardTool-rectangle,
 .DrawBoardTool-circle,
@@ -62,6 +63,43 @@
   height: 15px;
   contain: strict;
   transform-origin: 0 50%;
+}
+
+.DrawArrow {
+  height: 15px;
+  transform-origin: 0 50%;
+}
+
+.DrawArrowStroke {
+  position: absolute;
+  inset: 6px 0;
+  contain: strict;
+  background: #202020;
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.DrawArrowHead {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  box-sizing: border-box;
+  width: 10px;
+  height: 10px;
+  border-top: 3px solid #202020;
+  border-right: 3px solid #202020;
+  border-radius: 1px;
+  pointer-events: none;
+  transform: rotate(45deg);
+}
+
+.DrawArrow.DrawShapeSelected .DrawArrowStroke {
+  background: var(--DrawAccent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--DrawAccent) 25%, transparent);
+}
+
+.DrawArrow.DrawShapeSelected .DrawArrowHead {
+  border-color: var(--DrawAccent);
 }
 
 .DrawLineStroke {

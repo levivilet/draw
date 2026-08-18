@@ -21,6 +21,12 @@ test('exports lines, shapes, and escaped text without selection UI', () => {
         type: 'line',
       },
       {
+        end: { x: 25, y: 70 },
+        id: 7,
+        start: { x: 5, y: 70 },
+        type: 'arrow',
+      },
+      {
         end: { x: 50, y: 40 },
         id: 4,
         start: { x: 50, y: 40 },
@@ -62,6 +68,9 @@ test('exports lines, shapes, and escaped text without selection UI', () => {
 
   expect(svg).toContain(
     '<line x1="-5" y1="10" x2="20" y2="30" fill="none" stroke="#202020" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>',
+  )
+  expect(svg).toContain(
+    '<path d="M 5 70 L 25 70 M 14.607695154586736 76 L 25 70 L 14.607695154586736 64" fill="none" stroke="#202020" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>',
   )
   expect(svg).toContain('<circle cx="50" cy="40" r="1.5" fill="#202020"/>')
   expect(svg).toContain(
