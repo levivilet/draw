@@ -25,13 +25,16 @@ test('returns text input focus context while editing text', () => {
   })
 })
 
-test('returns empty context when no text input is being edited', () => {
+test('returns selected shape context while using the cursor', () => {
   expect(
     getContext({
       ...createState(),
       selectedTool: 'cursor',
     }),
-  ).toEqual({})
+  ).toEqual({ 'draw.selectedShape': true })
+})
+
+test('returns empty context when no shape is selected', () => {
   expect(
     getContext({
       ...createState(),

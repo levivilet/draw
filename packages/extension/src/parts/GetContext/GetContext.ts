@@ -6,10 +6,12 @@ export const getContext = (
 ): Readonly<Record<string, boolean>> => {
   const { selectedShapeId, selectedTool, shapes } = state
   const selectedShape = shapes.find((shape) => shape.id === selectedShapeId)
-  if (selectedTool !== 'text' || selectedShape?.type !== 'text') {
-    return {}
+  const context: Record<string, boolean> = {}
+  if (selectedTool === 'cursor' && selectedShape) {
+    context[ContextKey.SelectedShape] = true
   }
-  return {
-    [ContextKey.TextInputFocus]: true,
+  if (selectedTool === 'text' && selectedShape?.type === 'text') {
+    context[ContextKey.TextInputFocus] = true
   }
+  return context
 }

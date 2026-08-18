@@ -13,6 +13,11 @@ test('defines only the basic Draw extension surface', async () => {
     readonly browser: string
     readonly commands: readonly { readonly id: string }[]
     readonly configuration?: unknown
+    readonly keybindings: readonly {
+      readonly command: string
+      readonly key: string
+      readonly when: string
+    }[]
     readonly repository: string
     readonly rpc: readonly {
       readonly id: string
@@ -31,6 +36,7 @@ test('defines only the basic Draw extension surface', async () => {
     activation: [
       'onView:draw.views.whiteboard',
       'onCommand:draw.clear',
+      'onCommand:draw.duplicate',
       'onCommand:draw.show',
     ],
     browser: 'dist/drawMain.js',
@@ -39,6 +45,14 @@ test('defines only the basic Draw extension surface', async () => {
   expect(manifest.commands.map(({ id }) => id)).toEqual([
     'draw.show',
     'draw.clear',
+    'draw.duplicate',
+  ])
+  expect(manifest.keybindings).toEqual([
+    {
+      command: 'draw.duplicate',
+      key: 'Ctrl+D',
+      when: 'draw.selectedShape',
+    },
   ])
   expect(manifest.configuration).toBeUndefined()
   expect(manifest.rpc).toEqual([
